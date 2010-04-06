@@ -1,0 +1,60 @@
+/*
+File: fixed.css
+
+About: Version
+	1.0
+
+Project: iPhone OS Fixed Positioning
+
+Description:
+	Enables fixed positioning on iPhone OS
+
+Supports:
+	- iPad (iPhone coming soon(?))
+
+*/
+body > viewport {
+	top: 0;
+	left: 0;
+	z-index: 200;
+	position: fixed;
+}
+
+body > section {
+	top: 0;
+	left: 0;
+	min-width: 768px;
+	z-index: 100;
+	position: fixed;
+	background: rgba(0, 0, 255, 0.5);
+	
+	-webkit-backface-visibility: hidden;
+	-webkit-transition: -webkit-transform 0ms cubic-bezier(0, 0, 0, 1.0);
+}
+
+body.landscape > section {
+	min-width: 1024px;
+}
+
+body > viewport #touch-scrollbar {
+	top: 3px;
+	left: 760px;
+	position: absolute;
+	width: 5px;
+	background: rgba(0, 0, 0, 0.5);
+	-webkit-border-radius: 3px;
+	opacity: 0.9999;
+	
+	-webkit-backface-visibility: hidden;
+	-webkit-transition-property: -webkit-transform, opacity;
+	-webkit-transition-duration: 0ms, 500ms;
+	-webkit-transition-timing-function: cubic-bezier(0, 0, 0, 1.0);
+}
+
+body.landscape > viewport #touch-scrollbar {
+	left: 1016px;
+}
+
+body > viewport #touch-scrollbar.hidden {
+	opacity: 0;
+}
