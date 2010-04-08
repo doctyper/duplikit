@@ -44,6 +44,7 @@ Swipe.UI.Rivet = (function () {
 		namespaceClass : "ui-swipe-rivet",
 		endTimers : {},
 		scrollbarMatrices : {},
+		touchActive : 0,
 		velocityMultiplier : 10000,
 		maxDistance : 2500,
 		maxDuration : 2000
@@ -69,7 +70,7 @@ Swipe.UI.Rivet = (function () {
 			// Orientationchange fires before scroll
 			// This is good. It gives me a chance to not scroll
 			if (!$self.vars.orientationChange) {
-				var targets = $self.utils.getTargets();
+				var targets = $self.utils.getTargets($self.vars.object);
 				var matrix = $self.utils.getMatrix(targets.y);
 				
 				$self.utils.resetTransition(targets.y, 350);
@@ -220,8 +221,6 @@ Swipe.UI.Rivet = (function () {
 			}
 			
 			$self.vars.log = [];
-			
-			$self.vars.activeAxis = null;
 		}
 	};
 	
@@ -251,11 +250,18 @@ Swipe.UI.Rivet = (function () {
 		
 		var eventListeners = {
 			touchstart : function(e) {
-				
 				$self.utils.zeroValues();
 				
-				activeAxis = null;
-				doubleCheckAxis = null;
+				if (!$self.vars.touchActive) {
+					activeAxis = null;
+					doubleCheckAxis = null;
+					$self.vars.easingTimers = {};
+				} else {
+					window.clearTimeout($self.vars.easingTimers.x);
+					window.clearTimeout($self.vars.easingTimers.y);
+					
+					$self.vars.touchActive = 0;
+				}
 				
 				oldDifference = {};
 				
@@ -267,6 +273,7 @@ Swipe.UI.Rivet = (function () {
 				};
 
 				startTime = new Date().getTime();
+				offset = targets.content.getBoundingClientRect();
 
 				tHeight = targets.content.offsetHeight;
 				wHeight = targets.parent.offsetHeight || window.outerHeight;
@@ -284,11 +291,30 @@ Swipe.UI.Rivet = (function () {
 					x : $self.utils.getMatrix(targets.x),
 					y : $self.utils.getMatrix(targets.y)
 				};
+				
+				// Stop the current move
+				$self.utils.setTransform(targets.x, matrices.x.translate(0, 0));
+				$self.utils.setTransform(targets.y, matrices.y.translate(0, 0));
+				
+				// Stop scrollbars
+				$self.utils.updateScrollbarPosition({
+					el : targets.x,
+					outer : wWidth,
+					inner : tWidth,
+					position : offset
+				});
+
+				$self.utils.updateScrollbarPosition({
+					el : targets.y,
+					outer : wHeight,
+					inner : tHeight,
+					position : offset
+				});
 			},
 
 			touchmove : function(e) {
 				e.preventDefault();
-
+				
 				if ($self.vars._touchMoveTimer) {
 					window.clearTimeout($self.vars._touchMoveTimer);
 				}
@@ -304,15 +330,15 @@ Swipe.UI.Rivet = (function () {
 					x : currentTouches.x - startTouches.x,
 					y : currentTouches.y - startTouches.y
 				};
-				
+
 				if (!activeAxis) {
 					activeAxis = {};
-					
+
 					activeAxis.x = (Math.abs(touchDifferences.x) >= Math.abs(touchDifferences.y));
 					activeAxis.y = (Math.abs(touchDifferences.x) <= Math.abs(touchDifferences.y));
 				} else if (doubleCheckAxis === null) {
 					doubleCheckAxis = Math.abs(Math.abs(touchDifferences.x) - Math.abs(touchDifferences.y)) <= 5;
-					
+
 					if (doubleCheckAxis) {
 						activeAxis.x = true;
 						activeAxis.y = true;
@@ -320,18 +346,18 @@ Swipe.UI.Rivet = (function () {
 				}
 
 				offset = targets.content.getBoundingClientRect();
-				
+
 				if (widthDiff > 0 && activeAxis.x) {
-					
+
 					if (offset.left > 0 || Math.abs(offset.left) > widthDiff) {
 						matrices.x = $self.utils.getMatrix(targets.x);
 						oldDifference.x = oldDifference.x || currentTouches.x;
 						touchDifferences.x = (currentTouches.x - oldDifference.x) * 0.5;
 						oldDifference.x = currentTouches.x;
 					}
-					
+
 					$self.utils.setTransform(targets.x, matrices.x.translate(touchDifferences.x, 0));
-					
+
 					$self.utils.updateScrollbarPosition({
 						el : targets.x,
 						outer : wWidth,
@@ -339,9 +365,9 @@ Swipe.UI.Rivet = (function () {
 						position : offset
 					});
 				}
-				
+
 				if (heightDiff > 0 && activeAxis.y) {
-					
+
 					if (offset.top > 0 || Math.abs(offset.top) > heightDiff) {
 						matrices.y = $self.utils.getMatrix(targets.y);
 						oldDifference.y = oldDifference.y || currentTouches.y;
@@ -350,7 +376,7 @@ Swipe.UI.Rivet = (function () {
 					}
 
 					$self.utils.setTransform(targets.y, matrices.y.translate(0, touchDifferences.y));
-					
+
 					$self.utils.updateScrollbarPosition({
 						el : targets.y,
 						outer : wHeight,
@@ -404,8 +430,7 @@ Swipe.UI.Rivet = (function () {
 					return avg;
 				}();
 
-				lastTime = (log[0].time - log[2].time) * 2;
-				console.log(lastTime);
+				lastTime = log.length ? ((log[0].time - log[log.length - 1].time) * 2) : 0;
 
 				endDisplacement = {
 					x : endTouches.x - startTouches.x,
@@ -418,8 +443,8 @@ Swipe.UI.Rivet = (function () {
 				};
 				
 				endDuration = {
-					x : Math.min(Math.abs(velocity.x * $self.vars.velocityMultiplier), $self.vars.maxDuration),
-					y : Math.min(Math.abs(velocity.y * $self.vars.velocityMultiplier), $self.vars.maxDuration)
+					x : Math.min(Math.abs($self.vars.velocityMultiplier - (velocity.x * $self.vars.velocityMultiplier)), $self.vars.maxDuration),
+					y : Math.min(Math.abs($self.vars.velocityMultiplier - (velocity.y * $self.vars.velocityMultiplier)), $self.vars.maxDuration)
 				};
 				
 				end = {
@@ -434,9 +459,6 @@ Swipe.UI.Rivet = (function () {
 				if (Math.abs(end.y) > $self.vars.maxDistance) {
 					end.y = (end.y >= 0) ? $self.vars.maxDistance : -$self.vars.maxDistance;
 				}
-				
-				console.log(endDuration.y);
-				console.log(end.y);
 				
 				var bounds = {
 					top : offset.top + end.y > 0,
@@ -524,6 +546,13 @@ Swipe.UI.Rivet = (function () {
 					$self.utils.resetTransition(targets.x, endDuration.x);
 					$self.utils.setTransform(targets.x, matrices.x.translate(end.x, 0));
 					
+					// Add to queue
+					$self.vars.touchActive++;
+					
+					$self.vars.easingTimers.x = window.setTimeout(function() {
+						$self.vars.touchActive--;
+					}, endDuration.x);
+					
 					$self.utils.updateScrollbarPosition({
 						el : targets.x,
 						outer : wWidth,
@@ -540,6 +569,13 @@ Swipe.UI.Rivet = (function () {
 					$self.utils.resetTransition(targets.y, endDuration.y);
 					$self.utils.setTransform(targets.y, matrices.y.translate(0, end.y));
 					
+					// Add to queue
+					$self.vars.touchActive++;
+					
+					$self.vars.easingTimers.y = window.setTimeout(function() {
+						$self.vars.touchActive--;
+					}, endDuration.y);
+					
 					$self.utils.updateScrollbarPosition({
 						el : targets.y,
 						outer : wHeight,
@@ -551,6 +587,7 @@ Swipe.UI.Rivet = (function () {
 						duration : endDuration.y
 					});
 				}
+				
 			}
 		};
 		
