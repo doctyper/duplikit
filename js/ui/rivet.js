@@ -138,14 +138,8 @@ Swipe.UI.Rivet = (function () {
 			$self.vars.oldTouches = touchDifferences;
 
 			$self.vars._touchMoveTimer = window.setTimeout(function() {
-				$self.utils.logTouches({
-					touchDifferences : {
-						x : 0,
-						y : 0
-					},
-					time : new Date().getTime()
-				});
-			}, 10);
+				$self.vars.log = [];
+			}, 100);
 		},
 		
 		showScrollbars : function() {
@@ -403,13 +397,12 @@ Swipe.UI.Rivet = (function () {
 
 				// Reverse the log array
 				var log = $self.vars.log;
+				log.reverse();
 				
-				if (!log.length) {
+				if (!log[0]) {
 					$self.utils.hideScrollbars();
 					return;
 				}
-				
-				log.reverse();
 
 				lastTouches = function() {
 					var sum = {
