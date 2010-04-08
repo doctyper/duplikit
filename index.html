@@ -3,6 +3,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
 		<title>iPhone OS Fixed Positioning</title>
 		
 		<link rel="stylesheet" href="css/fixed.css" type="text/css" />
@@ -16,6 +17,10 @@
 
 			body {
 				font-family: "Helvetica";
+			}
+			
+			section {
+				width: 1024px;
 			}
 			
 			ol {
@@ -55,66 +60,91 @@
 		</style>
 	</head>
 	<body>
-		<viewport>
-			<div id="test" class="test">Fixed</div>
-		</viewport>
-		
-		<section>
+		<view>
+			<viewport>
+				<div id="test" class="test">Fixed</div>
+			</viewport>
 			
-			<ol>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-			</ol>
-
-			<script src="js/fixed.js" type="text/javascript"></script>
-		</section>
+			<div class="ui-swipe-rivet ui-swipe-rivet-y-axis">
+				<div class="ui-swipe-rivet ui-swipe-rivet-x-axis">
+					
+					<section>
+						
+						<ol>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ol>
+						
+					</section>
+					
+					
+				</div>
+			</div>
+			
+		</view>
+		
+		<script src="js/fixed.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			document.addEventListener("DOMContentLoaded", function() {
+				var views = document.querySelectorAll("view");
+				
+				for (var i = 0, j = views.length; i < j; i++) {
+					
+					Swipe.UI.Rivet({
+						target : views[i]
+					});
+					
+				}
+			}, false);
+		</script>
+		
 	</body>
 </html>
