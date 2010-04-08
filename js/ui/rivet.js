@@ -44,7 +44,9 @@ Swipe.UI.Rivet = (function () {
 		namespaceClass : "ui-swipe-rivet",
 		endTimers : {},
 		scrollbarMatrices : {},
-		velocityMultiplier : 1000
+		velocityMultiplier : 10000,
+		maxDistance : 2500,
+		maxDuration : 2000
 	};
 	
 	/*
@@ -319,7 +321,7 @@ Swipe.UI.Rivet = (function () {
 
 				offset = targets.content.getBoundingClientRect();
 				
-				if (widthDiff && activeAxis.x) {
+				if (widthDiff > 0 && activeAxis.x) {
 					
 					if (offset.left > 0 || Math.abs(offset.left) > widthDiff) {
 						matrices.x = $self.utils.getMatrix(targets.x);
@@ -338,7 +340,7 @@ Swipe.UI.Rivet = (function () {
 					});
 				}
 				
-				if (heightDiff && activeAxis.y) {
+				if (heightDiff > 0 && activeAxis.y) {
 					
 					if (offset.top > 0 || Math.abs(offset.top) > heightDiff) {
 						matrices.y = $self.utils.getMatrix(targets.y);
@@ -402,7 +404,8 @@ Swipe.UI.Rivet = (function () {
 					return avg;
 				}();
 
-				lastTime = log[0].time - log[2].time;
+				lastTime = (log[0].time - log[2].time) * 2;
+				console.log(lastTime);
 
 				endDisplacement = {
 					x : endTouches.x - startTouches.x,
@@ -415,14 +418,25 @@ Swipe.UI.Rivet = (function () {
 				};
 				
 				endDuration = {
-					x : Math.abs(velocity.x * $self.vars.velocityMultiplier),
-					y : Math.abs(velocity.y * $self.vars.velocityMultiplier)
+					x : Math.min(Math.abs(velocity.x * $self.vars.velocityMultiplier), $self.vars.maxDuration),
+					y : Math.min(Math.abs(velocity.y * $self.vars.velocityMultiplier), $self.vars.maxDuration)
 				};
 				
 				end = {
-					x : endDuration.x * velocity.x,
-					y : endDuration.y * velocity.y
+					x : (endDuration.x * velocity.x),
+					y : (endDuration.y * velocity.y)
 				};
+				
+				if (Math.abs(end.x) > $self.vars.maxDistance) {
+					end.x = (end.x >= 0) ? $self.vars.maxDistance : -$self.vars.maxDistance;
+				}
+				
+				if (Math.abs(end.y) > $self.vars.maxDistance) {
+					end.y = (end.y >= 0) ? $self.vars.maxDistance : -$self.vars.maxDistance;
+				}
+				
+				console.log(endDuration.y);
+				console.log(end.y);
 				
 				var bounds = {
 					top : offset.top + end.y > 0,
@@ -441,7 +455,7 @@ Swipe.UI.Rivet = (function () {
 					y : Math.min(800, Math.max(400, 800 * Math.abs(velocity.y)))
 				};
 				
-				if (heightDiff && activeAxis.y && (bounds.top || bounds.bottom)) {
+				if (heightDiff > 0 && activeAxis.y && (bounds.top || bounds.bottom)) {
 					endDuration.y = newDuration.y;
 					
 					if (bounds.top) {
@@ -471,7 +485,7 @@ Swipe.UI.Rivet = (function () {
 					}
 				}
 				
-				if (widthDiff && activeAxis.x && (bounds.left || bounds.right)) {
+				if (widthDiff > 0 && activeAxis.x && (bounds.left || bounds.right)) {
 					endDuration.x = newDuration.x;
 					
 					if (bounds.left) {
@@ -506,7 +520,7 @@ Swipe.UI.Rivet = (function () {
 					y : $self.utils.getMatrix(targets.y)
 				};
 				
-				if (widthDiff && activeAxis.x) {
+				if (widthDiff > 0 && activeAxis.x) {
 					$self.utils.resetTransition(targets.x, endDuration.x);
 					$self.utils.setTransform(targets.x, matrices.x.translate(end.x, 0));
 					
@@ -522,7 +536,7 @@ Swipe.UI.Rivet = (function () {
 					});
 				}
 				
-				if (heightDiff && activeAxis.y) {
+				if (heightDiff > 0 && activeAxis.y) {
 					$self.utils.resetTransition(targets.y, endDuration.y);
 					$self.utils.setTransform(targets.y, matrices.y.translate(0, end.y));
 					
