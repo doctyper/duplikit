@@ -4,7 +4,7 @@ File: fixed.js
 About: Version
 	1.0
 
-Project: iPhone OS Fixed Positioning
+Project: Swipe JS
 
 Description:
 	Enables fixed positioning on iPhone OS
@@ -312,7 +312,7 @@ Swipe.UI.Rivet = (function () {
 		    startTouches = {}, currentTouches = {},
 		    endTouches = {}, touchDifferences = {},
 		    tHeight, wHeight, heightDiff,
-		    tWidth, wWidth, widthDiff,
+		    tWidth, wWidth, widthDiff, oldDifference = {},
 		    activeAxis, doubleCheckAxis,
 		    lastTouches, lastTime, velocity, endDuration, end;
 		
@@ -323,6 +323,8 @@ Swipe.UI.Rivet = (function () {
 				
 				activeAxis = null;
 				doubleCheckAxis = null;
+				
+				oldDifference = {};
 				
 				touch = e.touches[0];
 
@@ -375,16 +377,13 @@ Swipe.UI.Rivet = (function () {
 					
 					activeAxis.x = (Math.abs(touchDifferences.x) >= Math.abs(touchDifferences.y));
 					activeAxis.y = (Math.abs(touchDifferences.x) <= Math.abs(touchDifferences.y));
-				} else if (!doubleCheckAxis) {
+				} else if (doubleCheckAxis === null) {
 					doubleCheckAxis = Math.abs(Math.abs(touchDifferences.x) - Math.abs(touchDifferences.y)) <= 5;
 					
 					if (doubleCheckAxis) {
 						activeAxis.x = true;
 						activeAxis.y = true;
 					}
-					
-					// If all else fails, lock the axis
-					doubleCheckAxis = true;
 				}
 
 				offset = targets.content.getBoundingClientRect();
@@ -392,7 +391,10 @@ Swipe.UI.Rivet = (function () {
 				if (widthDiff && activeAxis.x) {
 					
 					if (offset.left > 0 || Math.abs(offset.left) > widthDiff) {
-						touchDifferences.x *= 0.5;
+						matrices.x = $self.utils.getMatrix(targets.x);
+						oldDifference.x = oldDifference.x || currentTouches.x;
+						touchDifferences.x = (currentTouches.x - oldDifference.x) * 0.5;
+						oldDifference.x = currentTouches.x;
 					}
 					
 					$self.utils.setTransform(targets.x, matrices.x.translate(touchDifferences.x, 0));
@@ -408,7 +410,10 @@ Swipe.UI.Rivet = (function () {
 				if (heightDiff && activeAxis.y) {
 					
 					if (offset.top > 0 || Math.abs(offset.top) > heightDiff) {
-						touchDifferences.y *= 0.5;
+						matrices.y = $self.utils.getMatrix(targets.y);
+						oldDifference.y = oldDifference.y || currentTouches.y;
+						touchDifferences.y = (currentTouches.y - oldDifference.y) * 0.5;
+						oldDifference.y = currentTouches.y;
 					}
 
 					$self.utils.setTransform(targets.y, matrices.y.translate(0, touchDifferences.y));
@@ -642,11 +647,31 @@ Swipe.UI.Rivet = (function () {
 		$self.vars._scrollTimer = window.setTimeout($self.utils.hideScrollbars, 800);
 	};
 	
+	$self.prepView = function(object) {
+		var targets = $self.utils.getTargets(object);
+		
+		var x = document.createElement("div");
+		$self.utils.addClass(x, "ui-swipe-rivet");
+		$self.utils.addClass(x, "ui-swipe-rivet-x-axis");
+		
+		var y = document.createElement("div");
+		$self.utils.addClass(y, "ui-swipe-rivet");
+		$self.utils.addClass(y, "ui-swipe-rivet-y-axis");
+		
+		targets.parent.insertBefore(y, targets.content);
+		
+		y.appendChild(x);
+		x.appendChild(targets.content);
+		
+		$self.vars.object = null;
+	};
+	
 	/*
 	Function: init
 	*/
 	return function(object) {
 		// Initialize!
+		$self.prepView(object);
 		$self.addEventListeners(object);
 		$self.renderScrollbars(object);
 	};
