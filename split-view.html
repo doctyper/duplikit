@@ -5,7 +5,8 @@
 		<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 		<title>Swipe JS Fixed Positioning</title>
 		
-		<link rel="stylesheet" href="css/ui/rivet.css" type="text/css" />
+		<link rel="stylesheet" href="css/utils/rivet.css" type="text/css" />
+		<link rel="stylesheet" href="css/ui/split-view.css" type="text/css" />
 		
 		<!-- Sample Content -->
 		<style type="text/css" media="screen">
@@ -15,115 +16,7 @@
 				border: 0;
 				font-size: 100%;
 			}
-
-			.ui-swipe-split-view-component {
-				font-family: "Helvetica";
-			}
 			
-			.ui-swipe-split-view-component view {
-				margin: 0 -2px 0 -1px;
-				padding: 0;
-				display: inline-block;
-				position: relative;
-				vertical-align: top;
-				min-height: 768px;
-				background: #fff;
-			}
-			
-			
-			.ui-swipe-split-view-component header, .ui-swipe-split-view-component .ui-swipe-search-component {
-				margin: 0;
-				padding: 0;
-				display: block;
-				width: 100%;
-				height: 42px;
-				line-height: 44px;
-				text-align: center;
-				border: solid;
-				border-width: 1px 0;
-				border-color: #fff #fff #797f90;
-				background: -webkit-gradient(linear, left top, left bottom, from(#f4f5f7), to(#a8acb9), color-stop(32%, #edeef1), color-stop(70%, #c7cad3));
-			}
-			
-			.ui-swipe-split-view-component header h1 {
-				font-size: 20px;
-				font-weight: bold;
-				color: #717880;
-				text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
-			}
-			
-			.ui-swipe-split-view-component view:first-child {
-				width: 320px;
-				border-right: 1px solid #000;
-			}
-			
-			.ui-swipe-split-view-component view:last-child {
-				width: 703px;
-			}
-			
-			.ui-swipe-split-view-component view section {
-				width: 100%;
-				min-height: 596px;
-			}
-			
-			.ui-swipe-split-view-component view:first-child section {
-				width: 320px;
-				min-height: 552px;
-				padding: 0;
-			}
-			
-			.ui-swipe-split-view-component .ui-swipe-search-component {
-				border-bottom-color: #717d85;
-			}
-			
-			.ui-swipe-split-view-component .ui-swipe-search-component fieldset input[type="search"] {
-				margin-top: 6px;
-				margin-left: 5px;
-				height: 31px;
-				border-width: 4px 16px 2px 33px;
-				-webkit-border-radius: 14px;
-				font-size: 14px;
-				width: 310px;
-				-webkit-border-image: url("images/bg-search.png") 4 16 2 33;
-			}
-			
-			.ui-swipe-split-view-component view dt {
-				text-indent: 12px;
-				height: 20px;
-				line-height: 18px;
-				font-size: 18px;
-				font-weight: bold;
-				color: #fff;
-				text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
-				border: solid;
-				border-width: 1px 0;
-				border-color: #a5b1ba #fff #989ea4;
-				background: -webkit-gradient(linear, left top, left bottom, from(#909faa), to(#b8c1c8), color-stop(25%, #9ca9b3), color-stop(75%, #b0bac2));
-			}
-			
-			.ui-swipe-split-view-component view dt:not(:first-child) {
-				margin-top: 44px;
-			}
-			
-			.ui-swipe-split-view-component view dd {
-				text-indent: 12px;
-				height: 43px;
-				line-height: 44px;
-				font-size: 20px;
-				font-weight: bold;
-				color: #000;
-				width: 320px;
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				border-bottom: 1px solid #e0e0e0;
-			}
-			
-			.ui-swipe-split-view-component view section p {
-				font-size: 18px;
-				margin: 20px;
-				line-height: 1.5;
-			}
 		</style>
 		<!-- Sample Content -->
 		
@@ -132,7 +25,8 @@
 		<div class="ui-swipe-split-view-component">
 			<view>
 				<viewport>
-
+					<div class="ui-swipe-popover-tip-wrap"><span class="ui-swipe-popover-tip"></span></div>
+					
 					<header>
 						<h1>Item</h1>
 					</header>
@@ -149,51 +43,39 @@
 				<section>
 
 					<!-- Sample Content -->
-					<dl>
-						<dt>California</dt>
-						<dd>Foo Foo Foo Foo Foo Foo Foo Foo Foo Foo Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						
-						<dt>Section Footer</dt>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo Foo Foo Foo Foo Foo Foo Foo Foo Foo Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-						<dd>Foo</dd>
-					</dl>
+					<ul>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+						<li>Foo</li>
+					</ul>
 					<!-- Sample Content -->
 
 				</section>
@@ -205,6 +87,8 @@
 					<header>
 						<h1>Item</h1>
 					</header>
+					
+					<button class="ui-swipe-popover-trigger">Item</button>
 
 				</viewport>
 				<section>
@@ -237,22 +121,14 @@
 		</div>
 		
 		<script src="js/core/swipe.js" type="text/javascript"></script>
-		<script src="js/ui/rivet.js" type="text/javascript"></script>
+		<script src="js/utils/rivet.js" type="text/javascript"></script>
+		
+		<script src="js/ui/split-view.js" type="text/javascript"></script>
 		
 		<script type="text/javascript">
 			document.addEventListener("DOMContentLoaded", function() {
-				var views = document.querySelectorAll("view");
-				
-				// Swipe.UI.Rivet({
-				// 	target : views[0]
-				// });
-				for (var i = 0, j = views.length; i < j; i++) {
-					
-					Swipe.UI.Rivet({
-						target : views[i]
-					});
-					
-				}
+				var target = document.querySelector(".ui-swipe-split-view-component");
+				var component = new Swipe.UI.SplitView(target);
 			}, false);
 		</script>
 		
