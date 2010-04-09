@@ -27,13 +27,24 @@ var Swipe = window.Swipe || (function() {
 	Namespace: Swipe.vars
 		Shared local variables
 	*/
-	$self.vars = {};
+	$self.vars = {
+		namespaceClass : "ui-swipe"
+	};
 	
 	/*
 	Namespace: Swipe.utils
 		Shared local utilities
 	*/
 	$self.utils = {
+		
+		parseClass : function() {
+			var suffix = arguments[1] || arguments[0],
+			    prefix = arguments[1] ? arguments[0] : "";
+			
+			var value = prefix + $self.vars.namespaceClass + "-" + suffix;
+			
+			return value;
+		},
 		
 		/*
 		Property: addClass
@@ -87,6 +98,18 @@ var Swipe = window.Swipe || (function() {
 		*/
 		hasClass : function(el, elClass) {
 			return new RegExp(("(^|\\s)" + elClass + "(\\s|$)"), "i").test(el.className);
+		},
+
+		/*
+		Property: toggleClass
+		 	Toggles a class on/off
+
+		Parameters:
+			elClass - the class to toggle.
+		*/
+		toggleClass : function(el, elClass) {
+			$self.utils.hasClass(el, elClass) ? $self.utils.removeClass(el, elClass) : $self.utils.addClass(el, elClass);
+			return el;
 		},
 		
 		checkOrientation : function(e) {
