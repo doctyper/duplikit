@@ -396,7 +396,7 @@ Swipe.UI.Rivet = (function (object) {
 						position : offset
 					});
 				}
-
+				
 				$self.utils.updateTouches(touchDifferences);
 				
 			},
@@ -441,6 +441,11 @@ Swipe.UI.Rivet = (function (object) {
 
 					return avg;
 				}();
+				
+				if ((activeAxis.x && !lastTouches.x) || (activeAxis.y && !lastTouches.y)) {
+					$self.utils.hideScrollbars(targets.parent);
+					return;
+				}
 
 				lastTime = log.length ? ((log[0].time - log[log.length - 1].time) * 2) : 0;
 				
@@ -454,9 +459,13 @@ Swipe.UI.Rivet = (function (object) {
 					y : (lastTouches.y / lastTime)
 				};
 				
+				// endDuration = {
+				// 	x : Math.min(Math.abs($self.vars.velocityMultiplier - (velocity.x * $self.vars.velocityMultiplier)), $self.vars.maxDuration),
+				// 	y : Math.min(Math.abs($self.vars.velocityMultiplier - (velocity.y * $self.vars.velocityMultiplier)), $self.vars.maxDuration)
+				// };
 				endDuration = {
-					x : Math.min(Math.abs($self.vars.velocityMultiplier - (velocity.x * $self.vars.velocityMultiplier)), $self.vars.maxDuration),
-					y : Math.min(Math.abs($self.vars.velocityMultiplier - (velocity.y * $self.vars.velocityMultiplier)), $self.vars.maxDuration)
+					x : Math.abs($self.vars.velocityMultiplier - (velocity.x * $self.vars.velocityMultiplier)),
+					y : Math.abs($self.vars.velocityMultiplier - (velocity.y * $self.vars.velocityMultiplier))
 				};
 				
 				end = {
@@ -478,7 +487,7 @@ Swipe.UI.Rivet = (function (object) {
 				};
 				
 				var bounds = {
-					top : dims.y > wTop,
+					top : (dims.y) > wTop,
 					right : Math.abs(dims.x) > widthDiff,
 					bottom : Math.abs(dims.y) > heightDiff,
 					left : dims.x > wLeft
@@ -517,7 +526,7 @@ Swipe.UI.Rivet = (function (object) {
 					
 					if (_timer.y) {
 						endDuration.y /= 2.5;
-					
+						
 						$self.vars.endTimers.y = window.setTimeout(function() {
 							$self.utils.setTransform(targets.y, matrices.y.translate(0, bounce.y));
 						}, endDuration.y);
