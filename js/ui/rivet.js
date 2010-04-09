@@ -30,7 +30,7 @@ Swipe.UI = Swipe.UI || {};
 Namespace: Swipe.UI.Rivet
 	Under the Swipe.UI.Rivet Local Namespace
 */
-Swipe.UI.Rivet = (function () {
+Swipe.UI.Rivet = (function (object) {
 	
 	// Storing a variable to reference
 	var $space = Swipe;
@@ -45,7 +45,7 @@ Swipe.UI.Rivet = (function () {
 		endTimers : {},
 		scrollbarMatrices : {},
 		touchActive : 0,
-		velocityMultiplier : 10000,
+		velocityMultiplier : 5000,
 		maxDistance : 2500,
 		maxDuration : 2000
 	};
@@ -81,36 +81,36 @@ Swipe.UI.Rivet = (function () {
 		},
 		
 		getTargets : function(object) {
-			var target = object.target;
-			
 			$self.vars.object = $self.vars.object || {
-				parent : target,
-				x : target.querySelector($self.utils.parseClass(".", "x-axis")),
-				y : target.querySelector($self.utils.parseClass(".", "y-axis")),
-				viewport : target.querySelector("viewport"),
-				content : target.querySelector("section")
+				parent : object.target.querySelector("section"),
+				content : object.target.querySelector($self.utils.parseClass(".", "wrapper")),
+				x : object.target.querySelector($self.utils.parseClass(".", "x-axis")),
+				y : object.target.querySelector($self.utils.parseClass(".", "y-axis")),
+				viewport : object.target.querySelector("viewport")
 			};
 			
 			return $self.vars.object;
 		},
 		
-		getViewport : function(object) {
-			return object.target.querySelector("> viewport");
-		},
-		
 		setTransform : function(el, matrix) {
-			el.style.webkitTransform = matrix;
+			if (el) {
+				el.style.webkitTransform = matrix;
+			}
 		},
 
 		resetTransition : function(el, value) {
-			el.style.webkitTransitionDuration = (value || 0) + "ms";
+			if (el) {
+				el.style.webkitTransitionDuration = (value || 0) + "ms";
+			}
 		},
 
 		getMatrix : function(el) {
-			var transform = window.getComputedStyle(el).webkitTransform,
-			    matrix = new WebKitCSSMatrix(transform);
+			if (el) {
+				var transform = window.getComputedStyle(el).webkitTransform,
+				    matrix = new WebKitCSSMatrix(transform);
 
-			return matrix;
+				return matrix;
+			}
 		},
 
 		logTouches : function(object) {
@@ -138,20 +138,26 @@ Swipe.UI.Rivet = (function () {
 			$self.vars.oldTouches = touchDifferences;
 
 			$self.vars._touchMoveTimer = window.setTimeout(function() {
-				$self.vars.log = [];
+				$self.utils.logTouches({
+					touchDifferences : {
+						x : 0,
+						y : 0
+					},
+					time : new Date().getTime()
+				});
 			}, 100);
 		},
 		
-		showScrollbars : function() {
-			var scrollbars = document.querySelectorAll($self.utils.parseClass(".", "scrollbar"));
+		showScrollbars : function(parent) {
+			var scrollbars = parent.querySelectorAll($self.utils.parseClass(".", "scrollbar"));
 			
 			for (var i = 0, j = scrollbars.length; i < j; i++) {
 				$space.utils.removeClass(scrollbars[i], $self.utils.parseClass("hidden"));
 			}
 		},
 		
-		hideScrollbars : function() {
-			var scrollbars = document.querySelectorAll($self.utils.parseClass(".", "scrollbar"));
+		hideScrollbars : function(parent) {
+			var scrollbars = parent.querySelectorAll($self.utils.parseClass(".", "scrollbar"));
 			
 			for (var i = 0, j = scrollbars.length; i < j; i++) {
 				$space.utils.addClass(scrollbars[i], $self.utils.parseClass("hidden"));
@@ -159,13 +165,14 @@ Swipe.UI.Rivet = (function () {
 		},
 		
 		updateScrollbarPosition : function(object) {
-			$self.utils.showScrollbars();
+			var parent = object.targets.parent,
+			    target;
 			
-			var target;
+			$self.utils.showScrollbars(parent);
 			
 			var scrollbars = {
-				x : document.querySelector($self.utils.parseClass(".", "scrollbar-horizontal")),
-				y : document.querySelector($self.utils.parseClass(".", "scrollbar-vertical"))
+				x : parent.querySelector($self.utils.parseClass(".", "scrollbar-horizontal")),
+				y : parent.querySelector($self.utils.parseClass(".", "scrollbar-vertical"))
 			};
 			
 			var ratio, value, matrices, matrix;
@@ -175,7 +182,7 @@ Swipe.UI.Rivet = (function () {
 				y : $self.vars.scrollbarMatrices.y || $self.utils.getMatrix(scrollbars.y)
 			};
 			
-			if ($space.utils.hasClass(object.el, "ui-swipe-rivet-y-axis")) {
+			if (scrollbars.y && $space.utils.hasClass(object.el, "ui-swipe-rivet-y-axis")) {
 				ratio = 1 - ((object.inner - Math.abs(object.position.top)) / object.inner);
 				
 				value = {
@@ -184,7 +191,7 @@ Swipe.UI.Rivet = (function () {
 				};
 				target = scrollbars.y;
 				matrix = matrices.y;
-			} else {
+			} else if (scrollbars.x) {
 				ratio = 1 - ((object.inner - Math.abs(object.position.left)) / object.inner);
 				value = {
 					x : object.outer * ratio,
@@ -194,13 +201,17 @@ Swipe.UI.Rivet = (function () {
 				matrix = matrices.x;
 			}
 			
-			$self.utils.resetTransition(target, object.duration);
-			$self.utils.setTransform(target, matrix.translate(value.x, value.y));
-			
-			$self.vars.scrollbarMatrices = matrices;
-			
-			if (object.duration) {
-				$self.vars._scrollTimer = window.setTimeout($self.utils.hideScrollbars, object.duration);
+			if (target) {
+				$self.utils.resetTransition(target, object.duration);
+				$self.utils.setTransform(target, matrix.translate(value.x, value.y));
+
+				$self.vars.scrollbarMatrices = matrices;
+
+				if (object.duration) {
+					$self.vars._scrollTimer = window.setTimeout(function() {
+						$self.utils.hideScrollbars(object.targets.parent);
+					}, object.duration);
+				}
 			}
 		},
 		
@@ -227,9 +238,9 @@ Swipe.UI.Rivet = (function () {
 	Function: addEventListeners
 	*/
 	$self.addEventListeners = function(object) {
+		
 		// Shortcuts
-		var doc = document,
-		    targets = $self.utils.getTargets(object);
+		var targets = $self.utils.getTargets(object);
 		
 		// Local variables
 		var touch, offset, scale,
@@ -237,7 +248,7 @@ Swipe.UI.Rivet = (function () {
 		    startTime, endTime, endDisplacement,
 		    startTouches = {}, currentTouches = {},
 		    endTouches = {}, touchDifferences = {},
-		    tHeight, wHeight, heightDiff,
+		    tHeight, wHeight, heightDiff, wTop, wLeft,
 		    tWidth, wWidth, widthDiff, oldDifference = {},
 		    activeAxis, doubleCheckAxis,
 		    lastTouches, lastTime, velocity, endDuration, end;
@@ -275,6 +286,9 @@ Swipe.UI.Rivet = (function () {
 				tWidth = targets.content.offsetWidth;
 				wWidth = targets.parent.offsetWidth || window.outerWidth;
 				
+				wTop = targets.parent.offsetTop;
+				wLeft = targets.parent.offsetLeft;
+				
 				heightDiff = tHeight - wHeight;
 				widthDiff = tWidth - wWidth;
 				
@@ -292,6 +306,7 @@ Swipe.UI.Rivet = (function () {
 				
 				// Stop scrollbars
 				$self.utils.updateScrollbarPosition({
+					targets : targets,
 					el : targets.x,
 					outer : wWidth,
 					inner : tWidth,
@@ -299,6 +314,7 @@ Swipe.UI.Rivet = (function () {
 				});
 
 				$self.utils.updateScrollbarPosition({
+					targets : targets,
 					el : targets.y,
 					outer : wHeight,
 					inner : tHeight,
@@ -353,6 +369,7 @@ Swipe.UI.Rivet = (function () {
 					$self.utils.setTransform(targets.x, matrices.x.translate(touchDifferences.x, 0));
 
 					$self.utils.updateScrollbarPosition({
+						targets : targets,
 						el : targets.x,
 						outer : wWidth,
 						inner : tWidth,
@@ -372,6 +389,7 @@ Swipe.UI.Rivet = (function () {
 					$self.utils.setTransform(targets.y, matrices.y.translate(0, touchDifferences.y));
 
 					$self.utils.updateScrollbarPosition({
+						targets : targets,
 						el : targets.y,
 						outer : wHeight,
 						inner : tHeight,
@@ -397,12 +415,13 @@ Swipe.UI.Rivet = (function () {
 
 				// Reverse the log array
 				var log = $self.vars.log;
-				log.reverse();
 				
-				if (!log[0]) {
-					$self.utils.hideScrollbars();
+				if (!log.length) {
+					$self.utils.hideScrollbars(targets.parent);
 					return;
 				}
+				
+				log.reverse();
 
 				lastTouches = function() {
 					var sum = {
@@ -424,7 +443,7 @@ Swipe.UI.Rivet = (function () {
 				}();
 
 				lastTime = log.length ? ((log[0].time - log[log.length - 1].time) * 2) : 0;
-
+				
 				endDisplacement = {
 					x : endTouches.x - startTouches.x,
 					y : endTouches.y - startTouches.y
@@ -453,11 +472,16 @@ Swipe.UI.Rivet = (function () {
 					end.y = (end.y >= 0) ? $self.vars.maxDistance : -$self.vars.maxDistance;
 				}
 				
+				var dims = {
+					x : (offset.left + end.x),
+					y : (offset.top + end.y)
+				};
+				
 				var bounds = {
-					top : offset.top + end.y > 0,
-					right : Math.abs(offset.left + end.x) > widthDiff,
-					bottom : Math.abs(offset.top + end.y) > heightDiff,
-					left : offset.left + end.x > 0
+					top : dims.y > wTop,
+					right : Math.abs(dims.x) > widthDiff,
+					bottom : Math.abs(dims.y) > heightDiff,
+					left : dims.x > wLeft
 				};
 				
 				var _timer = {
@@ -474,7 +498,7 @@ Swipe.UI.Rivet = (function () {
 					endDuration.y = newDuration.y;
 					
 					if (bounds.top) {
-						end.y = -(offset.top);
+						end.y = -(offset.top - wTop);
 
 						if (offset.top < 0) {
 							bounce.y = end.y;
@@ -482,7 +506,7 @@ Swipe.UI.Rivet = (function () {
 							_timer.y = true;
 						}
 					} else if (bounds.bottom) {
-						end.y = -(heightDiff) - offset.top;
+						end.y = -(heightDiff) - (offset.top - wTop);
 
 						if (Math.abs(offset.top) < heightDiff) {
 							bounce.y = end.y;
@@ -493,7 +517,7 @@ Swipe.UI.Rivet = (function () {
 					
 					if (_timer.y) {
 						endDuration.y /= 2.5;
-
+					
 						$self.vars.endTimers.y = window.setTimeout(function() {
 							$self.utils.setTransform(targets.y, matrices.y.translate(0, bounce.y));
 						}, endDuration.y);
@@ -504,7 +528,7 @@ Swipe.UI.Rivet = (function () {
 					endDuration.x = newDuration.x;
 					
 					if (bounds.left) {
-						end.x = -(offset.left);
+						end.x = -(offset.left - wLeft);
 
 						if (offset.left < 0) {
 							bounce.x = end.x;
@@ -512,7 +536,7 @@ Swipe.UI.Rivet = (function () {
 							_timer.x = true;
 						}
 					} else if (bounds.right) {
-						end.x = -(widthDiff) - offset.left;
+						end.x = -(widthDiff) - (offset.left - wLeft);
 
 						if (Math.abs(offset.right) < widthDiff) {
 							bounce.x = end.x;
@@ -523,7 +547,7 @@ Swipe.UI.Rivet = (function () {
 					
 					if (_timer.x) {
 						endDuration.x /= 2.5;
-
+					
 						$self.vars.endTimers.x = window.setTimeout(function() {
 							$self.utils.setTransform(targets.x, matrices.x.translate(bounce.x, 0));
 						}, endDuration.x);
@@ -547,6 +571,7 @@ Swipe.UI.Rivet = (function () {
 					}, endDuration.x);
 					
 					$self.utils.updateScrollbarPosition({
+						targets : targets,
 						el : targets.x,
 						outer : wWidth,
 						inner : tWidth,
@@ -570,6 +595,7 @@ Swipe.UI.Rivet = (function () {
 					}, endDuration.y);
 					
 					$self.utils.updateScrollbarPosition({
+						targets : targets,
 						el : targets.y,
 						outer : wHeight,
 						inner : tHeight,
@@ -585,7 +611,7 @@ Swipe.UI.Rivet = (function () {
 		};
 		
 		for (var key in eventListeners) {
-			doc.addEventListener(key, eventListeners[key], false);
+			object.target.addEventListener(key, eventListeners[key], false);
 		}
 
 		window.addEventListener("scroll", $self.utils.checkScroll, false);
@@ -593,7 +619,11 @@ Swipe.UI.Rivet = (function () {
 	
 	$self.renderScrollbars = function(object) {
 		var targets = $self.utils.getTargets(object),
-		    div, ratio, dimension;
+		    div, inner, ratio, dimension;
+		
+		inner = document.createElement("div");
+		$space.utils.addClass(inner, $self.utils.parseClass("scrollbar"));
+		$space.utils.addClass(inner, $self.utils.parseClass("scrollbar-inner"));
 		
 		div = document.createElement("div");
 		$space.utils.addClass(div, $self.utils.parseClass("scrollbar"));
@@ -603,19 +633,27 @@ Swipe.UI.Rivet = (function () {
 		ratio = targets.content.offsetWidth / dimension;
 		div.style.width = dimension / ratio + "px";
 		
-		targets.viewport.appendChild(div);
+		if (ratio !== 1) {
+			div.appendChild(inner);
+			targets.parent.appendChild(div);
+		}
 		
 		div = document.createElement("div");
 		$space.utils.addClass(div, $self.utils.parseClass("scrollbar"));
 		$space.utils.addClass(div, $self.utils.parseClass("scrollbar-vertical"));
 		
-		dimension = (targets.parent.offsetWidth || window.outerWidth);
+		dimension = (targets.parent.offsetHeight || window.outerHeight);
 		ratio = targets.content.offsetHeight / dimension;
 		div.style.height = dimension / ratio + "px";
 		
-		targets.viewport.appendChild(div);
+		if (ratio !== 1) {
+			div.appendChild(inner.cloneNode(true));
+			targets.parent.appendChild(div);
+		}
 		
-		$self.vars._scrollTimer = window.setTimeout($self.utils.hideScrollbars, 800);
+		$self.vars._scrollTimer = window.setTimeout(function() {
+			$self.utils.hideScrollbars(targets.parent);
+		}, 800);
 	};
 	
 	$self.prepView = function(object) {
@@ -629,10 +667,18 @@ Swipe.UI.Rivet = (function () {
 		$space.utils.addClass(y, "ui-swipe-rivet");
 		$space.utils.addClass(y, "ui-swipe-rivet-y-axis");
 		
-		targets.parent.insertBefore(y, targets.content);
+		var w = document.createElement("div");
+		$space.utils.addClass(w, "ui-swipe-rivet");
+		$space.utils.addClass(w, $self.utils.parseClass("wrapper"));
 		
-		y.appendChild(x);
-		x.appendChild(targets.content);
+		x.appendChild(y);
+		y.appendChild(w);
+		
+		while (targets.parent.firstChild) {
+			w.appendChild(targets.parent.firstChild);
+		}
+		
+		targets.parent.appendChild(x);
 		
 		$self.vars.object = null;
 	};
@@ -640,10 +686,9 @@ Swipe.UI.Rivet = (function () {
 	/*
 	Function: init
 	*/
-	return function(object) {
-		// Initialize!
+	$self.init = function() {
 		$self.prepView(object);
 		$self.addEventListeners(object);
 		$self.renderScrollbars(object);
-	};
-})();
+	}();
+});
