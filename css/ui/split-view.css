@@ -45,12 +45,10 @@
 
 .ui-swipe-split-view-component view section {
 	width: 100%;
-	min-height: 596px;
 	background: #fff;
 }
 
 .ui-swipe-split-view-component view:first-child section {
-	min-height: 552px;
 	padding: 0;
 }
 
@@ -117,10 +115,6 @@
 	
 	.ui-swipe-split-view-component view:last-child, .ui-swipe-split-view-component view viewport:last-child, .ui-swipe-split-view-component view section:last-child {
 		width: 768px;
-	}
-	
-	.ui-swipe-split-view-component view:last-child section {
-		min-height: 1000px;
 	}
 
 	.ui-swipe-split-view-component view:first-child {
