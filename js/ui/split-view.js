@@ -46,7 +46,14 @@ Swipe.UI.SplitView = (function (object) {
 	Namespace: Swipe.UI.utils
 		Shared local utilities
 	*/
-	$self.utils = {};
+	$self.utils = {
+		orientationChange : function(views) {
+			for (var i = 0, j = views.length; i < j; i++) {
+				var view = views[i];
+				view.style.height = window.innerHeight - view.offsetTop + "px";
+			}
+		}
+	};
 	
 	$self.prepView = function(object) {
 		var parent = object,
@@ -61,6 +68,7 @@ Swipe.UI.SplitView = (function (object) {
 	
 	$self.addEventListeners = function(object) {
 		var parent = object,
+		    views = parent.querySelectorAll("view > section"),
 		    button = parent.querySelector($space.utils.parseClass(".", "popover-trigger"));
 		
 		button.addEventListener("touchend", function() {
@@ -70,13 +78,19 @@ Swipe.UI.SplitView = (function (object) {
 		button.addEventListener("click", function(e) {
 			e.preventDefault();
 		}, false);
+		
+		window.addEventListener("orientationchange", function() {
+			$self.utils.orientationChange(views);
+		}, false);
+		
+		$self.utils.orientationChange(views);
 	};
 	
 	/*
 	Function: init
 	*/
 	$self.init = function() {
-		$self.prepView(object);
 		$self.addEventListeners(object);
+		$self.prepView(object);
 	}();
 });
