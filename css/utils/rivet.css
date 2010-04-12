@@ -68,7 +68,6 @@ view section .ui-swipe-rivet-hidden .ui-swipe-rivet-scrollbar-inner {
 }
 
 .ui-swipe-rivet {
-	width: 100%;
 	z-index: 100;
 	position: absolute;
 	
