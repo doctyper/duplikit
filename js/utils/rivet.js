@@ -361,11 +361,10 @@ Swipe.UI.Rivet = (function (object) {
 						activeAxis.y = true;
 					}
 				}
-
+				
 				offset = targets.content.getBoundingClientRect();
-
+				
 				if (widthDiff > 0 && activeAxis.x) {
-
 					if (offset.left > 0 || Math.abs(offset.left) > widthDiff) {
 						matrices.x = $self.utils.getMatrix(targets.x);
 						touchDifferences.x = (currentTouches.x - oldDifferences.x) * 0.5;
@@ -504,9 +503,11 @@ Swipe.UI.Rivet = (function (object) {
 					y : 0
 				}, bounce = {};
 				
+				var minDuration = 400, maxDuration = 600;
+				
 				var newDuration = {
-					x : Math.min(800, Math.max(400, 800 * Math.abs(velocity.x))),
-					y : Math.min(800, Math.max(400, 800 * Math.abs(velocity.y)))
+					x : Math.min(maxDuration, Math.max(minDuration, maxDuration * Math.abs(velocity.x))),
+					y : Math.min(maxDuration, Math.max(minDuration, maxDuration * Math.abs(velocity.y)))
 				};
 				
 				if (heightDiff > 0 && activeAxis.y && (bounds.top || bounds.bottom)) {
@@ -516,7 +517,10 @@ Swipe.UI.Rivet = (function (object) {
 					if (bounds.top) {
 						if (offset.top < 0) {
 							bounce.y = -(offset.top - wTop);
-							end.y = Math.min(end.y * 0.5, wHeight);
+							
+							if ((end.y - bounce.y) > (wHeight / 2)) {
+								end.y = bounce.y + 100;
+							}
 							
 							_timer.y = true;
 						} else {
@@ -525,7 +529,10 @@ Swipe.UI.Rivet = (function (object) {
 					} else if (bounds.bottom) {
 						if (Math.abs(offset.top) < heightDiff) {
 							bounce.y = -(heightDiff) - (offset.top - wTop);
-							end.y = Math.min(end.y * 0.5, wHeight);
+							
+							if ((end.y - bounce.y) < (wHeight / 2)) {
+								end.y = bounce.y - 100;
+							}
 							
 							_timer.y = true;
 						} else {
@@ -549,7 +556,10 @@ Swipe.UI.Rivet = (function (object) {
 					if (bounds.left) {
 						if (offset.left < 0) {
 							bounce.x = -(offset.left - wLeft);
-							end.x = Math.min(end.x * 0.5, wWidth);
+							
+							if ((end.x - bounce.x) > (wWidth / 2)) {
+								end.x = bounce.x + 100;
+							}
 							
 							_timer.x = true;
 						} else {
@@ -558,7 +568,10 @@ Swipe.UI.Rivet = (function (object) {
 					} else if (bounds.right) {
 						if (Math.abs(offset.right) < widthDiff) {
 							bounce.x = -(widthDiff) - (offset.left - wLeft);
-							end.x = Math.min(end.x * 0.5, wWidth);
+							
+							if ((end.x - bounce.x) < (wWidth / 2)) {
+								end.x = bounce.x - 100;
+							}
 							
 							_timer.x = true;
 						} else {
