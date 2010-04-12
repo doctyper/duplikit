@@ -69,7 +69,7 @@ Swipe.UI.Rivet = (function (object) {
 			
 			// Orientationchange fires before scroll
 			// This is good. It gives me a chance to not scroll
-			if (!$self.vars.orientationChange) {
+			if (!$space.vars.orientationChange) {
 				var targets = $self.utils.getTargets($self.vars.object);
 				var matrix = $self.utils.getMatrix(targets.y);
 				
@@ -77,7 +77,7 @@ Swipe.UI.Rivet = (function (object) {
 				$self.utils.setTransform(targets.y, matrix.translate(0, -targets.y.getBoundingClientRect().top));
 			}
 			
-			$self.vars.orientationChange = false;
+			$space.vars.orientationChange = false;
 		},
 		
 		getTargets : function(object) {
@@ -652,8 +652,11 @@ Swipe.UI.Rivet = (function (object) {
 		for (var key in eventListeners) {
 			object.target.addEventListener(key, eventListeners[key], false);
 		}
-
-		window.addEventListener("scroll", $self.utils.checkScroll, false);
+		
+		if (!$space.vars.windowListenerAttached) {
+			window.addEventListener("scroll", $self.utils.checkScroll, false);
+			$space.vars.windowListenerAttached = true;
+		}
 	};
 	
 	$self.renderScrollbars = function(object) {
