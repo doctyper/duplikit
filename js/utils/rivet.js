@@ -570,377 +570,344 @@ Swipe.UI.Rivet = (function (object) {
 
 			touchend : function(e) {
 				
-				// Using scoped function calls to split the touchend calculations
-				// Into sections without removing them from the flow
+				// Future proofing
+				// Log the current scale
+				scale = e.scale;
+
+				// Current element boundaries
+				offset = targets.content.getBoundingClientRect();
+
+				// Store the ending touches
+				endTouches = {
+					x : e.changedTouches[0].pageX,
+					y : e.changedTouches[0].pageY
+				};
+
+				// Store the ending time
+				endTime = (new Date().getTime()) - startTime;
 				
-				// Prep end animation with values
-				(function() {
-					
-					// Future proofing
-					// Log the current scale
-					scale = e.scale;
+				// Store the touch log
+				log = $self.vars.log;
 
-					// Current element boundaries
-					offset = targets.content.getBoundingClientRect();
+				// If log is empty, OR if only one touch has been logged,
+				// THEN there are not enough touches to constitute a swipe
+				// and the movement should stop without ease
+				if (!log.length || (log.length < 2)) {
+					$self.utils.hideScrollbars(targets.parent);
+					return;
+				}
 
-					// Store the ending touches
-					endTouches = {
-						x : e.changedTouches[0].pageX,
-						y : e.changedTouches[0].pageY
-					};
+				// Reverse the log.
+				// This will make calculating the lastTouches much easier.
+				log.reverse();
 
-					// Store the ending time
-					endTime = (new Date().getTime()) - startTime;
+				// Average out the touches in the log.
+				// That is, the sum of all touches divided by the total amount of touches.
+				// This value helps us find a consistent velocity amount to use.
+				// If we only used the previous touch, The value could be skewed in speed.
+				lastTouches = function() {
 
-				})();
-				
-				// Grab logger, calculate average time to swipe and average amount swiped
-				(function() {
-					
-					// Store the touch log
-					log = $self.vars.log;
-
-					// If log is empty, OR if only one touch has been logged,
-					// THEN there are not enough touches to constitute a swipe
-					// and the movement should stop without ease
-					if (!log.length || (log.length < 2)) {
-						$self.utils.hideScrollbars(targets.parent);
-						return;
-					}
-
-					// Reverse the log.
-					// This will make calculating the lastTouches much easier.
-					log.reverse();
-
-					// Average out the touches in the log.
-					// That is, the sum of all touches divided by the total amount of touches.
-					// This value helps us find a consistent velocity amount to use.
-					// If we only used the previous touch, The value could be skewed in speed.
-					lastTouches = function() {
-
-						// Original values
-						var sum = {
-							x : 0,
-							y : 0
-						};
-
-						// Add touchDifferences values to sum
-						for (var i = 0, j = log.length; i < j; i++) {
-							sum.x += Math.abs(log[i].touchDifferences.x);
-							sum.y += Math.abs(log[i].touchDifferences.y);
-						}
-
-						// Find the average values
-						var avg = {
-
-							// Total x-axis value divided by the total amount of x-touches
-							// Negate (or not) based on scroll direction
-							x : (sum.x / log.length) * ((direction.x) ? 1 : -1),
-
-							// Total y-axis value divided by the total amount of y-touches
-							// Negate (or not) based on scroll direction
-							y : (sum.y / log.length) * ((direction.y) ? 1 : -1)
-						};
-
-						// Return the averages object
-						return avg;
-					}();
-				
-					// Calculate the time between the first and last logged touch events
-					lastTime = log.length ? ((log[0].time - log[log.length - 1].time) * 2) : 0;
-
-				})();
-				
-				// Movement check!
-				(function() {
-					
-					// If activeAxis is x AND there are no x-axis lastTouches logged
-					// OR if activeAxis is y AND there are no y-axis lastTouches logged
-					// THEN the user has stopped the swipe. Flag as such.
-					if ((activeAxis.x && !lastTouches.x) || (activeAxis.y && !lastTouches.y)) {
-						noMovement = true;
-					}
-
-				})();
-				
-				// Calculate displacement, velocity, duration values
-				(function() {
-					
-					// Here we go.
-					// Calculate the end x/y displacements
-					// Subtract the ending x/y touches with the start x/y touch values
-					endDisplacement = {
-						x : endTouches.x - startTouches.x,
-						y : endTouches.y - startTouches.y
-					};
-
-					// Calculate the velocity of the swipe
-					// Divide the x/y lastTouches by the time between the first and last logged touch events
-					velocity = {
-						x : (lastTouches.x / lastTime),
-						y : (lastTouches.y / lastTime)
-					};
-
-					// Calculate the animation duration amount
-					// RETURN the minimum value
-					// OF the absolute value
-					//   OF the global velocityMultiplier
-					//   MINUS the x/y velocity MULTIPLIED BY the global velocityMultiplier
-					// OR the global maxDuration
-					endDuration = {
-						x : Math.min(Math.abs($self.vars.velocityMultiplier - (velocity.x * $self.vars.velocityMultiplier)), $self.vars.maxDuration),
-						y : Math.min(Math.abs($self.vars.velocityMultiplier - (velocity.y * $self.vars.velocityMultiplier)), $self.vars.maxDuration)
-					};
-					// endDuration = {
-					// 	x : Math.abs($self.vars.velocityMultiplier - (velocity.x * $self.vars.velocityMultiplier)),
-					// 	y : Math.abs($self.vars.velocityMultiplier - (velocity.y * $self.vars.velocityMultiplier))
-					// };
-
-					// Calculate the end x/y position
-					// Multiply the x/y animation duration amount by the velocity of the swipe
-					end = {
-						x : (endDuration.x * velocity.x),
-						y : (endDuration.y * velocity.y)
-					};
-
-					// See if the position amount is greater than the global maxDistance
-					// If so, cap the end value at the global maxDistance amount
-					if (Math.abs(end.x) > $self.vars.maxDistance) {
-						end.x = (end.x >= 0) ? $self.vars.maxDistance : -$self.vars.maxDistance;
-					}
-
-					// See if the position amount is greater than the global maxDistance
-					// If so, cap the end value at the global maxDistance amount
-					if (Math.abs(end.y) > $self.vars.maxDistance) {
-						end.y = (end.y >= 0) ? $self.vars.maxDistance : -$self.vars.maxDistance;
-					}
-
-				})();
-				
-				// Check viewport boundaries
-				(function() {
-					
-					// Store dimensions based on eventual movement
-					var dims = {
-
-						// Current element left position plus ending x-value
-						x : (offset.left + end.x),
-
-						// Current element top position plus ending y-value
-						y : (offset.top + end.y)
-					};
-
-					// Calculate element boundaries
-					var bounds = {
-
-						// True if eventual y-movement is greater than top boundary
-						top : (dims.y) > bTop,
-
-						// True if absolute value of eventual x-movement is greater than width difference
-						right : Math.abs(dims.x) > widthDiff,
-
-						// True if absolute value of eventual y-movement is greater than height difference
-						bottom : Math.abs(dims.y) > heightDiff,
-
-						// True if eventual x-movement is greater than left boundary
-						left : dims.x > bLeft
-					};
-
-					// Initial timer/bounce objects
-					var _timer = {
+					// Original values
+					var sum = {
 						x : 0,
 						y : 0
-					}, bounce = {};
-
-					// Min/max boundary duration times
-					var minDuration = 400, maxDuration = 600;
-
-					// Calculate new boundary duration times
-					// The minimum value
-					// OF the max boundary duration
-					// OR the maximum value
-					//   OF the minimum value
-					//   OR the maximum duration MULTIPLIED BY the absolute value of x/y velocity
-					var newDuration = {
-						x : Math.min(maxDuration, Math.max(minDuration, maxDuration * Math.abs(velocity.x))),
-						y : Math.min(maxDuration, Math.max(minDuration, maxDuration * Math.abs(velocity.y)))
 					};
 
-					// If the difference in height is greater than zero
-					// AND the activeAxis is vertical
-					// AND either the top or bottom bounds have been breached
-					if (heightDiff > 0 && activeAxis.y && (bounds.top || bounds.bottom)) {
-
-						// endDuration is now the newDuration property
-						endDuration.y = newDuration.y;
-
-						// We have movement!
-						// We need to. Otherwise the bounds won't snap to the edges if the user stops the swipe.
-						noMovement = false;
-
-						// If top boundary has been breached
-						if (bounds.top) {
-
-							// If top element boundary is less than zero,
-							// We need to create a bounce effect to mimic native UX
-							if (offset.top < 0) {
-
-								// Bounce distance is the amount to travel
-								bounce.y = -(offset.top - bTop);
-
-								// A check for the maximum amount allowed to bounce
-								// If the end y value minus the bounce amount is greater than half of the boundary height
-								// We've reached the maximum. Set the y value to only the bounce amount plus 100
-								if ((end.y - bounce.y) > (bHeight / 2)) {
-									end.y = bounce.y + 100;
-								}
-
-								// Yes, we will require a timer.
-								_timer.y = true;
-
-							// Otherwise, user is trying to scroll higher than boundary
-							// And we can just snap to boundary
-							} else {
-								end.y = -(offset.top - bTop);
-							}
-
-						// Otherwise if bottom boundary has been breached
-						} else if (bounds.bottom) {
-
-							// If the absolute value of the top boundary is less than the height difference,
-							// We need to create a bounce effect to mimic native UX
-							if (Math.abs(offset.top) < heightDiff) {
-
-								// Bounce distance is the amount to travel
-								bounce.y = -(heightDiff) - (offset.top - bTop);
-
-								// A check for the maximum amount allowed to bounce
-								// If the end y value minus the bounce amount is less than half of the boundary height
-								// We've reached the maximum. Set the y value to only the bounce amount minus 100
-								if ((end.y - bounce.y) < (bHeight / 2)) {
-									end.y = bounce.y - 100;
-								}
-
-								// Yes, we will require a timer.
-								_timer.y = true;
-
-							// Otherwise, user is trying to scroll higher than boundary
-							// And we can just snap to boundary
-							} else {
-								end.y = -(heightDiff) - (offset.top - bTop);
-							}
-						}
-
-						// If a timer is required
-						if (_timer.y) {
-
-							// Shorten the endDuration amount by 2.5x
-							endDuration.y /= 2.5;
-
-							// And set the timer to fire at the new amount
-							$self.vars.endTimers.y = window.setTimeout(function() {
-
-								// Animate to bounce distance
-								$self.utils.setTransform(targets.y, matrices.y.translate(0, bounce.y));
-
-							}, endDuration.y);
-						}
+					// Add touchDifferences values to sum
+					for (var i = 0, j = log.length; i < j; i++) {
+						sum.x += Math.abs(log[i].touchDifferences.x);
+						sum.y += Math.abs(log[i].touchDifferences.y);
 					}
 
-					// If the difference in width is greater than zero
-					// AND the activeAxis is horizontal
-					// AND either the left or right bounds have been breached
-					if (widthDiff > 0 && activeAxis.x && (bounds.left || bounds.right)) {
+					// Find the average values
+					var avg = {
 
-						// endDuration is now the newDuration property
-						endDuration.x = newDuration.x;
+						// Total x-axis value divided by the total amount of x-touches
+						// Negate (or not) based on scroll direction
+						x : (sum.x / log.length) * ((direction.x) ? 1 : -1),
 
-						// We have movement!
-						// We need to. Otherwise the bounds won't snap to the edges if the user stops the swipe.
-						noMovement = false;
+						// Total y-axis value divided by the total amount of y-touches
+						// Negate (or not) based on scroll direction
+						y : (sum.y / log.length) * ((direction.y) ? 1 : -1)
+					};
 
-						// If left boundary has been breached
-						if (bounds.left) {
-
-							// If left element boundary is less than zero,
-							// We need to create a bounce effect to mimic native UX
-							if (offset.left < 0) {
-
-								// Bounce distance is the amount to travel
-								bounce.x = -(offset.left - bLeft);
-
-								// A check for the maximum amount allowed to bounce
-								// If the end y value minus the bounce amount is greater than half of the boundary width
-								// We've reached the maximum. Set the x value to only the bounce amount plus 100
-								if ((end.x - bounce.x) > (bWidth / 2)) {
-									end.x = bounce.x + 100;
-								}
-
-								// Yes, we will require a timer.
-								_timer.x = true;
-
-							// Otherwise, user is trying to scroll wider than boundary
-							// And we can just snap to boundary
-							} else {
-								end.x = -(offset.left - bLeft);
-							}
-
-						// Otherwise if right boundary has been breached
-						} else if (bounds.right) {
-
-							// If the absolute value of the right boundary is less than the width difference,
-							// We need to create a bounce effect to mimic native UX
-							if (Math.abs(offset.right) < widthDiff) {
-
-								// Bounce distance is the amount to travel
-								bounce.x = -(widthDiff) - (offset.left - bLeft);
-
-								// A check for the maximum amount allowed to bounce
-								// If the end x value minus the bounce amount is less than half of the boundary width
-								// We've reached the maximum. Set the x value to only the bounce amount minus 100
-								if ((end.x - bounce.x) < (bWidth / 2)) {
-									end.x = bounce.x - 100;
-								}
-
-								// Yes, we will require a timer.
-								_timer.x = true;
-
-							// Otherwise, user is trying to scroll wider than boundary
-							// And we can just snap to boundary
-							} else {
-								end.x = -(widthDiff) - (offset.left - bLeft);
-							}
-						}
-
-						// If a timer is required
-						if (_timer.x) {
-
-							// Shorten the endDuration amount by 2.5x
-							endDuration.x /= 2.5;
-
-							// And set the timer to fire at the new amount
-							$self.vars.endTimers.x = window.setTimeout(function() {
-
-								// Animate to bounce distance
-								$self.utils.setTransform(targets.x, matrices.x.translate(bounce.x, 0));
-
-							}, endDuration.x);
-						}
-					}
-					
-				})();
+					// Return the averages object
+					return avg;
+				}();
+			
+				// Calculate the time between the first and last logged touch events
+				lastTime = log.length ? ((log[0].time - log[log.length - 1].time) * 2) : 0;
 				
-				// Movement check!
-				(function() {
-					
-					// If noMovement is still true
-					// Hide the scrollbars and return.
-					if (noMovement) {
-						$self.utils.hideScrollbars(targets.parent);
-						return;
+				// If activeAxis is x AND there are no x-axis lastTouches logged
+				// OR if activeAxis is y AND there are no y-axis lastTouches logged
+				// THEN the user has stopped the swipe. Flag as such.
+				if ((activeAxis.x && !lastTouches.x) || (activeAxis.y && !lastTouches.y)) {
+					noMovement = true;
+				}
+				
+				// Here we go.
+				// Calculate the end x/y displacements
+				// Subtract the ending x/y touches with the start x/y touch values
+				endDisplacement = {
+					x : endTouches.x - startTouches.x,
+					y : endTouches.y - startTouches.y
+				};
+
+				// Calculate the velocity of the swipe
+				// Divide the x/y lastTouches by the time between the first and last logged touch events
+				velocity = {
+					x : (lastTouches.x / lastTime),
+					y : (lastTouches.y / lastTime)
+				};
+
+				// Calculate the animation duration amount
+				// RETURN the minimum value
+				// OF the absolute value
+				//   OF the global velocityMultiplier
+				//   MINUS the x/y velocity MULTIPLIED BY the global velocityMultiplier
+				// OR the global maxDuration
+				endDuration = {
+					x : Math.min(Math.abs($self.vars.velocityMultiplier - (velocity.x * $self.vars.velocityMultiplier)), $self.vars.maxDuration),
+					y : Math.min(Math.abs($self.vars.velocityMultiplier - (velocity.y * $self.vars.velocityMultiplier)), $self.vars.maxDuration)
+				};
+				// endDuration = {
+				// 	x : Math.abs($self.vars.velocityMultiplier - (velocity.x * $self.vars.velocityMultiplier)),
+				// 	y : Math.abs($self.vars.velocityMultiplier - (velocity.y * $self.vars.velocityMultiplier))
+				// };
+
+				// Calculate the end x/y position
+				// Multiply the x/y animation duration amount by the velocity of the swipe
+				end = {
+					x : (endDuration.x * velocity.x),
+					y : (endDuration.y * velocity.y)
+				};
+
+				// See if the position amount is greater than the global maxDistance
+				// If so, cap the end value at the global maxDistance amount
+				if (Math.abs(end.x) > $self.vars.maxDistance) {
+					end.x = (end.x >= 0) ? $self.vars.maxDistance : -$self.vars.maxDistance;
+				}
+
+				// See if the position amount is greater than the global maxDistance
+				// If so, cap the end value at the global maxDistance amount
+				if (Math.abs(end.y) > $self.vars.maxDistance) {
+					end.y = (end.y >= 0) ? $self.vars.maxDistance : -$self.vars.maxDistance;
+				}
+				
+				// Store dimensions based on eventual movement
+				var dims = {
+
+					// Current element left position plus ending x-value
+					x : (offset.left + end.x),
+
+					// Current element top position plus ending y-value
+					y : (offset.top + end.y)
+				};
+
+				// Calculate element boundaries
+				var bounds = {
+
+					// True if eventual y-movement is greater than top boundary
+					top : (dims.y) > bTop,
+
+					// True if absolute value of eventual x-movement is greater than width difference
+					right : Math.abs(dims.x) > widthDiff,
+
+					// True if absolute value of eventual y-movement is greater than height difference
+					bottom : Math.abs(dims.y) > heightDiff,
+
+					// True if eventual x-movement is greater than left boundary
+					left : dims.x > bLeft
+				};
+
+				// Initial timer/bounce objects
+				var _timer = {
+					x : 0,
+					y : 0
+				}, bounce = {};
+
+				// Min/max boundary duration times
+				var minDuration = 400, maxDuration = 600;
+
+				// Calculate new boundary duration times
+				// The minimum value
+				// OF the max boundary duration
+				// OR the maximum value
+				//   OF the minimum value
+				//   OR the maximum duration MULTIPLIED BY the absolute value of x/y velocity
+				var newDuration = {
+					x : Math.min(maxDuration, Math.max(minDuration, maxDuration * Math.abs(velocity.x))),
+					y : Math.min(maxDuration, Math.max(minDuration, maxDuration * Math.abs(velocity.y)))
+				};
+
+				// If the difference in height is greater than zero
+				// AND the activeAxis is vertical
+				// AND either the top or bottom bounds have been breached
+				if (heightDiff > 0 && activeAxis.y && (bounds.top || bounds.bottom)) {
+
+					// endDuration is now the newDuration property
+					endDuration.y = newDuration.y;
+
+					// We have movement!
+					// We need to. Otherwise the bounds won't snap to the edges if the user stops the swipe.
+					noMovement = false;
+
+					// If top boundary has been breached
+					if (bounds.top) {
+
+						// If top element boundary is less than zero,
+						// We need to create a bounce effect to mimic native UX
+						if (offset.top < 0) {
+
+							// Bounce distance is the amount to travel
+							bounce.y = -(offset.top - bTop);
+
+							// A check for the maximum amount allowed to bounce
+							// If the end y value minus the bounce amount is greater than half of the boundary height
+							// We've reached the maximum. Set the y value to only the bounce amount plus 100
+							if ((end.y - bounce.y) > (bHeight / 2)) {
+								end.y = bounce.y + 100;
+							}
+
+							// Yes, we will require a timer.
+							_timer.y = true;
+
+						// Otherwise, user is trying to scroll higher than boundary
+						// And we can just snap to boundary
+						} else {
+							end.y = -(offset.top - bTop);
+						}
+
+					// Otherwise if bottom boundary has been breached
+					} else if (bounds.bottom) {
+
+						// If the absolute value of the top boundary is less than the height difference,
+						// We need to create a bounce effect to mimic native UX
+						if (Math.abs(offset.top) < heightDiff) {
+
+							// Bounce distance is the amount to travel
+							bounce.y = -(heightDiff) - (offset.top - bTop);
+
+							// A check for the maximum amount allowed to bounce
+							// If the end y value minus the bounce amount is less than half of the boundary height
+							// We've reached the maximum. Set the y value to only the bounce amount minus 100
+							if ((end.y - bounce.y) < (bHeight / 2)) {
+								end.y = bounce.y - 100;
+							}
+
+							// Yes, we will require a timer.
+							_timer.y = true;
+
+						// Otherwise, user is trying to scroll higher than boundary
+						// And we can just snap to boundary
+						} else {
+							end.y = -(heightDiff) - (offset.top - bTop);
+						}
 					}
-					
-				});
+
+					// If a timer is required
+					if (_timer.y) {
+
+						// Shorten the endDuration amount by 2.5x
+						endDuration.y /= 2.5;
+
+						// And set the timer to fire at the new amount
+						$self.vars.endTimers.y = window.setTimeout(function() {
+
+							// Animate to bounce distance
+							$self.utils.setTransform(targets.y, matrices.y.translate(0, bounce.y));
+
+						}, endDuration.y);
+					}
+				}
+
+				// If the difference in width is greater than zero
+				// AND the activeAxis is horizontal
+				// AND either the left or right bounds have been breached
+				if (widthDiff > 0 && activeAxis.x && (bounds.left || bounds.right)) {
+
+					// endDuration is now the newDuration property
+					endDuration.x = newDuration.x;
+
+					// We have movement!
+					// We need to. Otherwise the bounds won't snap to the edges if the user stops the swipe.
+					noMovement = false;
+
+					// If left boundary has been breached
+					if (bounds.left) {
+
+						// If left element boundary is less than zero,
+						// We need to create a bounce effect to mimic native UX
+						if (offset.left < 0) {
+
+							// Bounce distance is the amount to travel
+							bounce.x = -(offset.left - bLeft);
+
+							// A check for the maximum amount allowed to bounce
+							// If the end y value minus the bounce amount is greater than half of the boundary width
+							// We've reached the maximum. Set the x value to only the bounce amount plus 100
+							if ((end.x - bounce.x) > (bWidth / 2)) {
+								end.x = bounce.x + 100;
+							}
+
+							// Yes, we will require a timer.
+							_timer.x = true;
+
+						// Otherwise, user is trying to scroll wider than boundary
+						// And we can just snap to boundary
+						} else {
+							end.x = -(offset.left - bLeft);
+						}
+
+					// Otherwise if right boundary has been breached
+					} else if (bounds.right) {
+
+						// If the absolute value of the right boundary is less than the width difference,
+						// We need to create a bounce effect to mimic native UX
+						if (Math.abs(offset.right) < widthDiff) {
+
+							// Bounce distance is the amount to travel
+							bounce.x = -(widthDiff) - (offset.left - bLeft);
+
+							// A check for the maximum amount allowed to bounce
+							// If the end x value minus the bounce amount is less than half of the boundary width
+							// We've reached the maximum. Set the x value to only the bounce amount minus 100
+							if ((end.x - bounce.x) < (bWidth / 2)) {
+								end.x = bounce.x - 100;
+							}
+
+							// Yes, we will require a timer.
+							_timer.x = true;
+
+						// Otherwise, user is trying to scroll wider than boundary
+						// And we can just snap to boundary
+						} else {
+							end.x = -(widthDiff) - (offset.left - bLeft);
+						}
+					}
+
+					// If a timer is required
+					if (_timer.x) {
+
+						// Shorten the endDuration amount by 2.5x
+						endDuration.x /= 2.5;
+
+						// And set the timer to fire at the new amount
+						$self.vars.endTimers.x = window.setTimeout(function() {
+
+							// Animate to bounce distance
+							$self.utils.setTransform(targets.x, matrices.x.translate(bounce.x, 0));
+
+						}, endDuration.x);
+					}
+				}
+				
+				// If noMovement is still true
+				// Hide the scrollbars and return.
+				if (noMovement) {
+					$self.utils.hideScrollbars(targets.parent);
+					return;
+				}
 				
 				// Refresh x/y matrices
 				matrices = {
