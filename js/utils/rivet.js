@@ -804,10 +804,10 @@ Swipe.UI.Rivet = (function (object) {
 					top : (dims.y) > bTop,
 
 					// True if absolute value of eventual x-movement is greater than width difference
-					right : Math.abs(dims.x) > widthDiff,
+					right : Math.abs(dims.x) > (widthDiff - bLeft),
 
 					// True if absolute value of eventual y-movement is greater than height difference
-					bottom : Math.abs(dims.y) > heightDiff,
+					bottom : Math.abs(dims.y) > (heightDiff - bTop),
 
 					// True if eventual x-movement is greater than left boundary
 					left : dims.x > bLeft
@@ -876,7 +876,7 @@ Swipe.UI.Rivet = (function (object) {
 
 						// If the absolute value of the top boundary is less than the height difference,
 						// We need to create a bounce effect to mimic native UX
-						if (Math.abs(offset.top) < heightDiff) {
+						if (Math.abs(offset.top) < (heightDiff - bTop)) {
 
 							// Bounce distance is the amount to travel
 							bounce.y = -(heightDiff) - (offset.top - bTop);
@@ -957,7 +957,7 @@ Swipe.UI.Rivet = (function (object) {
 
 						// If the absolute value of the right boundary is less than the width difference,
 						// We need to create a bounce effect to mimic native UX
-						if (Math.abs(offset.right) < widthDiff) {
+						if (Math.abs(offset.right) < (widthDiff - bLeft)) {
 
 							// Bounce distance is the amount to travel
 							bounce.x = -(widthDiff) - (offset.left - bLeft);
