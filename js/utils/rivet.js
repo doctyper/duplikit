@@ -1079,7 +1079,7 @@ Swipe.UI.Rivet = (function (object) {
 		
 		// Add event listeners to the target element
 		for (var key in eventListeners) {
-			object.target.addEventListener(key, eventListeners[key], false);
+			targets.parent.addEventListener(key, eventListeners[key], false);
 		}
 		
 		// Add window listener only once.
@@ -1087,6 +1087,11 @@ Swipe.UI.Rivet = (function (object) {
 			
 			// Event listener
 			window.addEventListener("scroll", $self.utils.checkScroll, false);
+			
+			// Disable native touch
+			document.addEventListener("touchmove", function(e) {
+				e.preventDefault();
+			}, false);
 			
 			// Flag to add only once
 			$space.vars.windowListenerAttached = true;
