@@ -547,8 +547,9 @@ Swipe.UI.Rivet = (function (object) {
 					activeAxis = {};
 					
 					// Set the activeAxis based on dominance (if x > y, x is active. Or vice versa.)
-					activeAxis.x = (Math.abs(touchDifferences.x) >= Math.abs(touchDifferences.y));
-					activeAxis.y = (Math.abs(touchDifferences.x) <= Math.abs(touchDifferences.y));
+					// OR if there is only one axis to animate
+					activeAxis.x = !heightDiff || (widthDiff > 0 && (Math.abs(touchDifferences.x) >= Math.abs(touchDifferences.y)));
+					activeAxis.y = !widthDiff || (heightDiff > 0 && (Math.abs(touchDifferences.x) <= Math.abs(touchDifferences.y)));
 					
 				// The doubleCheckAxis variable does just that. Has a second pass at the current axis
 				// Looking for an x/y difference of no more than five. If less, the axis is locked.
