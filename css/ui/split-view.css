@@ -132,18 +132,21 @@
 		
 		-webkit-transition: opacity 350ms ease-out;
 		opacity: 0;
+		display: none;
 		
-		-webkit-box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5);
+		-webkit-box-shadow: 0 20px 20px rgba(0, 0, 0, 0.5);
 	}
 	
 	.ui-swipe-popover-active view:first-child {
 		-webkit-transition: none;
+		display: block;
 		opacity: 0.9999;
 	}
 	
 	.ui-swipe-split-view-component view:first-child section {
 		margin: 0 auto 6px;
 		width: 320px;
+		max-height: 400px;
 		-webkit-border-bottom-left-radius: 4px;
 		-webkit-border-bottom-right-radius: 4px;
 	}
