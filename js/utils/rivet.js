@@ -50,19 +50,19 @@ Swipe.UI.Rivet = (function (object) {
 		It's closely tied to the amount of friction the animation will throw
 		So... try not to alter it.
 	*/
-	const VELOCITY_MULTIPLIER = 5000;
+	const VELOCITY_MULTIPLIER = 2000;
 	
 	/*
-	constant: MAX_DISTANCE
-		Maximum distance to animate
+	constant: MAX_VELOCITY
+		Maximum velocity to animate
 	*/
-	const MAX_DISTANCE = 2500;
+	const MAX_VELOCITY = 1;
 	
 	/*
-	constant: MAX_DURATION
-		Maximum duration of animation
+	constant: END_DISTANCE_MULTIPLIER
+		Adds an extra 'oomph' to animation friction
 	*/
-	const MAX_DURATION = 2000;
+	const END_DISTANCE_MULTIPLIER = 0.5;
 	
 	/*
 	constant: NAMESPACE_CLASS
@@ -86,13 +86,7 @@ Swipe.UI.Rivet = (function (object) {
 		variable: scrollbarMatrices
 			Object to store scrollbar matrices
 		*/
-		scrollbarMatrices : {},
-		
-		// Pointer to constants
-		namespaceClass : NAMESPACE_CLASS,
-		velocityMultiplier : VELOCITY_MULTIPLIER,
-		maxDistance : MAX_DISTANCE,
-		maxDuration : MAX_DURATION
+		scrollbarMatrices : {}
 	};
 	
 	/*
@@ -109,7 +103,7 @@ Swipe.UI.Rivet = (function (object) {
 			var suffix = arguments[1] || arguments[0],
 			    prefix = arguments[1] ? arguments[0] : "";
 			
-			var value = prefix + $self.vars.namespaceClass + "-" + suffix;
+			var value = prefix + NAMESPACE_CLASS + "-" + suffix;
 			
 			return value;
 		},
@@ -171,7 +165,7 @@ Swipe.UI.Rivet = (function (object) {
 		*/
 		resetTransition : function(el, value) {
 			if (el) {
-				el.style.webkitTransitionDuration = (value || 0) + "ms";
+				el.style.webkitTransitionDuration = (value || 150) + "ms";
 			}
 		},
 
@@ -196,7 +190,7 @@ Swipe.UI.Rivet = (function (object) {
 		logTouches : function(object) {
 			$self.vars.log = $self.vars.log || [];
 			
-			if ($self.vars.log.length === 3) {
+			if ($self.vars.log.length === 5) {
 				$self.vars.log.shift();
 			}
 
@@ -749,10 +743,10 @@ Swipe.UI.Rivet = (function (object) {
 				// Calculate the velocity of the swipe
 				// Divide the x/y lastTouches by the time between the first and last logged touch events
 				velocity = {
-					x : (lastTouches.x / lastTime),
-					y : (lastTouches.y / lastTime)
+					x : Math.min(Math.max((lastTouches.x / lastTime), -MAX_VELOCITY), MAX_VELOCITY),
+					y : Math.min(Math.max((lastTouches.y / lastTime), -MAX_VELOCITY), MAX_VELOCITY)
 				};
-
+				
 				// Calculate the animation duration amount
 				// RETURN the minimum value
 				// OF the absolute value
@@ -760,41 +754,25 @@ Swipe.UI.Rivet = (function (object) {
 				//   MINUS the x/y velocity MULTIPLIED BY the global velocityMultiplier
 				// OR the global maxDuration
 				endDuration = {
-					x : Math.min(Math.abs($self.vars.velocityMultiplier - (velocity.x * $self.vars.velocityMultiplier)), $self.vars.maxDuration),
-					y : Math.min(Math.abs($self.vars.velocityMultiplier - (velocity.y * $self.vars.velocityMultiplier)), $self.vars.maxDuration)
+					x : Math.abs((Math.abs(velocity.x) * VELOCITY_MULTIPLIER + Math.abs(VELOCITY_MULTIPLIER / lastTouches.x) * 3)),
+					y : Math.abs((Math.abs(velocity.y) * VELOCITY_MULTIPLIER + Math.abs((VELOCITY_MULTIPLIER / lastTouches.y) * 3)))
 				};
-				// endDuration = {
-				// 	x : Math.abs($self.vars.velocityMultiplier - (velocity.x * $self.vars.velocityMultiplier)),
-				// 	y : Math.abs($self.vars.velocityMultiplier - (velocity.y * $self.vars.velocityMultiplier))
-				// };
-
+				
 				// Calculate the end x/y position
 				// Multiply the x/y animation duration amount by the velocity of the swipe
-				end = {
+				endDistance = {
 					x : (endDuration.x * velocity.x),
-					y : (endDuration.y * velocity.y)
+					y : ((endDuration.y + (endDuration.y * END_DISTANCE_MULTIPLIER)) * velocity.y)
 				};
-
-				// See if the position amount is greater than the global maxDistance
-				// If so, cap the end value at the global maxDistance amount
-				if (Math.abs(end.x) > $self.vars.maxDistance) {
-					end.x = (end.x >= 0) ? $self.vars.maxDistance : -$self.vars.maxDistance;
-				}
-
-				// See if the position amount is greater than the global maxDistance
-				// If so, cap the end value at the global maxDistance amount
-				if (Math.abs(end.y) > $self.vars.maxDistance) {
-					end.y = (end.y >= 0) ? $self.vars.maxDistance : -$self.vars.maxDistance;
-				}
 				
 				// Store dimensions based on eventual movement
 				var dims = {
 
 					// Current element left position plus ending x-value
-					x : (offset.left + end.x),
+					x : (offset.left + endDistance.x),
 
 					// Current element top position plus ending y-value
-					y : (offset.top + end.y)
+					y : (offset.top + endDistance.y)
 				};
 
 				// Calculate element boundaries
@@ -858,8 +836,8 @@ Swipe.UI.Rivet = (function (object) {
 							// A check for the maximum amount allowed to bounce
 							// If the end y value minus the bounce amount is greater than half of the boundary height
 							// We've reached the maximum. Set the y value to only the bounce amount plus 100
-							if ((end.y - bounce.y) > (bHeight / 2)) {
-								end.y = bounce.y + 100;
+							if ((endDistance.y - bounce.y) > (bHeight / 2)) {
+								endDistance.y = bounce.y + 100;
 							}
 
 							// Yes, we will require a timer.
@@ -868,7 +846,7 @@ Swipe.UI.Rivet = (function (object) {
 						// Otherwise, user is trying to scroll higher than boundary
 						// And we can just snap to boundary
 						} else {
-							end.y = -(offset.top - bTop);
+							endDistance.y = -(offset.top - bTop);
 						}
 
 					// Otherwise if bottom boundary has been breached
@@ -884,8 +862,8 @@ Swipe.UI.Rivet = (function (object) {
 							// A check for the maximum amount allowed to bounce
 							// If the end y value minus the bounce amount is less than half of the boundary height
 							// We've reached the maximum. Set the y value to only the bounce amount minus 100
-							if ((end.y - bounce.y) < (bHeight / 2)) {
-								end.y = bounce.y - 100;
+							if ((endDistance.y - bounce.y) < (bHeight / 2)) {
+								endDistance.y = bounce.y - 100;
 							}
 
 							// Yes, we will require a timer.
@@ -894,7 +872,7 @@ Swipe.UI.Rivet = (function (object) {
 						// Otherwise, user is trying to scroll higher than boundary
 						// And we can just snap to boundary
 						} else {
-							end.y = -(heightDiff) - (offset.top - bTop);
+							endDistance.y = -(heightDiff) - (offset.top - bTop);
 						}
 					}
 
@@ -939,8 +917,8 @@ Swipe.UI.Rivet = (function (object) {
 							// A check for the maximum amount allowed to bounce
 							// If the end y value minus the bounce amount is greater than half of the boundary width
 							// We've reached the maximum. Set the x value to only the bounce amount plus 100
-							if ((end.x - bounce.x) > (bWidth / 2)) {
-								end.x = bounce.x + 100;
+							if ((endDistance.x - bounce.x) > (bWidth / 2)) {
+								endDistance.x = bounce.x + 100;
 							}
 
 							// Yes, we will require a timer.
@@ -949,7 +927,7 @@ Swipe.UI.Rivet = (function (object) {
 						// Otherwise, user is trying to scroll wider than boundary
 						// And we can just snap to boundary
 						} else {
-							end.x = -(offset.left - bLeft);
+							endDistance.x = -(offset.left - bLeft);
 						}
 
 					// Otherwise if right boundary has been breached
@@ -965,8 +943,8 @@ Swipe.UI.Rivet = (function (object) {
 							// A check for the maximum amount allowed to bounce
 							// If the end x value minus the bounce amount is less than half of the boundary width
 							// We've reached the maximum. Set the x value to only the bounce amount minus 100
-							if ((end.x - bounce.x) < (bWidth / 2)) {
-								end.x = bounce.x - 100;
+							if ((endDistance.x - bounce.x) < (bWidth / 2)) {
+								endDistance.x = bounce.x - 100;
 							}
 
 							// Yes, we will require a timer.
@@ -975,7 +953,7 @@ Swipe.UI.Rivet = (function (object) {
 						// Otherwise, user is trying to scroll wider than boundary
 						// And we can just snap to boundary
 						} else {
-							end.x = -(widthDiff) - (offset.left - bLeft);
+							endDistance.x = -(widthDiff) - (offset.left - bLeft);
 						}
 					}
 
@@ -1016,7 +994,7 @@ Swipe.UI.Rivet = (function (object) {
 					$self.utils.resetTransition(targets.x, endDuration.x);
 					
 					// Set x-axis point to animate to
-					$self.utils.setTransform(targets.x, matrices.x.translate(end.x, 0));
+					$self.utils.setTransform(targets.x, matrices.x.translate(endDistance.x, 0));
 					
 					// Add to queue
 					$self.vars.touchActive++;
@@ -1033,8 +1011,8 @@ Swipe.UI.Rivet = (function (object) {
 						outer : bWidth,
 						inner : tWidth,
 						position : {
-							left : offset.left + end.x,
-							top : offset.top + end.y
+							left : offset.left + endDistance.x,
+							top : offset.top + endDistance.y
 						},
 						offset : bLeft,
 						duration : endDuration.x
@@ -1049,7 +1027,7 @@ Swipe.UI.Rivet = (function (object) {
 					$self.utils.resetTransition(targets.y, endDuration.y);
 					
 					// Set y-axis point to animate to
-					$self.utils.setTransform(targets.y, matrices.y.translate(0, end.y));
+					$self.utils.setTransform(targets.y, matrices.y.translate(0, endDistance.y));
 					
 					// Add to queue
 					$self.vars.touchActive++;
@@ -1066,8 +1044,8 @@ Swipe.UI.Rivet = (function (object) {
 						outer : bHeight,
 						inner : tHeight,
 						position : {
-							left : offset.left + end.x,
-							top : offset.top + end.y
+							left : offset.left + endDistance.x,
+							top : offset.top + endDistance.y
 						},
 						offset : bTop,
 						duration : endDuration.y
