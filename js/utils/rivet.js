@@ -388,6 +388,24 @@ Swipe.UI.Rivet = (function (object) {
 			}
 			
 			$self.vars.log = [];
+		},
+		
+		getOffsets : function(el) {
+			var offsets = {
+				left : 0,
+				top : 0
+			};
+			
+			var target = el;
+			
+			while (target.parentNode) {
+				offsets.left += target.offsetLeft;
+				offsets.top += target.offsetTop;
+				
+				target = target.parentNode;
+			}
+			
+			return offsets;
 		}
 	};
 	
@@ -407,7 +425,7 @@ Swipe.UI.Rivet = (function (object) {
 		
 		// Local variables
 		var touch, offset, scale, noMovement,
-		    matrices = {}, log, logDiff,
+		    matrices = {}, log, logDiff, docOffsets,
 		    startTime, endTime, endDisplacement,
 		    startTouches = {}, currentTouches = {},
 		    endTouches = {}, touchDifferences = {},
@@ -460,9 +478,12 @@ Swipe.UI.Rivet = (function (object) {
 				bWidth = targets.parent.offsetWidth || window.outerWidth;
 				bHeight = targets.parent.offsetHeight || window.outerHeight;
 				
+				// Get offset based on document
+				docOffsets = $self.utils.getOffsets(targets.parent);
+				
 				// Store parent boundary top/left
-				bTop = targets.parent.offsetTop;
-				bLeft = targets.parent.offsetLeft;
+				bTop = docOffsets.top;
+				bLeft = docOffsets.left;
 				
 				// Store parent/content height/width difference
 				heightDiff = tHeight - bHeight;
