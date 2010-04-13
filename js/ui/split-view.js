@@ -69,7 +69,12 @@ Swipe.UI.SplitView = (function (object) {
 	$self.addEventListeners = function(object) {
 		var parent = object,
 		    views = parent.querySelectorAll("view > section"),
+		    second = views[1],
 		    button = parent.querySelector($space.utils.parseClass(".", "popover-trigger"));
+		
+		second.addEventListener("touchstart", function() {
+			$space.utils.removeClass(parent, $space.utils.parseClass("popover-active"));
+		}, false);
 		
 		button.addEventListener("touchend", function() {
 			$space.utils.toggleClass(parent, $space.utils.parseClass("popover-active"));
