@@ -144,6 +144,7 @@ Swipe.UI.Rivet = (function (object) {
 		*/
 		getTargets : function(object) {
 			$self.vars.object = $self.vars.object || {
+				view : object.target,
 				parent : object.target.querySelector("section"),
 				content : object.target.querySelector($self.utils.parseClass(".", "wrapper")),
 				x : object.target.querySelector($self.utils.parseClass(".", "x-axis")),
@@ -1100,6 +1101,9 @@ Swipe.UI.Rivet = (function (object) {
 		var targets = $self.utils.getTargets(object),
 		    div, inner, ratio, dimension;
 		
+		// Ensure targets are visible for the rendering
+		targets.view.style.display = "block";
+		
 		inner = document.createElement("div");
 		$space.utils.addClass(inner, $self.utils.parseClass("scrollbar"));
 		$space.utils.addClass(inner, $self.utils.parseClass("scrollbar-inner"));
@@ -1129,6 +1133,9 @@ Swipe.UI.Rivet = (function (object) {
 			div.appendChild(inner.cloneNode(true));
 			targets.parent.appendChild(div);
 		}
+		
+		// Reset styling
+		targets.view.style.display = "";
 		
 		$self.vars._scrollTimer = window.setTimeout(function() {
 			$self.utils.hideScrollbars(targets.parent);
