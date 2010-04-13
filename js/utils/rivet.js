@@ -273,7 +273,7 @@ Swipe.UI.Rivet = (function (object) {
 				y : parent.querySelector($self.utils.parseClass(".", "scrollbar-vertical"))
 			};
 			
-			var ratio, value, matrices, matrix;
+			var ratio, value, matrices, matrix, val;
 			
 			matrices = {
 				x : $self.vars.scrollbarMatrices.x || $self.utils.getMatrix(scrollbars.x),
@@ -281,22 +281,72 @@ Swipe.UI.Rivet = (function (object) {
 			};
 			
 			if (scrollbars.y && $space.utils.hasClass(object.el, "ui-swipe-rivet-y-axis")) {
-				ratio = 1 - ((object.inner - Math.abs(object.position.top)) / object.inner);
+				ratio = -(object.position.top - object.offset) / object.inner;
+				val = Math.min(Math.max(object.outer * ratio, 0), object.outer - (scrollbars.y.offsetHeight + 8));
 				
 				value = {
 					x : 0,
-					y : object.outer * ratio
+					y : val
 				};
+				
 				target = scrollbars.y;
 				matrix = matrices.y;
+				
+				if ($self.vars.outsideBoundary) {
+					if (!target.getAttribute("data-original-height")) {
+						target.setAttribute("data-original-height", parseFloat(target.firstChild.offsetHeight));
+					}
+					
+					var oHeight = parseFloat(target.getAttribute("data-original-height"));
+					$self.vars.minus = $self.vars.minus || oHeight;
+					
+					if (object.position.top - object.offset > 0) {
+						$self.vars.minus -= $self.vars.touchDifferences.y;
+					} else {
+						$self.vars.minus += $self.vars.touchDifferences.y;
+						value.y += oHeight - Math.min(Math.max($self.vars.minus, 10), oHeight);
+					}
+					target.firstChild.style.height = Math.min(Math.max($self.vars.minus, 10), oHeight) + "px";
+				} else {
+					if (target.getAttribute("data-original-height")) {
+						$self.vars.minus = null;
+						target.firstChild.style.height = target.getAttribute("data-original-height") + "px";
+					}
+				}
+				
 			} else if (scrollbars.x) {
-				ratio = 1 - ((object.inner - Math.abs(object.position.left)) / object.inner);
+				ratio = -(object.position.left - object.offset) / object.inner;
+				val = Math.min(Math.max(object.outer * ratio, 0), object.outer - (scrollbars.x.offsetWidth + 8));
+				
 				value = {
-					x : object.outer * ratio,
+					x : val,
 					y : 0
 				};
 				target = scrollbars.x;
 				matrix = matrices.x;
+				
+				if ($self.vars.outsideBoundary) {
+					if (!target.getAttribute("data-original-width")) {
+						target.setAttribute("data-original-width", parseFloat(target.firstChild.offsetWidth));
+					}
+					
+					var oWidth = parseFloat(target.getAttribute("data-original-width"));
+					$self.vars.minus = $self.vars.minus || oWidth;
+					
+					if (object.position.left - object.offset > 0) {
+						$self.vars.minus -= $self.vars.touchDifferences.x;
+					} else {
+						$self.vars.minus += $self.vars.touchDifferences.x;
+						value.x += oWidth - Math.min(Math.max($self.vars.minus, 10), oWidth);
+					}
+					target.firstChild.style.width = Math.min(Math.max($self.vars.minus, 10), oWidth) + "px";
+				} else {
+					if (target.getAttribute("data-original-width")) {
+						$self.vars.minus = null;
+						target.firstChild.style.width = target.getAttribute("data-original-width") + "px";
+					}
+				}
+				
 			}
 			
 			if (target) {
@@ -306,6 +356,16 @@ Swipe.UI.Rivet = (function (object) {
 				$self.vars.scrollbarMatrices = matrices;
 
 				if (object.duration) {
+					$self.vars.minus = null;
+					
+					if (target.getAttribute("data-original-height")) {
+						$self.utils.setTransform(target, matrix.translate(0, val));
+						target.firstChild.style.height = target.getAttribute("data-original-height") + "px";
+					} else if (target.getAttribute("data-original-width")) {
+						$self.utils.setTransform(target, matrix.translate(val, 0));
+						target.firstChild.style.width = target.getAttribute("data-original-width") + "px";
+					}
+					
 					$self.vars._scrollTimer = window.setTimeout(function() {
 						$self.utils.hideScrollbars(object.targets.parent);
 					}, object.duration);
@@ -428,7 +488,8 @@ Swipe.UI.Rivet = (function (object) {
 					el : targets.x,
 					outer : bWidth,
 					inner : tWidth,
-					position : offset
+					position : offset,
+					offset : bLeft
 				});
 
 				// Stop y axis scrollbar
@@ -437,7 +498,8 @@ Swipe.UI.Rivet = (function (object) {
 					el : targets.y,
 					outer : bHeight,
 					inner : tHeight,
-					position : offset
+					position : offset,
+					offset : bTop
 				});
 			},
 
@@ -461,7 +523,7 @@ Swipe.UI.Rivet = (function (object) {
 				};
 				
 				// Calculate differences between current x/y touches and start x/y touches
-				touchDifferences = {
+				touchDifferences = $self.vars.touchDifferences = {
 					x : currentTouches.x - startTouches.x,
 					y : currentTouches.y - startTouches.y
 				};
@@ -471,7 +533,7 @@ Swipe.UI.Rivet = (function (object) {
 				
 				// Calculate which direction the user is scrolling
 				// (true = right/down), (false = left/up)
-				direction = {
+				direction = $self.vars.direction = {
 					x : (currentTouches.x - oldDifferences.x >= 0),
 					y : (currentTouches.y - oldDifferences.y >= 0)
 				};
@@ -515,9 +577,12 @@ Swipe.UI.Rivet = (function (object) {
 					// OR if the absolute value of the target's left boundary IS GREATER THAN the width difference
 					// THEN we're past our boundary. For this, we decrease the touch movement by half.
 					// This prevents the content from ever scrolling off-screen
-					if (offset.left > 0 || Math.abs(offset.left) > widthDiff) {
+					if (offset.left - bLeft > 0 || (Math.abs(offset.left) + bLeft) > widthDiff) {
 						matrices.x = $self.utils.getMatrix(targets.x);
 						touchDifferences.x = (currentTouches.x - oldDifferences.x) * 0.5;
+						$self.vars.outsideBoundary = true;
+					} else {
+						$self.vars.outsideBoundary = false;
 					}
 					
 					// Set the x-axis transform based on the differences in touch
@@ -529,7 +594,8 @@ Swipe.UI.Rivet = (function (object) {
 						el : targets.x,
 						outer : bWidth,
 						inner : tWidth,
-						position : offset
+						position : offset,
+						offset : bLeft
 					});
 				}
 
@@ -542,9 +608,12 @@ Swipe.UI.Rivet = (function (object) {
 					// OR if the absolute value of the target's top boundary IS GREATER THAN the height difference
 					// THEN we're past our boundary. For this, we decrease the touch movement by half.
 					// This prevents the content from ever scrolling off-screen
-					if (offset.top > 0 || Math.abs(offset.top) > heightDiff) {
+					if (offset.top - bTop > 0 || (Math.abs(offset.top) + bTop) > heightDiff) {
 						matrices.y = $self.utils.getMatrix(targets.y);
 						touchDifferences.y = (currentTouches.y - oldDifferences.y) * 0.5;
+						$self.vars.outsideBoundary = true;
+					} else {
+						$self.vars.outsideBoundary = false;
 					}
 					
 					// Set the y-axis transform based on the differences in touch
@@ -556,7 +625,8 @@ Swipe.UI.Rivet = (function (object) {
 						el : targets.y,
 						outer : bHeight,
 						inner : tHeight,
-						position : offset
+						position : offset,
+						offset : bTop
 					});
 				}
 				
@@ -943,6 +1013,7 @@ Swipe.UI.Rivet = (function (object) {
 							left : offset.left + end.x,
 							top : offset.top + end.y
 						},
+						offset : bLeft,
 						duration : endDuration.x
 					});
 				}
@@ -975,6 +1046,7 @@ Swipe.UI.Rivet = (function (object) {
 							left : offset.left + end.x,
 							top : offset.top + end.y
 						},
+						offset : bTop,
 						duration : endDuration.y
 					});
 				}
