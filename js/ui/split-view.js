@@ -77,7 +77,20 @@ Swipe.UI.SplitView = (function (object) {
 		}, false);
 		
 		button.addEventListener("touchend", function() {
-			$space.utils.toggleClass(parent, $space.utils.parseClass("popover-active"));
+			var utils = $space.utils,
+			    _anim = $space.utils.parseClass("popover-animating"),
+			    _class = $space.utils.parseClass("popover-active");
+			
+			if (utils.hasClass(parent, _class)) {
+				$space.utils.addClass(parent, _anim);
+				
+				window.setTimeout(function() {
+					$space.utils.removeClass(parent, _anim);
+					$space.utils.removeClass(parent, _class);
+				}, 500);
+			} else {
+				$space.utils.addClass(parent, _class);
+			}
 		}, false);
 		
 		button.addEventListener("click", function(e) {

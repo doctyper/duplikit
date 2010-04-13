@@ -131,16 +131,19 @@
 		background: -webkit-gradient(linear, left top, left bottom, from(#131e31), to(#121d30));
 		
 		-webkit-transition: opacity 350ms ease-out;
-		opacity: 0;
 		display: none;
 		
 		-webkit-box-shadow: 0 20px 20px rgba(0, 0, 0, 0.5);
 	}
 	
 	.ui-swipe-popover-active view:first-child {
-		-webkit-transition: none;
 		display: block;
 		opacity: 0.9999;
+	}
+	
+	.ui-swipe-popover-animating view:first-child {
+		opacity: 0;
+		display: block;
 	}
 	
 	.ui-swipe-split-view-component view:first-child section {
