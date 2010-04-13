@@ -421,9 +421,8 @@ Swipe.UI.Rivet = (function (object) {
 		// Local variables
 		var touch, offset, scale, noMovement,
 		    matrices = {}, log, logDiff, docOffsets,
-		    startTime, endTime, endDisplacement,
-		    startTouches = {}, currentTouches = {},
-		    endTouches = {}, touchDifferences = {},
+		    startTime, startTouches = {},
+		    currentTouches = {}, touchDifferences = {},
 		    tHeight, bHeight, heightDiff, bTop, bLeft,
 		    tWidth, bWidth, widthDiff, oldDifferences = {},
 		    activeAxis, doubleCheckAxis, direction,
@@ -664,15 +663,6 @@ Swipe.UI.Rivet = (function (object) {
 				// Current element boundaries
 				offset = targets.content.getBoundingClientRect();
 
-				// Store the ending touches
-				endTouches = {
-					x : e.changedTouches[0].pageX,
-					y : e.changedTouches[0].pageY
-				};
-
-				// Store the ending time
-				endTime = (new Date().getTime()) - startTime;
-				
 				// Store the touch log
 				log = $self.vars.log;
 
@@ -731,14 +721,6 @@ Swipe.UI.Rivet = (function (object) {
 				if ((activeAxis.x && !lastTouches.x) || (activeAxis.y && !lastTouches.y)) {
 					noMovement = true;
 				}
-				
-				// Here we go.
-				// Calculate the end x/y displacements
-				// Subtract the ending x/y touches with the start x/y touch values
-				endDisplacement = {
-					x : endTouches.x - startTouches.x,
-					y : endTouches.y - startTouches.y
-				};
 
 				// Calculate the velocity of the swipe
 				// Divide the x/y lastTouches by the time between the first and last logged touch events
@@ -761,7 +743,7 @@ Swipe.UI.Rivet = (function (object) {
 				// Calculate the end x/y position
 				// Multiply the x/y animation duration amount by the velocity of the swipe
 				endDistance = {
-					x : (endDuration.x * velocity.x),
+					x : ((endDuration.x + (endDuration.x * END_DISTANCE_MULTIPLIER)) * velocity.x),
 					y : ((endDuration.y + (endDuration.y * END_DISTANCE_MULTIPLIER)) * velocity.y)
 				};
 				
@@ -829,20 +811,20 @@ Swipe.UI.Rivet = (function (object) {
 						// If top element boundary is less than zero,
 						// We need to create a bounce effect to mimic native UX
 						if (offset.top < 0) {
-
+						
 							// Bounce distance is the amount to travel
 							bounce.y = -(offset.top - bTop);
-
+						
 							// A check for the maximum amount allowed to bounce
 							// If the end y value minus the bounce amount is greater than half of the boundary height
 							// We've reached the maximum. Set the y value to only the bounce amount plus 100
 							if ((endDistance.y - bounce.y) > (bHeight / 2)) {
 								endDistance.y = bounce.y + 100;
 							}
-
+						
 							// Yes, we will require a timer.
 							_timer.y = true;
-
+						
 						// Otherwise, user is trying to scroll higher than boundary
 						// And we can just snap to boundary
 						} else {
