@@ -65,6 +65,12 @@ Swipe.UI.Rivet = (function (object) {
 	const MAX_DURATION = 2500;
 	
 	/*
+	constant: MAX_DISTANCE_MULTIPLIER
+		Maximum distance to animate
+	*/
+	const MAX_DISTANCE_MULTIPLIER = 0.45;
+	
+	/*
 	constant: BOUNDARY_MULTIPLIER
 		Increases the boundary friction
 	*/
@@ -647,7 +653,7 @@ Swipe.UI.Rivet = (function (object) {
 				} else if (doubleCheckAxis === null) {
 					
 					// If differences is no more than five
-					doubleCheckAxis = Math.abs(Math.abs(touchDifferences.x) - Math.abs(touchDifferences.y)) <= 5;
+					doubleCheckAxis = Math.abs(Math.abs(touchDifferences.x) - Math.abs(touchDifferences.y)) <= 10;
 					
 					// If true, we've double-checked the axes
 					if (doubleCheckAxis) {
@@ -843,9 +849,14 @@ Swipe.UI.Rivet = (function (object) {
 
 					// Calculate the end x/y position
 					// Multiply the x/y animation duration amount by the velocity of the swipe
+					var maxDistance = {
+						x : tWidth * MAX_DISTANCE_MULTIPLIER,
+						y : tHeight * MAX_DISTANCE_MULTIPLIER
+					};
+					
 					endDistance = {
-						x : ((endDuration.x + (endDuration.x * END_DISTANCE_MULTIPLIER)) * velocity.x),
-						y : ((endDuration.y + (endDuration.y * END_DISTANCE_MULTIPLIER)) * velocity.y)
+						x : Math.min(Math.max((endDuration.x + (endDuration.x * END_DISTANCE_MULTIPLIER)) * velocity.x, -maxDistance.x), maxDistance.x),
+						y : Math.min(Math.max((endDuration.y + (endDuration.y * END_DISTANCE_MULTIPLIER)) * velocity.y, -maxDistance.y), maxDistance.y)
 					};
 					
 					if (endDuration.x === MAX_DURATION && Math.abs(endDistance.x) < 15) {
