@@ -1,0 +1,43 @@
+/*
+File: duplikit.css
+
+About: Version
+	1.0
+
+Project: DupliKit
+
+Description:
+	I can't believe it's not Cocoa!
+
+Supports:
+	- iPad (iPhone coming soon(?))
+
+*/
+
+view {
+	/* Disable Loupe */
+	-webkit-user-select: none;
+	
+	/* Disable Tap Effect */
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	
+	/* Disable Actionable Elements */
+	-webkit-touch-callout: none;
+}
+
+view, view viewport, view section {
+	margin: 0 auto;
+	padding: 0;
+	display: block;
+	position: relative;
+	-webkit-backface-visibility: hidden;
+}
+
+view section {
+	display: block;
+	overflow: hidden;
+}
+
+view > viewport {
+	z-index: 200;
+}
