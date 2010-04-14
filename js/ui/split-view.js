@@ -1,5 +1,5 @@
 /*
-File: rivet.js
+File: split-view.js
 
 About: Version
 	1.0
@@ -7,10 +7,11 @@ About: Version
 Project: DupliKit
 
 Description:
-	Enables fixed positioning on iPhone OS
+	DupliKit's Split View Controller
 
-Supports:
-	- iPad (iPhone coming soon(?))
+Requires:
+	- <dup.js>
+	- <rivet.js>
 	
 */
 

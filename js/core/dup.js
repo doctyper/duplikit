@@ -7,7 +7,7 @@ About: Version
 Project: DupliKit
 
 Description:
-	Recreates native iPhone OS functionality
+	I can't believe it's not Cocoa!
 
 Supports:
 	- iPad (iPhone coming soon(?))

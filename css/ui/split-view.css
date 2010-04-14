@@ -1,3 +1,20 @@
+/*
+File: split-view.css
+
+About: Version
+	1.0
+
+Project: DupliKit
+
+Description:
+	DupliKit's Split View Controller
+
+Requires:
+	- <duplikit.css>
+	- <rivet.css>
+
+*/
+
 .ui-dup-split-view-component {
 	font-family: "Helvetica";
 }

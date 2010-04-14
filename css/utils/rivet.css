@@ -1,5 +1,5 @@
 /*
-File: fixed.css
+File: rivet.css
 
 About: Version
 	1.0
@@ -9,27 +9,10 @@ Project: DupliKit
 Description:
 	Enables fixed positioning on iPhone OS
 
-Supports:
-	- iPad (iPhone coming soon(?))
+Requires:
+	- <duplikit.css>
 
 */
-
-view, view viewport, view section {
-	margin: 0 auto;
-	padding: 0;
-	display: block;
-	position: relative;
-	-webkit-backface-visibility: hidden;
-}
-
-view section {
-	display: block;
-	overflow: hidden;
-}
-
-view > viewport {
-	z-index: 200;
-}
 
 view section .ui-dup-rivet-scrollbar {
 	top: 2px;

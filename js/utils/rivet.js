@@ -9,8 +9,8 @@ Project: DupliKit
 Description:
 	Enables fixed positioning on iPhone OS
 
-Supports:
-	- iPad (iPhone coming soon(?))
+Requires:
+	- <dup.js>
 	
 */
 
