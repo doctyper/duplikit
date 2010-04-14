@@ -10,7 +10,7 @@ Description:
 	Enables fixed positioning on iPhone OS
 
 Requires:
-	- <dup.js>
+	- <duplikit.js>
 	
 */
 

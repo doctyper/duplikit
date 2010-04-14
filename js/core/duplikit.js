@@ -1,5 +1,5 @@
 /*
-File: dup.js
+File: duplikit.js
 
 About: Version
 	1.0

@@ -10,7 +10,7 @@ Description:
 	DupliKit's Split View Controller
 
 Requires:
-	- <dup.js>
+	- <duplikit.js>
 	- <rivet.js>
 	
 */
