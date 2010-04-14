@@ -59,10 +59,28 @@ Swipe.UI.Rivet = (function (object) {
 	const MAX_VELOCITY = 1;
 	
 	/*
+	constant: BOUNDARY_MULTIPLIER
+		Increases the boundary friction
+	*/
+	const BOUNDARY_MULTIPLIER = 1.2;
+	
+	/*
 	constant: END_DISTANCE_MULTIPLIER
 		Adds an extra 'oomph' to animation friction
 	*/
 	const END_DISTANCE_MULTIPLIER = 0.5;
+	
+	/*
+	constant: BOUNCE_DURATION_DIVISOR
+		When a bounce is in effect, divide the calculated time by this amount
+	*/
+	const BOUNCE_DURATION_DIVISOR = 2.5;
+	
+	/*
+	constant: BOUNCE_DISTANCE
+		Distance to travel for a proper bounce
+	*/
+	const BOUNCE_DISTANCE = 100;
 	
 	/*
 	constant: NAMESPACE_CLASS
@@ -602,7 +620,7 @@ Swipe.UI.Rivet = (function (object) {
 					// This prevents the content from ever scrolling off-screen
 					if (offset.left - bLeft > 0 || (Math.abs(offset.left) + bLeft) > widthDiff) {
 						matrices.x = $self.utils.getMatrix(targets.x);
-						touchDifferences.x = (currentTouches.x - oldDifferences.x);
+						touchDifferences.x = (currentTouches.x - oldDifferences.x) * BOUNDARY_MULTIPLIER;
 						$self.vars.outsideBoundary = true;
 					} else {
 						$self.vars.outsideBoundary = false;
@@ -639,7 +657,7 @@ Swipe.UI.Rivet = (function (object) {
 					// This prevents the content from ever scrolling off-screen
 					if (offset.top - bTop > 0 || (Math.abs(offset.top) + bTop) > heightDiff) {
 						matrices.y = $self.utils.getMatrix(targets.y);
-						touchDifferences.y = (currentTouches.y - oldDifferences.y);
+						touchDifferences.y = (currentTouches.y - oldDifferences.y) * BOUNDARY_MULTIPLIER;
 						$self.vars.outsideBoundary = true;
 					} else {
 						$self.vars.outsideBoundary = false;
@@ -901,8 +919,8 @@ Swipe.UI.Rivet = (function (object) {
 					// If a timer is required
 					if (_timer.y) {
 
-						// Shorten the endDuration amount by 2.5x
-						endDuration.y /= 2.5;
+						// Shorten the endDuration amount by BOUNCE_DURATION_DIVISOR
+						endDuration.y /= BOUNCE_DURATION_DIVISOR;
 
 						// And set the timer to fire at the new amount
 						$self.vars.endTimers.y = window.setTimeout(function() {
@@ -941,7 +959,7 @@ Swipe.UI.Rivet = (function (object) {
 							// If the end y value minus the bounce amount is greater than half of the boundary width
 							// We've reached the maximum. Set the x value to only the bounce amount plus 100
 							if ((endDistance.x - bounce.x) > (bWidth / 2)) {
-								endDistance.x = bounce.x + 100;
+								endDistance.x = bounce.x + BOUNCE_DISTANCE;
 							}
 
 							// Yes, we will require a timer.
@@ -967,7 +985,7 @@ Swipe.UI.Rivet = (function (object) {
 							// If the end x value minus the bounce amount is less than half of the boundary width
 							// We've reached the maximum. Set the x value to only the bounce amount minus 100
 							if ((endDistance.x - bounce.x) < (bWidth / 2)) {
-								endDistance.x = bounce.x - 100;
+								endDistance.x = bounce.x - BOUNCE_DISTANCE;
 							}
 
 							// Yes, we will require a timer.
@@ -983,8 +1001,8 @@ Swipe.UI.Rivet = (function (object) {
 					// If a timer is required
 					if (_timer.x) {
 
-						// Shorten the endDuration amount by 2.5x
-						endDuration.x /= 2.5;
+						// Shorten the endDuration amount by BOUNCE_DURATION_DIVISOR
+						endDuration.x /= BOUNCE_DURATION_DIVISOR;
 
 						// And set the timer to fire at the new amount
 						$self.vars.endTimers.x = window.setTimeout(function() {
