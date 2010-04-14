@@ -165,7 +165,7 @@ Swipe.UI.Rivet = (function (object) {
 		*/
 		resetTransition : function(el, value) {
 			if (el) {
-				el.style.webkitTransitionDuration = (value || 150) + "ms";
+				el.style.webkitTransitionDuration = ((typeof value !== "undefined") ? value : 150) + "ms";
 			}
 		},
 
@@ -401,6 +401,24 @@ Swipe.UI.Rivet = (function (object) {
 			}
 			
 			return offsets;
+		},
+		
+		resetXY : function(targets, value) {
+			// Reset x/y transition duration
+			$self.utils.resetTransition(targets.x, value);
+			$self.utils.resetTransition(targets.y, value);
+			
+			// Reset x/y starting matrices
+			var matrices = {
+				x : $self.utils.getMatrix(targets.x),
+				y : $self.utils.getMatrix(targets.y)
+			};
+			
+			// Stop the current move
+			$self.utils.setTransform(targets.x, matrices.x.translate(0, 0));
+			$self.utils.setTransform(targets.y, matrices.y.translate(0, 0));
+			
+			return matrices;
 		}
 	};
 	
@@ -484,18 +502,7 @@ Swipe.UI.Rivet = (function (object) {
 				widthDiff = tWidth - bWidth;
 				
 				// Reset x/y transition duration
-				$self.utils.resetTransition(targets.x);
-				$self.utils.resetTransition(targets.y);
-				
-				// Reset x/y starting matrices
-				matrices = {
-					x : $self.utils.getMatrix(targets.x),
-					y : $self.utils.getMatrix(targets.y)
-				};
-				
-				// Stop the current move
-				$self.utils.setTransform(targets.x, matrices.x.translate(0, 0));
-				$self.utils.setTransform(targets.y, matrices.y.translate(0, 0));
+				matrices = $self.utils.resetXY(targets);
 				
 				// Stop x axis scrollbar
 				$self.utils.updateScrollbarPosition({
@@ -595,24 +602,30 @@ Swipe.UI.Rivet = (function (object) {
 					// This prevents the content from ever scrolling off-screen
 					if (offset.left - bLeft > 0 || (Math.abs(offset.left) + bLeft) > widthDiff) {
 						matrices.x = $self.utils.getMatrix(targets.x);
-						touchDifferences.x = (currentTouches.x - oldDifferences.x) * 0.5;
+						touchDifferences.x = (currentTouches.x - oldDifferences.x);
 						$self.vars.outsideBoundary = true;
 					} else {
 						$self.vars.outsideBoundary = false;
 					}
 					
-					// Set the x-axis transform based on the differences in touch
-					$self.utils.setTransform(targets.x, matrices.x.translate(touchDifferences.x, 0));
-					
-					// Update x-axis scrollbar
-					$self.utils.updateScrollbarPosition({
-						targets : targets,
-						el : targets.x,
-						outer : bWidth,
-						inner : tWidth,
-						position : offset,
-						offset : bLeft
-					});
+					// Update only if we have more than one touch logged
+					// We need at least two for the touchend event to do its analysis
+					if ($self.vars.log.length > 0) {
+						
+						// Set the x-axis transform based on the differences in touch
+						$self.utils.setTransform(targets.x, matrices.x.translate(touchDifferences.x, 0));
+
+						// Update x-axis scrollbar
+						$self.utils.updateScrollbarPosition({
+							targets : targets,
+							el : targets.x,
+							outer : bWidth,
+							inner : tWidth,
+							position : offset,
+							offset : bLeft
+						});
+						
+					}
 				}
 
 				// If the height difference is greater than zero,
@@ -626,24 +639,30 @@ Swipe.UI.Rivet = (function (object) {
 					// This prevents the content from ever scrolling off-screen
 					if (offset.top - bTop > 0 || (Math.abs(offset.top) + bTop) > heightDiff) {
 						matrices.y = $self.utils.getMatrix(targets.y);
-						touchDifferences.y = (currentTouches.y - oldDifferences.y) * 0.5;
+						touchDifferences.y = (currentTouches.y - oldDifferences.y);
 						$self.vars.outsideBoundary = true;
 					} else {
 						$self.vars.outsideBoundary = false;
 					}
 					
-					// Set the y-axis transform based on the differences in touch
-					$self.utils.setTransform(targets.y, matrices.y.translate(0, touchDifferences.y));
-					
-					// Update y-axis scrollbar
-					$self.utils.updateScrollbarPosition({
-						targets : targets,
-						el : targets.y,
-						outer : bHeight,
-						inner : tHeight,
-						position : offset,
-						offset : bTop
-					});
+					// Update only if we have more than one touch logged
+					// We need at least two for the touchend event to do its analysis
+					if ($self.vars.log.length > 0) {
+						
+						// Set the y-axis transform based on the differences in touch
+						$self.utils.setTransform(targets.y, matrices.y.translate(0, touchDifferences.y));
+						
+						// Update y-axis scrollbar
+						$self.utils.updateScrollbarPosition({
+							targets : targets,
+							el : targets.y,
+							outer : bHeight,
+							inner : tHeight,
+							position : offset,
+							offset : bTop
+						});
+						
+					}
 				}
 				
 				// Keep a log of the previous difference
@@ -656,12 +675,15 @@ Swipe.UI.Rivet = (function (object) {
 
 			touchend : function(e) {
 				
+				// Reset x/y transition duration
+				matrices = $self.utils.resetXY(targets, 0);
+				
 				// Future proofing
 				// Log the current scale
 				scale = e.scale;
 
 				// Current element boundaries
-				offset = targets.content.getBoundingClientRect();
+				// offset = targets.content.getBoundingClientRect();
 
 				// Store the touch log
 				log = $self.vars.log;
@@ -669,7 +691,7 @@ Swipe.UI.Rivet = (function (object) {
 				// If log is empty, OR if only one touch has been logged,
 				// THEN there are not enough touches to constitute a swipe
 				// and the movement should stop without ease
-				if (!log.length || (log.length < 2)) {
+				if (!log.length || log.length < 2) {
 					$self.utils.hideScrollbars(targets.parent);
 					return;
 				}
@@ -747,6 +769,11 @@ Swipe.UI.Rivet = (function (object) {
 					y : ((endDuration.y + (endDuration.y * END_DISTANCE_MULTIPLIER)) * velocity.y)
 				};
 				
+				// console.log(endDuration.y + ", " + endDistance.y);
+	
+				// Current element boundaries
+				offset = targets.content.getBoundingClientRect();
+			
 				// Store dimensions based on eventual movement
 				var dims = {
 
@@ -789,8 +816,8 @@ Swipe.UI.Rivet = (function (object) {
 				//   OF the minimum value
 				//   OR the maximum duration MULTIPLIED BY the absolute value of x/y velocity
 				var newDuration = {
-					x : Math.min(maxDuration, Math.max(minDuration, maxDuration * Math.abs(velocity.x))),
-					y : Math.min(maxDuration, Math.max(minDuration, maxDuration * Math.abs(velocity.y)))
+					x : 600,
+					y : 600
 				};
 
 				// If the difference in height is greater than zero
@@ -868,6 +895,7 @@ Swipe.UI.Rivet = (function (object) {
 						$self.vars.endTimers.y = window.setTimeout(function() {
 
 							// Animate to bounce distance
+							$self.utils.resetTransition(targets.y, endDuration.y * 4);
 							$self.utils.setTransform(targets.y, matrices.y.translate(0, bounce.y));
 
 						}, endDuration.y);
@@ -949,6 +977,7 @@ Swipe.UI.Rivet = (function (object) {
 						$self.vars.endTimers.x = window.setTimeout(function() {
 
 							// Animate to bounce distance
+							$self.utils.resetTransition(targets.x, endDuration.x * 4);
 							$self.utils.setTransform(targets.x, matrices.x.translate(bounce.x, 0));
 
 						}, endDuration.x);
