@@ -610,7 +610,7 @@ Swipe.UI.Rivet = (function (object) {
 					
 					// Update only if we have more than one touch logged
 					// We need at least two for the touchend event to do its analysis
-					if ($self.vars.log.length > 0) {
+					if ($self.vars.log.length > 1) {
 						
 						// Set the x-axis transform based on the differences in touch
 						$self.utils.setTransform(targets.x, matrices.x.translate(touchDifferences.x, 0));
@@ -647,7 +647,7 @@ Swipe.UI.Rivet = (function (object) {
 					
 					// Update only if we have more than one touch logged
 					// We need at least two for the touchend event to do its analysis
-					if ($self.vars.log.length > 0) {
+					if ($self.vars.log.length > 1) {
 						
 						// Set the y-axis transform based on the differences in touch
 						$self.utils.setTransform(targets.y, matrices.y.translate(0, touchDifferences.y));
@@ -691,83 +691,97 @@ Swipe.UI.Rivet = (function (object) {
 				// If log is empty, OR if only one touch has been logged,
 				// THEN there are not enough touches to constitute a swipe
 				// and the movement should stop without ease
-				if (!log.length || log.length < 2) {
+				if (!log.length) {
 					$self.utils.hideScrollbars(targets.parent);
 					return;
-				}
-
-				// Reverse the log.
-				// This will make calculating the lastTouches much easier.
-				log.reverse();
-
-				// Average out the touches in the log.
-				// That is, the sum of all touches divided by the total amount of touches.
-				// This value helps us find a consistent velocity amount to use.
-				// If we only used the previous touch, The value could be skewed in speed.
-				lastTouches = function() {
-
-					// Original values
-					var sum = {
+				} else if (log.length < 2) {
+					noMovement = true;
+					
+					endDuration = {
 						x : 0,
 						y : 0
 					};
+					
+					endDistance = {
+						x : 0,
+						y : 0
+					};
+				} else {
+					
+					// Reverse the log.
+					// This will make calculating the lastTouches much easier.
+					log.reverse();
 
-					// Add touchDifferences values to sum
-					for (var i = 0, j = log.length; i < j; i++) {
-						sum.x += Math.abs(log[i].touchDifferences.x);
-						sum.y += Math.abs(log[i].touchDifferences.y);
+					// Average out the touches in the log.
+					// That is, the sum of all touches divided by the total amount of touches.
+					// This value helps us find a consistent velocity amount to use.
+					// If we only used the previous touch, The value could be skewed in speed.
+					lastTouches = function() {
+
+						// Original values
+						var sum = {
+							x : 0,
+							y : 0
+						};
+
+						// Add touchDifferences values to sum
+						for (var i = 0, j = log.length; i < j; i++) {
+							sum.x += Math.abs(log[i].touchDifferences.x);
+							sum.y += Math.abs(log[i].touchDifferences.y);
+						}
+
+						// Find the average values
+						var avg = {
+
+							// Total x-axis value divided by the total amount of x-touches
+							// Negate (or not) based on scroll direction
+							x : (sum.x / log.length) * ((direction.x) ? 1 : -1),
+
+							// Total y-axis value divided by the total amount of y-touches
+							// Negate (or not) based on scroll direction
+							y : (sum.y / log.length) * ((direction.y) ? 1 : -1)
+						};
+
+						// Return the averages object
+						return avg;
+					}();
+
+					// Calculate the time between the first and last logged touch events
+					lastTime = log.length ? ((log[0].time - log[log.length - 1].time) * 2) : 0;
+
+					// If activeAxis is x AND there are no x-axis lastTouches logged
+					// OR if activeAxis is y AND there are no y-axis lastTouches logged
+					// THEN the user has stopped the swipe. Flag as such.
+					if ((activeAxis.x && !lastTouches.x) || (activeAxis.y && !lastTouches.y)) {
+						noMovement = true;
 					}
 
-					// Find the average values
-					var avg = {
-
-						// Total x-axis value divided by the total amount of x-touches
-						// Negate (or not) based on scroll direction
-						x : (sum.x / log.length) * ((direction.x) ? 1 : -1),
-
-						// Total y-axis value divided by the total amount of y-touches
-						// Negate (or not) based on scroll direction
-						y : (sum.y / log.length) * ((direction.y) ? 1 : -1)
+					// Calculate the velocity of the swipe
+					// Divide the x/y lastTouches by the time between the first and last logged touch events
+					velocity = {
+						x : Math.min(Math.max((lastTouches.x / lastTime), -MAX_VELOCITY), MAX_VELOCITY),
+						y : Math.min(Math.max((lastTouches.y / lastTime), -MAX_VELOCITY), MAX_VELOCITY)
 					};
 
-					// Return the averages object
-					return avg;
-				}();
-			
-				// Calculate the time between the first and last logged touch events
-				lastTime = log.length ? ((log[0].time - log[log.length - 1].time) * 2) : 0;
-				
-				// If activeAxis is x AND there are no x-axis lastTouches logged
-				// OR if activeAxis is y AND there are no y-axis lastTouches logged
-				// THEN the user has stopped the swipe. Flag as such.
-				if ((activeAxis.x && !lastTouches.x) || (activeAxis.y && !lastTouches.y)) {
-					noMovement = true;
-				}
+					// Calculate the animation duration amount
+					// RETURN the minimum value
+					// OF the absolute value
+					//   OF the global velocityMultiplier
+					//   MINUS the x/y velocity MULTIPLIED BY the global velocityMultiplier
+					// OR the global maxDuration
+					endDuration = {
+						x : Math.abs((Math.abs(velocity.x) * VELOCITY_MULTIPLIER + Math.abs(VELOCITY_MULTIPLIER / lastTouches.x) * 3)),
+						y : Math.abs((Math.abs(velocity.y) * VELOCITY_MULTIPLIER + Math.abs((VELOCITY_MULTIPLIER / lastTouches.y) * 3)))
+					};
 
-				// Calculate the velocity of the swipe
-				// Divide the x/y lastTouches by the time between the first and last logged touch events
-				velocity = {
-					x : Math.min(Math.max((lastTouches.x / lastTime), -MAX_VELOCITY), MAX_VELOCITY),
-					y : Math.min(Math.max((lastTouches.y / lastTime), -MAX_VELOCITY), MAX_VELOCITY)
-				};
-				
-				// Calculate the animation duration amount
-				// RETURN the minimum value
-				// OF the absolute value
-				//   OF the global velocityMultiplier
-				//   MINUS the x/y velocity MULTIPLIED BY the global velocityMultiplier
-				// OR the global maxDuration
-				endDuration = {
-					x : Math.abs((Math.abs(velocity.x) * VELOCITY_MULTIPLIER + Math.abs(VELOCITY_MULTIPLIER / lastTouches.x) * 3)),
-					y : Math.abs((Math.abs(velocity.y) * VELOCITY_MULTIPLIER + Math.abs((VELOCITY_MULTIPLIER / lastTouches.y) * 3)))
-				};
-				
-				// Calculate the end x/y position
-				// Multiply the x/y animation duration amount by the velocity of the swipe
-				endDistance = {
-					x : ((endDuration.x + (endDuration.x * END_DISTANCE_MULTIPLIER)) * velocity.x),
-					y : ((endDuration.y + (endDuration.y * END_DISTANCE_MULTIPLIER)) * velocity.y)
-				};
+					// Calculate the end x/y position
+					// Multiply the x/y animation duration amount by the velocity of the swipe
+					endDistance = {
+						x : ((endDuration.x + (endDuration.x * END_DISTANCE_MULTIPLIER)) * velocity.x),
+						y : ((endDuration.y + (endDuration.y * END_DISTANCE_MULTIPLIER)) * velocity.y)
+					};
+
+				}
 				
 				// console.log(endDuration.y + ", " + endDistance.y);
 	
