@@ -14,6 +14,13 @@ Supports:
 
 */
 
+* {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+}
+
 view {
 	/* Disable Loupe */
 	-webkit-user-select: none;
@@ -26,7 +33,7 @@ view {
 }
 
 view, view viewport, view section {
-	margin: 0 auto;
+	margin: 0;
 	padding: 0;
 	display: block;
 	position: relative;
