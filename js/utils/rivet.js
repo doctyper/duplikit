@@ -71,16 +71,58 @@ Swipe.UI.Rivet = (function (object) {
 	const END_DISTANCE_MULTIPLIER = 0.5;
 	
 	/*
+	constant: MAX_BOUNCE
+		Maximum bounce to animate
+	*/
+	const MAX_BOUNCE = 100;
+	
+	/*
 	constant: BOUNCE_DURATION_DIVISOR
 		When a bounce is in effect, divide the calculated time by this amount
 	*/
-	const BOUNCE_DURATION_DIVISOR = 2.5;
+	const BOUNCE_DURATION_DIVISOR = 5;
+	
+	/*
+	constant: BOUNDARY_DURATION
+		Amount to animate boundary friction
+	*/
+	const BOUNDARY_DURATION = 600;
+	
+	/*
+	constant: BOUNDARY_ELASTICITY
+		Easing for boundary friction
+	*/
+	const BOUNDARY_ELASTICITY = "cubic-bezier(0.25, 1.0, 0.5, 1.0)";
 	
 	/*
 	constant: BOUNCE_DISTANCE
 		Distance to travel for a proper bounce
 	*/
 	const BOUNCE_DISTANCE = 100;
+	
+	/*
+	constant: BOUNCE_DURATION
+		Duration of bounce
+	*/
+	const BOUNCE_DURATION = (BOUNCE_DISTANCE * 1.5);
+	
+	/*
+	constant: BOUNCE_MULTIPLIER
+		Drags out the ending animation for more friction
+	*/
+	const BOUNCE_MULTIPLIER = 4;
+	
+	/*
+	constant: BOUNCE_START_ELASTICITY
+		Easing for starting bounce animation
+	*/
+	const BOUNCE_START_ELASTICITY = "cubic-bezier(0, 0.25, 0.25, 1.0)";
+	
+	/*
+	constant: BOUNCE_END_ELASTICITY
+		Easing for ending bounce animation
+	*/
+	const BOUNCE_END_ELASTICITY = "cubic-bezier(0.5, 1.0, 0.25, 1.0)";
 	
 	/*
 	constant: NAMESPACE_CLASS
@@ -181,9 +223,10 @@ Swipe.UI.Rivet = (function (object) {
 		sub: resetTransition
 			Resets transition duration to a specific value or zero
 		*/
-		resetTransition : function(el, value) {
+		resetTransition : function(el, duration, timing) {
 			if (el) {
-				el.style.webkitTransitionDuration = ((typeof value !== "undefined") ? value : 150) + "ms";
+				el.style.webkitTransitionDuration = ((typeof duration !== "undefined") ? duration : 150) + "ms";
+				el.style.webkitTransitionTimingFunction = ((typeof timing !== "undefined") ? timing : "");
 			}
 		},
 
@@ -457,7 +500,7 @@ Swipe.UI.Rivet = (function (object) {
 		// Local variables
 		var touch, offset, scale, noMovement,
 		    matrices = {}, log, logDiff, docOffsets,
-		    startTime, startTouches = {},
+		    startTime, startTouches = {}, easing,
 		    currentTouches = {}, touchDifferences = {},
 		    tHeight, bHeight, heightDiff, bTop, bLeft,
 		    tWidth, bWidth, widthDiff, oldDifferences = {},
@@ -472,6 +515,7 @@ Swipe.UI.Rivet = (function (object) {
 				$self.vars.touchActive = $self.vars.touchActive || 0;
 				oldDifferences = null;
 				noMovement = null;
+				easing = null;
 				
 				// If touch is not active, reset related axis properties
 				// Otherwise, we need to preserve those values but reset the scroll
@@ -787,8 +831,8 @@ Swipe.UI.Rivet = (function (object) {
 					//   MINUS the x/y velocity MULTIPLIED BY the global velocityMultiplier
 					// OR the global maxDuration
 					endDuration = {
-						x : Math.abs((Math.abs(velocity.x) * VELOCITY_MULTIPLIER + Math.abs(VELOCITY_MULTIPLIER / lastTouches.x) * 3)),
-						y : Math.abs((Math.abs(velocity.y) * VELOCITY_MULTIPLIER + Math.abs((VELOCITY_MULTIPLIER / lastTouches.y) * 3)))
+						x : Math.abs((Math.abs(velocity.x) * VELOCITY_MULTIPLIER + Math.abs(VELOCITY_MULTIPLIER / (lastTouches.x || 1)) * 3)),
+						y : Math.abs((Math.abs(velocity.y) * VELOCITY_MULTIPLIER + Math.abs((VELOCITY_MULTIPLIER / (lastTouches.y || 1)) * 3)))
 					};
 
 					// Calculate the end x/y position
@@ -836,28 +880,15 @@ Swipe.UI.Rivet = (function (object) {
 					x : 0,
 					y : 0
 				}, bounce = {};
-
-				// Min/max boundary duration times
-				var minDuration = 400, maxDuration = 600;
-
-				// Calculate new boundary duration times
-				// The minimum value
-				// OF the max boundary duration
-				// OR the maximum value
-				//   OF the minimum value
-				//   OR the maximum duration MULTIPLIED BY the absolute value of x/y velocity
-				var newDuration = {
-					x : 600,
-					y : 600
-				};
-
+				
 				// If the difference in height is greater than zero
 				// AND the activeAxis is vertical
 				// AND either the top or bottom bounds have been breached
 				if (heightDiff > 0 && activeAxis.y && (bounds.top || bounds.bottom)) {
 
 					// endDuration is now the newDuration property
-					endDuration.y = newDuration.y;
+					endDuration.y = BOUNDARY_DURATION;
+					easing = BOUNDARY_ELASTICITY;
 
 					// We have movement!
 					// We need to. Otherwise the bounds won't snap to the edges if the user stops the swipe.
@@ -876,8 +907,8 @@ Swipe.UI.Rivet = (function (object) {
 							// A check for the maximum amount allowed to bounce
 							// If the end y value minus the bounce amount is greater than half of the boundary height
 							// We've reached the maximum. Set the y value to only the bounce amount plus 100
-							if ((endDistance.y - bounce.y) > (bHeight / 2)) {
-								endDistance.y = bounce.y + 100;
+							if ((endDistance.y - bounce.y) > (bHeight / 6)) {
+								endDistance.y = bounce.y + BOUNCE_DISTANCE;
 							}
 						
 							// Yes, we will require a timer.
@@ -902,8 +933,8 @@ Swipe.UI.Rivet = (function (object) {
 							// A check for the maximum amount allowed to bounce
 							// If the end y value minus the bounce amount is less than half of the boundary height
 							// We've reached the maximum. Set the y value to only the bounce amount minus 100
-							if ((endDistance.y - bounce.y) < (bHeight / 2)) {
-								endDistance.y = bounce.y - 100;
+							if ((endDistance.y - bounce.y) < (bHeight / 6)) {
+								endDistance.y = bounce.y - BOUNCE_DISTANCE;
 							}
 
 							// Yes, we will require a timer.
@@ -920,13 +951,14 @@ Swipe.UI.Rivet = (function (object) {
 					if (_timer.y) {
 
 						// Shorten the endDuration amount by BOUNCE_DURATION_DIVISOR
-						endDuration.y /= BOUNCE_DURATION_DIVISOR;
+						endDuration.y = BOUNCE_DURATION;
+						easing = BOUNCE_START_ELASTICITY;
 
 						// And set the timer to fire at the new amount
 						$self.vars.endTimers.y = window.setTimeout(function() {
-
+							
 							// Animate to bounce distance
-							$self.utils.resetTransition(targets.y, endDuration.y * 4);
+							$self.utils.resetTransition(targets.y, endDuration.y * BOUNCE_MULTIPLIER, BOUNCE_END_ELASTICITY);
 							$self.utils.setTransform(targets.y, matrices.y.translate(0, bounce.y));
 
 						}, endDuration.y);
@@ -939,7 +971,8 @@ Swipe.UI.Rivet = (function (object) {
 				if (widthDiff > 0 && activeAxis.x && (bounds.left || bounds.right)) {
 
 					// endDuration is now the newDuration property
-					endDuration.x = newDuration.x;
+					endDuration.x = BOUNDARY_DURATION;
+					easing = BOUNDARY_ELASTICITY;
 
 					// We have movement!
 					// We need to. Otherwise the bounds won't snap to the edges if the user stops the swipe.
@@ -958,7 +991,7 @@ Swipe.UI.Rivet = (function (object) {
 							// A check for the maximum amount allowed to bounce
 							// If the end y value minus the bounce amount is greater than half of the boundary width
 							// We've reached the maximum. Set the x value to only the bounce amount plus 100
-							if ((endDistance.x - bounce.x) > (bWidth / 2)) {
+							if ((endDistance.x - bounce.x) > (bWidth / 6)) {
 								endDistance.x = bounce.x + BOUNCE_DISTANCE;
 							}
 
@@ -984,7 +1017,7 @@ Swipe.UI.Rivet = (function (object) {
 							// A check for the maximum amount allowed to bounce
 							// If the end x value minus the bounce amount is less than half of the boundary width
 							// We've reached the maximum. Set the x value to only the bounce amount minus 100
-							if ((endDistance.x - bounce.x) < (bWidth / 2)) {
+							if ((endDistance.x - bounce.x) < (bWidth / 6)) {
 								endDistance.x = bounce.x - BOUNCE_DISTANCE;
 							}
 
@@ -1002,13 +1035,14 @@ Swipe.UI.Rivet = (function (object) {
 					if (_timer.x) {
 
 						// Shorten the endDuration amount by BOUNCE_DURATION_DIVISOR
-						endDuration.x /= BOUNCE_DURATION_DIVISOR;
-
+						endDuration.x = BOUNCE_DURATION;
+						easing = BOUNCE_START_ELASTICITY;
+						
 						// And set the timer to fire at the new amount
 						$self.vars.endTimers.x = window.setTimeout(function() {
-
+							
 							// Animate to bounce distance
-							$self.utils.resetTransition(targets.x, endDuration.x * 4);
+							$self.utils.resetTransition(targets.x, endDuration.x * BOUNCE_MULTIPLIER, BOUNCE_END_ELASTICITY);
 							$self.utils.setTransform(targets.x, matrices.x.translate(bounce.x, 0));
 
 						}, endDuration.x);
@@ -1033,7 +1067,7 @@ Swipe.UI.Rivet = (function (object) {
 				if (widthDiff > 0 && activeAxis.x) {
 					
 					// Set x-axis transition duration to new endDuration value
-					$self.utils.resetTransition(targets.x, endDuration.x);
+					$self.utils.resetTransition(targets.x, endDuration.x, easing);
 					
 					// Set x-axis point to animate to
 					$self.utils.setTransform(targets.x, matrices.x.translate(endDistance.x, 0));
@@ -1066,7 +1100,7 @@ Swipe.UI.Rivet = (function (object) {
 				if (heightDiff > 0 && activeAxis.y) {
 					
 					// Set y-axis transition duration to new endDuration value
-					$self.utils.resetTransition(targets.y, endDuration.y);
+					$self.utils.resetTransition(targets.y, endDuration.y, easing);
 					
 					// Set y-axis point to animate to
 					$self.utils.setTransform(targets.y, matrices.y.translate(0, endDistance.y));
