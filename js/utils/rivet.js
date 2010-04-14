@@ -691,11 +691,10 @@ Swipe.UI.Rivet = (function (object) {
 				// If log is empty, OR if only one touch has been logged,
 				// THEN there are not enough touches to constitute a swipe
 				// and the movement should stop without ease
-				if (!log.length) {
-					$self.utils.hideScrollbars(targets.parent);
-					return;
-				} else if (log.length < 2) {
+				if (!log.length || log.length < 2) {
 					noMovement = true;
+					
+					activeAxis = activeAxis || {};
 					
 					endDuration = {
 						x : 0,
