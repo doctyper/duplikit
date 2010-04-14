@@ -59,6 +59,12 @@ Swipe.UI.Rivet = (function (object) {
 	const MAX_VELOCITY = 1;
 	
 	/*
+	constant: MAX_DURATION
+		Maximum duration to animate
+	*/
+	const MAX_DURATION = 2500;
+	
+	/*
 	constant: BOUNDARY_MULTIPLIER
 		Increases the boundary friction
 	*/
@@ -831,8 +837,8 @@ Swipe.UI.Rivet = (function (object) {
 					//   MINUS the x/y velocity MULTIPLIED BY the global velocityMultiplier
 					// OR the global maxDuration
 					endDuration = {
-						x : Math.abs((Math.abs(velocity.x) * VELOCITY_MULTIPLIER + Math.abs(VELOCITY_MULTIPLIER / (lastTouches.x || 1)) * 3)),
-						y : Math.abs((Math.abs(velocity.y) * VELOCITY_MULTIPLIER + Math.abs((VELOCITY_MULTIPLIER / (lastTouches.y || 1)) * 3)))
+						x : Math.min(Math.abs((Math.abs(velocity.x) * VELOCITY_MULTIPLIER + Math.abs(VELOCITY_MULTIPLIER / (lastTouches.x || 1)) * 3)), MAX_DURATION),
+						y : Math.min(Math.abs((Math.abs(velocity.y) * VELOCITY_MULTIPLIER + Math.abs((VELOCITY_MULTIPLIER / (lastTouches.y || 1)) * 3))), MAX_DURATION)
 					};
 
 					// Calculate the end x/y position
@@ -841,10 +847,18 @@ Swipe.UI.Rivet = (function (object) {
 						x : ((endDuration.x + (endDuration.x * END_DISTANCE_MULTIPLIER)) * velocity.x),
 						y : ((endDuration.y + (endDuration.y * END_DISTANCE_MULTIPLIER)) * velocity.y)
 					};
+					
+					if (endDuration.x === MAX_DURATION && Math.abs(endDistance.x) < 15) {
+						endDuration.x = endDistance.x = 0;
+						noMovement = true;
+					}
+					
+					if (endDuration.y === MAX_DURATION && Math.abs(endDistance.y) < 15) {
+						endDuration.y = endDistance.y = 0;
+						noMovement = true;
+					}
 
 				}
-				
-				// console.log(endDuration.y + ", " + endDistance.y);
 	
 				// Current element boundaries
 				offset = targets.content.getBoundingClientRect();
