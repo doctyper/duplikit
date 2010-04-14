@@ -4,7 +4,7 @@ File: rivet.js
 About: Version
 	1.0
 
-Project: Swipe JS
+Project: DupliKit
 
 Description:
 	Enables fixed positioning on iPhone OS
@@ -15,31 +15,31 @@ Supports:
 */
 
 /*
-Class: Swipe
-	Scoped to the Swipe Global Namespace
+Class: Dup
+	Scoped to the Dup Global Namespace
 */
-var Swipe = window.Swipe || {};
+var Dup = window.Dup || {};
 
 /*
-Namespace: Swipe.UI
-	Under the Swipe.UI Local Namespace
+Namespace: Dup.UI
+	Under the Dup.UI Local Namespace
 */
-Swipe.UI = Swipe.UI || {};
+Dup.UI = Dup.UI || {};
 
 /*
-Namespace: Swipe.UI.Rivet
-	Under the Swipe.UI.Rivet Local Namespace
+Namespace: Dup.UI.Rivet
+	Under the Dup.UI.Rivet Local Namespace
 */
-Swipe.UI.Rivet = (function (object) {
+Dup.UI.Rivet = (function (object) {
 	
 	// Storing a variable to reference
-	var $space = Swipe;
+	var $space = Dup;
 	
 	// Self reference
 	var $self = this;
 	
 	/*
-	Namespace: Swipe.UI.const
+	Namespace: Dup.UI.const
 		Shared local constants
 	*/
 	
@@ -140,10 +140,10 @@ Swipe.UI.Rivet = (function (object) {
 	constant: NAMESPACE_CLASS
 		All generated elements will use this namespace
 	*/
-	const NAMESPACE_CLASS = "ui-swipe-rivet";
+	const NAMESPACE_CLASS = "ui-dup-rivet";
 	
 	/*
-	Namespace: Swipe.UI.vars
+	Namespace: Dup.UI.vars
 		Shared local variables
 	*/
 	$self.vars = {
@@ -162,7 +162,7 @@ Swipe.UI.Rivet = (function (object) {
 	};
 	
 	/*
-	Namespace: Swipe.UI.utils
+	Namespace: Dup.UI.utils
 		Shared local utilities
 	*/
 	$self.utils = {
@@ -348,7 +348,7 @@ Swipe.UI.Rivet = (function (object) {
 				y : $self.vars.scrollbarMatrices.y || $self.utils.getMatrix(scrollbars.y)
 			};
 			
-			if (scrollbars.y && $space.utils.hasClass(object.el, "ui-swipe-rivet-y-axis")) {
+			if (scrollbars.y && $space.utils.hasClass(object.el, "ui-dup-rivet-y-axis")) {
 				ratio = -(object.position.top - object.offset) / object.inner;
 				val = Math.min(Math.max(object.outer * ratio, 0), object.outer - (scrollbars.y.offsetHeight + 8));
 				
@@ -496,8 +496,8 @@ Swipe.UI.Rivet = (function (object) {
 	};
 	
 	/*
-	Namespace: Swipe.UI
-		Under the Swipe.UI Local Namespace
+	Namespace: Dup.UI
+		Under the Dup.UI Local Namespace
 	*/
 	
 	/*
@@ -1234,15 +1234,15 @@ Swipe.UI.Rivet = (function (object) {
 		var targets = $self.utils.getTargets(object);
 		
 		var x = document.createElement("div");
-		$space.utils.addClass(x, "ui-swipe-rivet");
-		$space.utils.addClass(x, "ui-swipe-rivet-x-axis");
+		$space.utils.addClass(x, "ui-dup-rivet");
+		$space.utils.addClass(x, "ui-dup-rivet-x-axis");
 		
 		var y = document.createElement("div");
-		$space.utils.addClass(y, "ui-swipe-rivet");
-		$space.utils.addClass(y, "ui-swipe-rivet-y-axis");
+		$space.utils.addClass(y, "ui-dup-rivet");
+		$space.utils.addClass(y, "ui-dup-rivet-y-axis");
 		
 		var w = document.createElement("div");
-		$space.utils.addClass(w, "ui-swipe-rivet");
+		$space.utils.addClass(w, "ui-dup-rivet");
 		$space.utils.addClass(w, $self.utils.parseClass("wrapper"));
 		
 		x.appendChild(y);

@@ -1,10 +1,10 @@
 /*
-File: swipe.js
+File: dup.js
 
 About: Version
 	1.0
 
-Project: Swipe JS
+Project: DupliKit
 
 Description:
 	Recreates native iPhone OS functionality
@@ -15,24 +15,24 @@ Supports:
 */
 
 /*
-Class: Swipe
-	Scoped to the Swipe Global Namespace
+Class: Dup
+	Scoped to the Dup Global Namespace
 */
-var Swipe = window.Swipe || (function() {
+var Dup = window.Dup || (function() {
 	
 	// Storing a variable to reference
 	var $self = {};
 	
 	/*
-	Namespace: Swipe.vars
+	Namespace: Dup.vars
 		Shared local variables
 	*/
 	$self.vars = {
-		namespaceClass : "ui-swipe"
+		namespaceClass : "ui-dup"
 	};
 	
 	/*
-	Namespace: Swipe.utils
+	Namespace: Dup.utils
 		Shared local utilities
 	*/
 	$self.utils = {
@@ -129,8 +129,8 @@ var Swipe = window.Swipe || (function() {
 	};
 	
 	/*
-	Namespace: Swipe
-		Under the Swipe Local Namespace
+	Namespace: Dup
+		Under the Dup Local Namespace
 	*/
 	
 	return function() {

@@ -4,7 +4,7 @@ File: rivet.js
 About: Version
 	1.0
 
-Project: Swipe JS
+Project: DupliKit
 
 Description:
 	Enables fixed positioning on iPhone OS
@@ -15,35 +15,35 @@ Supports:
 */
 
 /*
-Class: Swipe
-	Scoped to the Swipe Global Namespace
+Class: Dup
+	Scoped to the Dup Global Namespace
 */
-var Swipe = window.Swipe || {};
+var Dup = window.Dup || {};
 
 /*
-Namespace: Swipe.UI
-	Under the Swipe.UI Local Namespace
+Namespace: Dup.UI
+	Under the Dup.UI Local Namespace
 */
-Swipe.UI = Swipe.UI || {};
+Dup.UI = Dup.UI || {};
 
 /*
-Namespace: Swipe.UI.SplitView
-	Under the Swipe.UI.SplitView Local Namespace
+Namespace: Dup.UI.SplitView
+	Under the Dup.UI.SplitView Local Namespace
 */
-Swipe.UI.SplitView = (function (object) {
+Dup.UI.SplitView = (function (object) {
 	
 	// Storing a variable to reference
-	var $space = Swipe;
+	var $space = Dup;
 	var $self = this;
 	
 	/*
-	Namespace: Swipe.UI.vars
+	Namespace: Dup.UI.vars
 		Shared local variables
 	*/
 	$self.vars = {};
 	
 	/*
-	Namespace: Swipe.UI.utils
+	Namespace: Dup.UI.utils
 		Shared local utilities
 	*/
 	$self.utils = {
@@ -60,7 +60,7 @@ Swipe.UI.SplitView = (function (object) {
 		    views = parent.querySelectorAll("view");
 		
 		for (var i = 0, j = views.length; i < j; i++) {
-			new Swipe.UI.Rivet({
+			new Dup.UI.Rivet({
 				target : views[i]
 			});
 		}

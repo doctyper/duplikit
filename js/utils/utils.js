@@ -4,7 +4,7 @@ File: fixed.js
 About: Version
 	1.0
 
-Project: Swipe JS
+Project: DupliKit
 
 Description:
 	Enables fixed positioning on iPhone OS
@@ -15,40 +15,40 @@ Supports:
 */
 
 /*
-Class: Swipe
-	Scoped to the Swipe Global Namespace
+Class: Dup
+	Scoped to the Dup Global Namespace
 */
-var Swipe = window.Swipe || {};
+var Dup = window.Dup || {};
 
 /*
-Namespace: Swipe.UI
-	Under the Swipe.UI Local Namespace
+Namespace: Dup.UI
+	Under the Dup.UI Local Namespace
 */
-Swipe.UI = Swipe.UI || {};
+Dup.UI = Dup.UI || {};
 
 /*
-Namespace: Swipe.UI.Rivet
-	Under the Swipe.UI.Rivet Local Namespace
+Namespace: Dup.UI.Rivet
+	Under the Dup.UI.Rivet Local Namespace
 */
-Swipe.UI.Rivet = (function () {
+Dup.UI.Rivet = (function () {
 	
 	// Storing a variable to reference
-	var $space = Swipe.UI;
+	var $space = Dup.UI;
 	var $self = this;
 	
 	/*
-	Namespace: Swipe.UI.vars
+	Namespace: Dup.UI.vars
 		Shared local variables
 	*/
 	$self.vars = {
-		namespaceClass : "ui-swipe-rivet",
+		namespaceClass : "ui-dup-rivet",
 		endTimers : {},
 		scrollbarMatrices : {},
 		velocityMultiplier : 1000
 	};
 	
 	/*
-	Namespace: Swipe.UI.utils
+	Namespace: Dup.UI.utils
 		Shared local utilities
 	*/
 	$self.utils = {
@@ -247,7 +247,7 @@ Swipe.UI.Rivet = (function () {
 				y : $self.vars.scrollbarMatrices.y || $self.utils.getMatrix(scrollbars.y)
 			};
 			
-			if ($self.utils.hasClass(object.el, "ui-swipe-rivet-y-axis")) {
+			if ($self.utils.hasClass(object.el, "ui-dup-rivet-y-axis")) {
 				ratio = 1 - ((object.inner - Math.abs(object.position.top)) / object.inner);
 				
 				value = {
@@ -293,8 +293,8 @@ Swipe.UI.Rivet = (function () {
 	};
 	
 	/*
-	Namespace: Swipe.UI
-		Under the Swipe.UI Local Namespace
+	Namespace: Dup.UI
+		Under the Dup.UI Local Namespace
 	*/
 	
 	/*
@@ -651,12 +651,12 @@ Swipe.UI.Rivet = (function () {
 		var targets = $self.utils.getTargets(object);
 		
 		var x = document.createElement("div");
-		$self.utils.addClass(x, "ui-swipe-rivet");
-		$self.utils.addClass(x, "ui-swipe-rivet-x-axis");
+		$self.utils.addClass(x, "ui-dup-rivet");
+		$self.utils.addClass(x, "ui-dup-rivet-x-axis");
 		
 		var y = document.createElement("div");
-		$self.utils.addClass(y, "ui-swipe-rivet");
-		$self.utils.addClass(y, "ui-swipe-rivet-y-axis");
+		$self.utils.addClass(y, "ui-dup-rivet");
+		$self.utils.addClass(y, "ui-dup-rivet-y-axis");
 		
 		targets.parent.insertBefore(y, targets.content);
 		

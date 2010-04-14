@@ -4,7 +4,7 @@ File: fixed.css
 About: Version
 	1.0
 
-Project: Swipe JS
+Project: DupliKit
 
 Description:
 	Enables fixed positioning on iPhone OS
@@ -31,7 +31,7 @@ view > viewport {
 	z-index: 200;
 }
 
-view section .ui-swipe-rivet-scrollbar {
+view section .ui-dup-rivet-scrollbar {
 	top: 2px;
 	right: 2px;
 	position: absolute;
@@ -42,7 +42,7 @@ view section .ui-swipe-rivet-scrollbar {
 	-webkit-transition: -webkit-transform 0ms cubic-bezier(0, 0, 0, 1.0);
 }
 
-view section .ui-swipe-rivet-scrollbar-horizontal {
+view section .ui-dup-rivet-scrollbar-horizontal {
 	left: 4px;
 	right: auto;
 	top: auto;
@@ -51,7 +51,7 @@ view section .ui-swipe-rivet-scrollbar-horizontal {
 	height: 5px;
 }
 
-view section .ui-swipe-rivet-scrollbar-inner {
+view section .ui-dup-rivet-scrollbar-inner {
 	top: 0;
 	left: 0;
 	margin: 0;
@@ -69,11 +69,11 @@ view section .ui-swipe-rivet-scrollbar-inner {
 	-webkit-transition-timing-function: cubic-bezier(0, 0, 0, 1.0);
 }
 
-view section .ui-swipe-rivet-hidden .ui-swipe-rivet-scrollbar-inner {
+view section .ui-dup-rivet-hidden .ui-dup-rivet-scrollbar-inner {
 	opacity: 0;
 }
 
-.ui-swipe-rivet {
+.ui-dup-rivet {
 	min-width: 100%;
 	z-index: 100;
 	position: absolute;
