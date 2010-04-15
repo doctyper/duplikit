@@ -91,8 +91,59 @@ Dup.UI.SplitView = (function (object) {
 			xhr.send();
 		},
 		
-		transitionTo : function(list) {
+		transitionTo : function(view, list, back) {
+			var matrix = $space.utils.getMatrix(view);
 			
+			$space.utils.resetTransition(view, 350);
+			$space.utils.setTransform(view, matrix.translate(320 * (back ? 1 : -1), 0));
+		},
+		
+		updateBackButton : function(view, list, text, old, back) {
+			var target = view.parentNode.querySelector("viewport header"),
+			    header, button;
+			
+			if (target) {
+				
+				if (!back) {
+					$self.vars.titles = $self.vars.titles || [];
+					$self.vars.titles.push({
+						text : text,
+						old : old
+					});
+				}
+				
+				header = target.querySelector("h1");
+				
+				// REMOVE!
+				button = target.querySelector("button"); if (button) {target.removeChild(button);}
+				
+				if (old) {
+					button = document.createElement("button");
+
+					$space.utils.addClass(button, $space.utils.parseClass("back-button"));
+					button.appendChild(document.createTextNode(old));
+
+					$space.utils.bindHoverClass(button);
+					button.addEventListener("touchend", function() {
+						$self.vars.titles.pop();
+
+						var titles = $self.vars.titles;
+
+						var title = titles[titles.length - 1] || {
+							text : $self.vars.mainTitle,
+							old : null
+						};
+
+
+						$self.utils.transitionTo(view, list, true);
+						$self.utils.updateBackButton(view, list, title.text, title.old, true);
+					});
+
+					target.appendChild(button);
+				}
+				
+				header.firstChild.nodeValue = text;
+			}
 		}
 	};
 	
@@ -154,7 +205,7 @@ Dup.UI.SplitView = (function (object) {
 	$self.prepDrillDown = function(object) {
 		var parent = object,
 		    views = parent.querySelectorAll("view > section"),
-		    first = views[0],
+		    first = views[0], i,
 		    items = first.querySelectorAll("li"),
 		    links = first.querySelectorAll("a");
 		
@@ -204,7 +255,21 @@ Dup.UI.SplitView = (function (object) {
 			_link = _cell.querySelector("a");
 			
 			if (_list) {
-				$self.utils.transitionTo(_list);
+				var text = _cell.querySelector("span").firstChild.nodeValue;
+				
+				var oldText = _cell.parentNode.parentNode.querySelector(":root > span");
+				
+				if (!oldText) {
+					oldText = first.parentNode.querySelector("viewport h1");
+					$self.vars.mainTitle = $self.vars.mainTitle || oldText.firstChild.nodeValue;
+				}
+				
+				if (oldText) {
+					oldText = oldText.firstChild.nodeValue;
+				}
+				
+				$self.utils.transitionTo(first, _list);
+				$self.utils.updateBackButton(first, _list, text, oldText);
 			} else if (_link) {
 				var wrap = views[1].querySelector($space.utils.parseClass(".", "rivet-wrapper"));
 				$self.utils.loadPage(_link.getAttribute("rel"), wrap);
@@ -242,12 +307,20 @@ Dup.UI.SplitView = (function (object) {
 		
 		first.addEventListener("touchend", enableRivet);
 		
-		for (var i = 0, j = links.length; i < j; i++) {
+		for (i = 0, j = links.length; i < j; i++) {
 			var link = links[i];
 			
 			link.addEventListener("click", function(e) {
 				e.preventDefault();
 			}, false);
+		}
+		
+		var nestedLists = first.querySelectorAll("ul ul");
+		for (i = 0, j = nestedLists.length; i < j; i++) {
+			var list = nestedLists[i],
+			    offset = list.parentNode.offsetTop;
+			
+			list.style.top = -(offset) + "px";
 		}
 	};
 	
