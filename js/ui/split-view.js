@@ -194,15 +194,18 @@ Dup.UI.SplitView = (function (object) {
 					});
 				}
 				
-				header = target.querySelector("h1");
-				
 				// REMOVE!
-				button = target.querySelector("button"); if (button) {target.removeChild(button);}
+				// button = target.querySelector("button"); if (button) {target.removeChild(button);}
 				
 				if (old) {
 					button = document.createElement("button");
 
 					$space.utils.addClass(button, $space.utils.parseClass("back-button"));
+					
+					if (back) {
+						$space.utils.addClass(button, $space.utils.parseClass("slide-out"));
+					}
+					
 					button.appendChild(document.createTextNode(old));
 
 					$space.utils.bindHoverClass(button);
@@ -219,11 +222,96 @@ Dup.UI.SplitView = (function (object) {
 					});
 
 					target.appendChild(button);
+					
+					header = target.querySelector("h1").cloneNode(true);
+					$space.utils.addClass(header, $space.utils.parseClass("slide-prep"));
+					header.firstChild.nodeValue = text;
+					
+					if (back) {
+						$space.utils.addClass(header, $space.utils.parseClass("slide-out"));
+					}
+					
+					target.appendChild(header);
+					
+					window.setTimeout(function() {
+						$self.utils.animateHeader(target, back);
+					}, 0);
 				}
 				
-				header.firstChild.nodeValue = text;
+			}
+		},
+		
+		animateHeader : function(target, back) {
+			var buttons = target.querySelectorAll("button"),
+			    headers = target.querySelectorAll("h1");
+			
+			var matrix;
+			
+			var hFirst = headers[0],
+			    hSecond = headers[1];
+			
+			var bFirst = buttons[0],
+			    bSecond = buttons[1];
+			
+			if (back) {
+				if (hSecond) {
+					$space.utils.removeClass(hFirst, $space.utils.parseClass("slide-in"));
+					$space.utils.removeClass(hFirst, $space.utils.parseClass("slide-out"));
+					
+					$space.utils.addClass(hSecond, $space.utils.parseClass("slide-in"));
+					$space.utils.removeClass(hSecond, $space.utils.parseClass("slide-out"));
+				} else {
+					$space.utils.addClass(hFirst, $space.utils.parseClass("slide-out"));
+					$space.utils.removeClass(hFirst, $space.utils.parseClass("slide-in"));
+				}
+				
+				if (bSecond) {
+					$space.utils.removeClass(bFirst, $space.utils.parseClass("slide-in"));
+					$space.utils.removeClass(bFirst, $space.utils.parseClass("slide-out"));
+					
+					$space.utils.addClass(bSecond, $space.utils.parseClass("slide-in"));
+					$space.utils.removeClass(bSecond, $space.utils.parseClass("slide-out"));
+				} else {
+					$space.utils.addClass(bFirst, $space.utils.parseClass("slide-out"));
+					$space.utils.removeClass(bFirst, $space.utils.parseClass("slide-in"));
+				}
+			} else {
+				if (hSecond) {
+					$space.utils.removeClass(hFirst, $space.utils.parseClass("slide-in"));
+					$space.utils.addClass(hFirst, $space.utils.parseClass("slide-out"));
+					
+					$space.utils.removeClass(hSecond, $space.utils.parseClass("slide-out"));
+					$space.utils.addClass(hSecond, $space.utils.parseClass("slide-in"));
+				} else {
+					$space.utils.removeClass(hFirst, $space.utils.parseClass("slide-out"));
+					$space.utils.addClass(hFirst, $space.utils.parseClass("slide-in"));
+				}
+				
+				if (bSecond) {
+					$space.utils.removeClass(bFirst, $space.utils.parseClass("slide-in"));
+					$space.utils.addClass(bFirst, $space.utils.parseClass("slide-out"));
+					
+					$space.utils.removeClass(bSecond, $space.utils.parseClass("slide-out"));
+					$space.utils.addClass(bSecond, $space.utils.parseClass("slide-in"));
+				} else {
+					$space.utils.removeClass(bFirst, $space.utils.parseClass("slide-out"));
+					$space.utils.addClass(bFirst, $space.utils.parseClass("slide-in"));
+				}
+			}
+			
+			if (hSecond) {
+				window.setTimeout(function() {
+					hFirst.parentNode.removeChild(hFirst);
+				}, 350);
+			}
+			
+			if (bSecond) {
+				window.setTimeout(function() {
+					bFirst.parentNode.removeChild(bFirst);
+				}, 350);
 			}
 		}
+		
 	};
 	
 	$self.prepView = function(object) {

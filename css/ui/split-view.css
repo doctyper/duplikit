@@ -106,7 +106,6 @@ Requires:
 	top: 0;
 	left: 100%;
 	display: none;
-	background: rgba(0, 255, 0, 0.5);
 }
 
 .ui-dup-split-view-component view .ui-dup-hover ul {
@@ -123,25 +122,49 @@ Requires:
 	color: #000;
 	width: 320px;
 	white-space: nowrap;
-/*	overflow: hidden;*/
 	text-overflow: ellipsis;
 	border-bottom: 1px solid #e0e0e0;
 	-webkit-backface-visibility: hidden;
 }
 
-.ui-dup-split-view-component view li a {
+.ui-dup-split-view-component view li a, .ui-dup-split-view-component view li a:hover {
+	color: #000;
 	display: block;
-	background: rgba(255, 0, 0, 0.5);
 }
 
 .ui-dup-split-view-component view li span {
 	display: block;
-	background: rgba(0, 0, 255, 0.5);
+}
+
+.ui-dup-split-view-component view li > span:after {
+	width: 6px;
+	height: 6px;
+	
+	top: 16px;
+	right: 14px;
+	position: absolute;
+	
+	border: solid #7b7b7b;
+	border-width: 3px 3px 0 0;
+	
+	content : ".";
+	text-indent: -9999px;
+	
+	-webkit-transform: rotate(45deg);
 }
 
 .ui-dup-split-view-component view li.ui-dup-hover {
 	color: #fff;
 	background: -webkit-gradient(linear, left top, left bottom, from(#458bf3), to(#265ee3), color-stop(25%, #3a7bef), color-stop(75%, #2c67e7));
+}
+
+.ui-dup-split-view-component view li.ui-dup-hover > span:after {
+	border-color: #fff;
+}
+
+.ui-dup-split-view-component view li.ui-dup-hover > a {
+	color: #fff;
+	display: block;
 }
 
 .ui-dup-split-view-component view section p {
@@ -164,7 +187,7 @@ Requires:
 	top: 8px;
 	left: 7px;
 	position: absolute;
-	height: 27px;
+	height: 29px;
 	border: 1px solid;
 	border-color: #4c4e50 #565a60 #565b64;
 	-webkit-border-radius: 5px;
@@ -175,6 +198,45 @@ Requires:
 	font-weight: bold;
 	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.8);
 	z-index: 500;
+	white-space: nowrap;
+}
+
+.ui-dup-split-view-component view:first-child .ui-dup-slide-prep, .ui-dup-split-view-component view:first-child button {
+	-webkit-backface-visibility: hidden;
+	-webkit-transform: translate(100px, 0);
+	opacity: 0;
+	
+	-webkit-transition-property: -webkit-transform, opacity;
+	-webkit-transition-duration: 350ms;
+	-webkit-transition-timing-function: linear;
+}
+
+.ui-dup-split-view-component view:first-child .ui-dup-slide-in {
+	-webkit-transform: translate(0, 0);
+	opacity: 0.9999;
+}
+
+.ui-dup-split-view-component view:first-child .ui-dup-slide-out {
+	-webkit-transform: translate(-100px, 0);
+	opacity: 0;
+}
+
+.ui-dup-split-view-component view:first-child h1 {
+	width: 100%;
+	top: 0;
+	left: 0;
+	position: absolute;
+}
+
+.ui-dup-split-view-component view:first-child button {
+	background: none;
+	border-width: 2px 5px 2px 14px;
+	-webkit-border-radius: 0;
+	-webkit-border-image: url("../../images/ui/border-back-button.png") 2 5 2 14;
+}
+
+.ui-dup-split-view-component view:first-child button.ui-dup-hover {
+	-webkit-border-image: url("../../images/ui/border-back-button-active.png") 2 5 2 14;
 }
 
 .ui-dup-split-view-component view:last-child button {
@@ -278,7 +340,7 @@ Requires:
 		width: 314px;
 	}
 	
-	.ui-dup-split-view-component button.ui-dup-popover-trigger {
+	.ui-dup-split-view-component view:last-child button.ui-dup-popover-trigger {
 		display: block;
 	}
 }

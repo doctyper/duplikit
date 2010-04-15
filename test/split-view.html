@@ -19,7 +19,7 @@
 				position: relative;
 			}
 
-			li:after {
+/*			li:before {
 				top: 0;
 				right: 12px;
 				position: absolute;
@@ -27,6 +27,7 @@
 				counter-increment: count;
 				content: counter(count) " ";
 			}
+*/			
 		</style>
 	</head>
 	<body>
@@ -39,191 +40,213 @@
 						<h1>Item</h1>
 					</header>
 
-					<div class="ui-dup-search-component">
+					<!-- <div class="ui-dup-search-component">
 						<form action="#">
 							<fieldset>
 								<input type="search" placeholder="Search" value="" />
 							</fieldset>
 						</form>
-					</div>
+					</div> -->
 
 				</viewport>
 				<section>
 
 					<!-- Sample Content -->
 					<ul class="ui-dup-table-view-component">
-						<li><a rel="split/test-1.html">Foo</a></li>
+						<li><a rel="split/test-1.html">Test Link 1</a></li>
 						<li>
-							<span>Foo</span>
+							<span>Nested List</span>
 							<ul>
-								<li>Bar</li>
-								<li><a rel="split/test-2.html">Bar</a></li>
-								<li>Bar</li>
-								<li>Bar</li>
-								<li><a rel="split/test-3.html">Bar</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-2.html">Test Link 2</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-3.html">Test Link 3</a></li>
 								<li>
 									<span>Bar</span>
 									<ul>
-										<li>Dup</li>
-										<li><a rel="split/test-1.html">Dup</a></li>
-										<li>Dup</li>
-										<li>Dup</li>
-										<li><a rel="split/test-2.html">Dup</a></li>
-										<li>Dup</li>
-										<li>Dup</li>
-										<li><a rel="split/test-3.html">Dup</a></li>
+										<li><a rel="split/test-1.html">Test Link 1</a></li>
+										<li><a rel="split/test-1.html">Test Link 1</a></li>
+										<li><a rel="split/test-1.html">Test Link 1</a></li>
+										<li><a rel="split/test-1.html">Test Link 1</a></li>
+										<li><a rel="split/test-2.html">Test Link 2</a></li>
+										<li><a rel="split/test-1.html">Test Link 1</a></li>
+										<li><a rel="split/test-1.html">Test Link 1</a></li>
+										<li><a rel="split/test-3.html">Test Link 3</a></li>
 										<li>
 											<span>Dup</span>
 											<ul>
-												<li>Boo</li>
-												<li><a rel="split/test-1.html">Boo</a></li>
-												<li>Boo</li>
-												<li>Boo</li>
-												<li><a rel="split/test-2.html">Boo</a></li>
-												<li>Boo</li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
+												<li><a rel="split/test-2.html">Test Link 2</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
 												<li>
 													<span>Boo</span>
 													<ul>
-														<li>Yen</li>
-														<li>Yen</li>
-														<li>Yen</li>
+														<li><a rel="split/test-1.html">Test Link 1</a></li>
+														<li><a rel="split/test-1.html">Test Link 1</a></li>
+														<li><a rel="split/test-1.html">Test Link 1</a></li>
 													</ul>
 												</li>
-												<li><a rel="split/test-3.html">Boo</a></li>
-												<li>Boo</li>
-												<li>Boo</li>
-												<li><a rel="split/test-1.html">Boo</a></li>
-												<li>Boo</li>
-												<li>Boo</li>
-												<li><a rel="split/test-2.html">Boo</a></li>
-												<li>Boo</li>
-												<li>Boo</li>
-												<li><a rel="split/test-3.html">Boo</a></li>
-												<li>Boo</li>
-												<li>Boo</li>
-												<li><a rel="split/test-1.html">Boo</a></li>
-												<li>Boo</li>
-												<li>Boo</li>
-												<li><a rel="split/test-2.html">Boo</a></li>
-												<li>Boo</li>
-												<li>Boo</li>
-												<li><a rel="split/test-3.html">Boo</a></li>
-												<li>Boo</li>
-												<li>Boo</li>
-												<li><a rel="split/test-1.html">Boo</a></li>
-												<li>Boo</li>
-												<li>Boo</li>
-												<li><a rel="split/test-2.html">Boo</a></li>
-												<li>Boo</li>
-												<li>Boo</li>
-												<li><a rel="split/test-3.html">Boo</a></li>
-												<li>Boo</li>
+												<li><a rel="split/test-3.html">Test Link 3</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
+												<li><a rel="split/test-2.html">Test Link 2</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
+												<li><a rel="split/test-3.html">Test Link 3</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
+												<li><a rel="split/test-2.html">Test Link 2</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
+												<li><a rel="split/test-3.html">Test Link 3</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
+												<li><a rel="split/test-2.html">Test Link 2</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
+												<li><a rel="split/test-3.html">Test Link 3</a></li>
+												<li><a rel="split/test-1.html">Test Link 1</a></li>
 											</ul>
 										</li>
-										<li>Dup</li>
-										<li><a rel="split/test-1.html">Dup</a></li>
-										<li>Dup</li>
-										<li>Dup</li>
-										<li><a rel="split/test-2.html">Dup</a></li>
-										<li>Dup</li>
-										<li>Dup</li>
-										<li><a rel="split/test-3.html">Dup</a></li>
-										<li>Dup</li>
-										<li>Dup</li>
-										<li>Dup</li>
-										<li><a rel="split/test-1.html">Dup</a></li>
-										<li>Dup</li>
-										<li>Dup</li>
-										<li><a rel="split/test-2.html">Dup</a></li>
-										<li>Dup</li>
-										<li>Dup</li>
-										<li><a rel="split/test-3.html">Dup</a></li>
-										<li>Dup</li>
-										<li>Dup</li>
+										<li><a rel="split/test-1.html">Test Link 1</a></li>
+										<li><a rel="split/test-1.html">Test Link 1</a></li>
+										<li><a rel="split/test-1.html">Test Link 1</a></li>
+										<li><a rel="split/test-1.html">Test Link 1</a></li>
+										<li><a rel="split/test-2.html">Test Link 2</a></li>
+										<li><a rel="split/test-1.html">Test Link 1</a></li>
+										<li><a rel="split/test-1.html">Test Link 1</a></li>
+										<li><a rel="split/test-3.html">Test Link 3</a></li>
+										<li><a rel="split/test-1.html">Test Link 1</a></li>
+										<li><a rel="split/test-1.html">Test Link 1</a></li>
+										<li><a rel="split/test-1.html">Test Link 1</a></li>
+										<li><a rel="split/test-1.html">Test Link 1</a></li>
+										<li><a rel="split/test-1.html">Test Link 1</a></li>
+										<li><a rel="split/test-1.html">Test Link 1</a></li>
+										<li><a rel="split/test-2.html">Test Link 2</a></li>
+										<li><a rel="split/test-1.html">Test Link 1</a></li>
+										<li><a rel="split/test-1.html">Test Link 1</a></li>
+										<li><a rel="split/test-3.html">Test Link 3</a></li>
+										<li><a rel="split/test-1.html">Test Link 1</a></li>
+										<li><a rel="split/test-1.html">Test Link 1</a></li>
 									</ul>
 								</li>
-								<li>Bar</li>
-								<li><a rel="split/test-1.html">Bar</a></li>
-								<li>Bar</li>
-								<li>Bar</li>
-								<li><a rel="split/test-2.html">Bar</a></li>
-								<li>Bar</li>
-								<li>Bar</li>
-								<li><a rel="split/test-3.html">Bar</a></li>
-								<li>Bar</li>
-								<li>Bar</li>
-								<li><a rel="split/test-1.html">Bar</a></li>
-								<li>Bar</li>
-								<li>Bar</li>
-								<li><a rel="split/test-2.html">Bar</a></li>
-								<li>Bar</li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-2.html">Test Link 2</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-3.html">Test Link 3</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-2.html">Test Link 2</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
 							</ul>
 						</li>
-						<li>Foo</li>
-						<li><a rel="split/test-3.html">Foo</a></li>
-						<li>Foo</li>
-						<li>Foo</li>
-						<li>Foo</li>
-						<li>Foo</li>
-						<li>Foo</li>
-						<li>Foo</li>
-						<li>Foo</li>
-						<li>Foo</li>
-						<li>Foo</li>
-						<li>Foo</li>
-						<li>Foo</li>
-						<li>Foo</li>
-						<li>Foo</li>
-						<li>Foo</li>
-						<li><a rel="split/test-1.html">Foo</a></li>
-						<li>Foo</li>
-						<li>Foo</li>
-						<li>Foo</li>
-						<li>Foo</li>
-						<li>Foo</li>
-						<li>Foo</li>
-						<li>Foo</li>
-						<li>Foo</li>
+						<li><a rel="split/test-1.html">Test Link 1</a></li>
+						<li><a rel="split/test-2.html">Test Link 2</a></li>
+						<li><a rel="split/test-3.html">Test Link 3</a></li>
 						<li>
-							<span>Foo</span>
+							<span>Nested List</span>
 							<ul>
-								<li>Baz</li>
-								<li><a rel="split/test-2.html">Baz</a></li>
-								<li>Baz</li>
-								<li>Baz</li>
-								<li><a rel="split/test-3.html">Baz</a></li>
-								<li>Baz</li>
-								<li>Baz</li>
-								<li><a rel="split/test-1.html">Baz</a></li>
-								<li>Baz</li>
-								<li>Baz</li>
-								<li><a rel="split/test-2.html">Baz</a></li>
-								<li>Baz</li>
-								<li>Baz</li>
-								<li><a rel="split/test-3.html">Baz</a></li>
-								<li>Baz</li>
-								<li>Baz</li>
-								<li><a rel="split/test-1.html">Baz</a></li>
-								<li>Baz</li>
-								<li>Baz</li>
-								<li><a rel="split/test-2.html">Baz</a></li>
-								<li>Baz</li>
-								<li>Baz</li>
-								<li><a rel="split/test-3.html">Baz</a></li>
-								<li>Baz</li>
-								<li>Baz</li>
-								<li><a rel="split/test-1.html">Baz</a></li>
-								<li>Baz</li>
-								<li>Baz</li>
-								<li><a rel="split/test-2.html">Baz</a></li>
-								<li>Baz</li>
-								<li>Baz</li>
-								<li><a rel="split/test-3.html">Baz</a></li>
-								<li>Baz</li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-2.html">Test Link 2</a></li>
+								<li><a rel="split/test-3.html">Test Link 3</a></li>
 							</ul>
 						</li>
-						<li>Foo</li>
-						<li>Foo</li>
+						<li><a rel="split/test-2.html">Test Link 2</a></li>
+						<li><a rel="split/test-3.html">Test Link 3</a></li>
+						<li><a rel="split/test-1.html">Test Link 1</a></li>
+						<li><a rel="split/test-2.html">Test Link 2</a></li>
+						<li>
+							<span>Nested List</span>
+							<ul>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-2.html">Test Link 2</a></li>
+								<li><a rel="split/test-3.html">Test Link 3</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-2.html">Test Link 2</a></li>
+								<li><a rel="split/test-3.html">Test Link 3</a></li>
+							</ul>
+						</li>
+						<li><a rel="split/test-1.html">Test Link 1</a></li>
+						<li><a rel="split/test-2.html">Test Link 2</a></li>
+						<li><a rel="split/test-3.html">Test Link 3</a></li>
+						<li><a rel="split/test-1.html">Test Link 1</a></li>
+						<li><a rel="split/test-2.html">Test Link 2</a></li>
+						<li><a rel="split/test-3.html">Test Link 3</a></li>
+						<li>
+							<span>Nested List</span>
+							<ul>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+							</ul>
+						</li>
+						<li><a rel="split/test-2.html">Test Link 2</a></li>
+						<li><a rel="split/test-3.html">Test Link 3</a></li>
+						<li><a rel="split/test-1.html">Test Link 1</a></li>
+						<li><a rel="split/test-2.html">Test Link 2</a></li>
+						<li><a rel="split/test-1.html">Test Link 1</a></li>
+						<li><a rel="split/test-2.html">Test Link 2</a></li>
+						<li><a rel="split/test-1.html">Test Link 1</a></li>
+						<li><a rel="split/test-2.html">Test Link 2</a></li>
+						<li><a rel="split/test-3.html">Test Link 3</a></li>
+						<li>
+							<span>Nested List</span>
+							<ul>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-2.html">Test Link 2</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-3.html">Test Link 3</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-2.html">Test Link 2</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-3.html">Test Link 3</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-2.html">Test Link 2</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-3.html">Test Link 3</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-2.html">Test Link 2</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+								<li><a rel="split/test-3.html">Test Link 3</a></li>
+								<li><a rel="split/test-1.html">Test Link 1</a></li>
+							</ul>
+						</li>
+						<li><a rel="split/test-1.html">Test Link 1</a></li>
+						<li><a rel="split/test-2.html">Test Link 2</a></li>
 					</ul>
 					<!-- Sample Content -->
 
