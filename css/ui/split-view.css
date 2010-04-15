@@ -87,10 +87,25 @@ Requires:
 	-webkit-border-image: url("../../images/bg-search.png") 4 16 2 33;
 }
 
+.ui-dup-split-view-component view:first-child {
+	overflow: hidden;
+}
+
+.ui-dup-split-view-component view:first-child section {
+	overflow: visible;
+}
+
 .ui-dup-split-view-component view ul {
 	display: block;
 	width: 320px;
 	position: relative;
+}
+
+.ui-dup-split-view-component view ul ul {
+	position: absolute;
+	top: 0;
+	left: 100%;
+	background: rgba(0, 255, 0, 0.5);
 }
 
 .ui-dup-split-view-component view li {
@@ -103,16 +118,20 @@ Requires:
 	color: #000;
 	width: 320px;
 	white-space: nowrap;
-	overflow: hidden;
+/*	overflow: hidden;*/
 	text-overflow: ellipsis;
 	border-bottom: 1px solid #e0e0e0;
 	-webkit-backface-visibility: hidden;
-	position: relative;
 }
 
 .ui-dup-split-view-component view li a {
 	display: block;
 	background: rgba(255, 0, 0, 0.5);
+}
+
+.ui-dup-split-view-component view li span {
+	display: block;
+	background: rgba(0, 0, 255, 0.5);
 }
 
 .ui-dup-split-view-component view li.ui-dup-hover {
@@ -136,7 +155,7 @@ Requires:
 	z-index: 300;
 }
 
-.ui-dup-split-view-component button.ui-dup-popover-trigger {
+.ui-dup-split-view-component button {
 	top: 8px;
 	left: 7px;
 	position: absolute;
@@ -151,6 +170,9 @@ Requires:
 	font-weight: bold;
 	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.8);
 	z-index: 500;
+}
+
+.ui-dup-split-view-component view:last-child button {
 	display: none;
 }
 
