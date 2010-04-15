@@ -204,10 +204,10 @@ Dup.UI.Rivet = (function (object) {
 				var targets = $self.utils.getTargets($self.vars.object),
 				    rect = targets.y.getBoundingClientRect().top,
 				    offset = $self.utils.getOffsets(targets.y).top,
-				    matrix = $self.utils.getMatrix(targets.y);
+				    matrix = $space.utils.getMatrix(targets.y);
 				
-				$self.utils.resetTransition(targets.y, (duration || 350));
-				$self.utils.setTransform(targets.y, matrix.translate(0, -(rect - offset)));
+				$space.utils.resetTransition(targets.y, (duration || 350));
+				$space.utils.setTransform(targets.y, matrix.translate(0, -(rect - offset)));
 			}
 			
 			$space.vars.orientationChange = false;
@@ -219,7 +219,7 @@ Dup.UI.Rivet = (function (object) {
 			(e.g. container, content, axis wrappers)
 		*/
 		getTargets : function(object) {
-			$self.vars.object = $self.vars.object || {
+			$self.vars.object = {
 				view : object.target,
 				parent : object.target.querySelector("section"),
 				content : object.target.querySelector($self.utils.parseClass(".", "wrapper")),
@@ -229,40 +229,6 @@ Dup.UI.Rivet = (function (object) {
 			};
 			
 			return $self.vars.object;
-		},
-		
-		/*
-		sub: setTransform
-			Applies a matrix value to the target element
-		*/
-		setTransform : function(el, matrix) {
-			if (el) {
-				el.style.webkitTransform = matrix;
-			}
-		},
-
-		/*
-		sub: resetTransition
-			Resets transition duration to a specific value or zero
-		*/
-		resetTransition : function(el, duration, timing) {
-			if (el) {
-				el.style.webkitTransitionDuration = ((typeof duration !== "undefined") ? duration : 150) + "ms";
-				el.style.webkitTransitionTimingFunction = ((typeof timing !== "undefined") ? timing : "");
-			}
-		},
-
-		/*
-		sub: getMatrix
-			Returns the target element matrix
-		*/
-		getMatrix : function(el) {
-			if (el) {
-				var transform = window.getComputedStyle(el).webkitTransform,
-				    matrix = new WebKitCSSMatrix(transform);
-
-				return matrix;
-			}
 		},
 
 		/*
@@ -354,8 +320,8 @@ Dup.UI.Rivet = (function (object) {
 			var ratio, value, matrices, matrix, val;
 			
 			matrices = {
-				x : $self.vars.scrollbarMatrices.x || $self.utils.getMatrix(scrollbars.x),
-				y : $self.vars.scrollbarMatrices.y || $self.utils.getMatrix(scrollbars.y)
+				x : $self.vars.scrollbarMatrices.x || $space.utils.getMatrix(scrollbars.x),
+				y : $self.vars.scrollbarMatrices.y || $space.utils.getMatrix(scrollbars.y)
 			};
 			
 			if (scrollbars.y && $space.utils.hasClass(object.el, "ui-dup-rivet-y-axis")) {
@@ -428,8 +394,8 @@ Dup.UI.Rivet = (function (object) {
 			}
 			
 			if (target) {
-				$self.utils.resetTransition(target, object.duration);
-				$self.utils.setTransform(target, matrix.translate(value.x, value.y));
+				$space.utils.resetTransition(target, object.duration);
+				$space.utils.setTransform(target, matrix.translate(value.x, value.y));
 
 				$self.vars.scrollbarMatrices = matrices;
 
@@ -437,10 +403,10 @@ Dup.UI.Rivet = (function (object) {
 					$self.vars.minus = null;
 					
 					if (target.getAttribute("data-original-height")) {
-						$self.utils.setTransform(target, matrix.translate(0, val));
+						$space.utils.setTransform(target, matrix.translate(0, val));
 						target.firstChild.style.height = target.getAttribute("data-original-height") + "px";
 					} else if (target.getAttribute("data-original-width")) {
-						$self.utils.setTransform(target, matrix.translate(val, 0));
+						$space.utils.setTransform(target, matrix.translate(val, 0));
 						target.firstChild.style.width = target.getAttribute("data-original-width") + "px";
 					}
 					
@@ -488,18 +454,18 @@ Dup.UI.Rivet = (function (object) {
 		
 		resetXY : function(targets, value) {
 			// Reset x/y transition duration
-			$self.utils.resetTransition(targets.x, value);
-			$self.utils.resetTransition(targets.y, value);
+			$space.utils.resetTransition(targets.x, value);
+			$space.utils.resetTransition(targets.y, value);
 			
 			// Reset x/y starting matrices
 			var matrices = {
-				x : $self.utils.getMatrix(targets.x),
-				y : $self.utils.getMatrix(targets.y)
+				x : $space.utils.getMatrix(targets.x),
+				y : $space.utils.getMatrix(targets.y)
 			};
 			
 			// Stop the current move
-			$self.utils.setTransform(targets.x, matrices.x.translate(0, 0));
-			$self.utils.setTransform(targets.y, matrices.y.translate(0, 0));
+			$space.utils.setTransform(targets.x, matrices.x.translate(0, 0));
+			$space.utils.setTransform(targets.y, matrices.y.translate(0, 0));
 			
 			return matrices;
 		}
@@ -695,7 +661,7 @@ Dup.UI.Rivet = (function (object) {
 					// THEN we're past our boundary. For this, we decrease the touch movement by half.
 					// This prevents the content from ever scrolling off-screen
 					if (offset.left - bLeft > 0 || (Math.abs(offset.left) + bLeft) > widthDiff) {
-						matrices.x = $self.utils.getMatrix(targets.x);
+						matrices.x = $space.utils.getMatrix(targets.x);
 						touchDifferences.x = (currentTouches.x - oldDifferences.x) * BOUNDARY_MULTIPLIER;
 						$self.vars.outsideBoundary = true;
 					} else {
@@ -707,7 +673,7 @@ Dup.UI.Rivet = (function (object) {
 					if ($self.vars.log.length > 1) {
 						
 						// Set the x-axis transform based on the differences in touch
-						$self.utils.setTransform(targets.x, matrices.x.translate(touchDifferences.x, 0));
+						$space.utils.setTransform(targets.x, matrices.x.translate(touchDifferences.x, 0));
 
 						// Update x-axis scrollbar
 						$self.utils.updateScrollbarPosition({
@@ -732,7 +698,7 @@ Dup.UI.Rivet = (function (object) {
 					// THEN we're past our boundary. For this, we decrease the touch movement by half.
 					// This prevents the content from ever scrolling off-screen
 					if (offset.top - bTop > 0 || (Math.abs(offset.top) + bTop) > heightDiff) {
-						matrices.y = $self.utils.getMatrix(targets.y);
+						matrices.y = $space.utils.getMatrix(targets.y);
 						touchDifferences.y = (currentTouches.y - oldDifferences.y) * BOUNDARY_MULTIPLIER;
 						$self.vars.outsideBoundary = true;
 					} else {
@@ -744,7 +710,7 @@ Dup.UI.Rivet = (function (object) {
 					if ($self.vars.log.length > 1) {
 						
 						// Set the y-axis transform based on the differences in touch
-						$self.utils.setTransform(targets.y, matrices.y.translate(0, touchDifferences.y));
+						$space.utils.setTransform(targets.y, matrices.y.translate(0, touchDifferences.y));
 						
 						// Update y-axis scrollbar
 						$self.utils.updateScrollbarPosition({
@@ -1007,8 +973,8 @@ Dup.UI.Rivet = (function (object) {
 						$self.vars.endTimers.y = window.setTimeout(function() {
 							
 							// Animate to bounce distance
-							$self.utils.resetTransition(targets.y, endDuration.y * BOUNCE_MULTIPLIER, BOUNCE_END_ELASTICITY);
-							$self.utils.setTransform(targets.y, matrices.y.translate(0, bounce.y));
+							$space.utils.resetTransition(targets.y, endDuration.y * BOUNCE_MULTIPLIER, BOUNCE_END_ELASTICITY);
+							$space.utils.setTransform(targets.y, matrices.y.translate(0, bounce.y));
 
 						}, endDuration.y);
 					}
@@ -1091,8 +1057,8 @@ Dup.UI.Rivet = (function (object) {
 						$self.vars.endTimers.x = window.setTimeout(function() {
 							
 							// Animate to bounce distance
-							$self.utils.resetTransition(targets.x, endDuration.x * BOUNCE_MULTIPLIER, BOUNCE_END_ELASTICITY);
-							$self.utils.setTransform(targets.x, matrices.x.translate(bounce.x, 0));
+							$space.utils.resetTransition(targets.x, endDuration.x * BOUNCE_MULTIPLIER, BOUNCE_END_ELASTICITY);
+							$space.utils.setTransform(targets.x, matrices.x.translate(bounce.x, 0));
 
 						}, endDuration.x);
 					}
@@ -1107,8 +1073,8 @@ Dup.UI.Rivet = (function (object) {
 				
 				// Refresh x/y matrices
 				matrices = {
-					x : $self.utils.getMatrix(targets.x),
-					y : $self.utils.getMatrix(targets.y)
+					x : $space.utils.getMatrix(targets.x),
+					y : $space.utils.getMatrix(targets.y)
 				};
 				
 				// If difference in width is greater than zero
@@ -1116,10 +1082,10 @@ Dup.UI.Rivet = (function (object) {
 				if (widthDiff > 0 && activeAxis.x) {
 					
 					// Set x-axis transition duration to new endDuration value
-					$self.utils.resetTransition(targets.x, endDuration.x, easing);
+					$space.utils.resetTransition(targets.x, endDuration.x, easing);
 					
 					// Set x-axis point to animate to
-					$self.utils.setTransform(targets.x, matrices.x.translate(endDistance.x, 0));
+					$space.utils.setTransform(targets.x, matrices.x.translate(endDistance.x, 0));
 					
 					// Add to queue
 					$self.vars.touchActive++;
@@ -1149,10 +1115,10 @@ Dup.UI.Rivet = (function (object) {
 				if (heightDiff > 0 && activeAxis.y) {
 					
 					// Set y-axis transition duration to new endDuration value
-					$self.utils.resetTransition(targets.y, endDuration.y, easing);
+					$space.utils.resetTransition(targets.y, endDuration.y, easing);
 					
 					// Set y-axis point to animate to
-					$self.utils.setTransform(targets.y, matrices.y.translate(0, endDistance.y));
+					$space.utils.setTransform(targets.y, matrices.y.translate(0, endDistance.y));
 					
 					// Add to queue
 					$self.vars.touchActive++;
