@@ -80,10 +80,10 @@ Dup.UI.SplitView = (function (object) {
 						}
 						
 						target.appendChild(fragment);
-						$space.UI.Rivet.utils.checkScroll(null, "0");
+						$space.UI.Rivet.utils.checkScroll(null, "0", null, target);
 						
 					} else {
-						console.log(req.statusText);
+						console.log(xhr.status);
 					}
 				}
 			};
@@ -92,10 +92,91 @@ Dup.UI.SplitView = (function (object) {
 		},
 		
 		transitionTo : function(view, list, back) {
-			var matrix = $space.utils.getMatrix(view);
 			
-			$space.utils.resetTransition(view, 350);
-			$space.utils.setTransform(view, matrix.translate(320 * (back ? 1 : -1), 0));
+			function endTransition(target, offset, destination) {
+				
+				// Enable interaction
+				window.setTimeout(function() {
+
+					// Enable Rivet
+					$space.UI.Rivet.utils.enableRivet();
+
+					// Snap to top
+					$space.UI.Rivet.utils.checkScroll(null, destination || "0", destination ? "0" : null);
+
+					// Make sure the nested list is flush with the top boundary
+					target.style.top = offset || "";
+				}, 350);
+
+			}
+			
+			// Small delay to let the hover class take effect
+			window.setTimeout(function() {
+			
+				// Disable interaction during a transition
+				$space.UI.Rivet.utils.disableRivet();
+				
+				// Get last created cache object
+				var cache = $self.vars.cache;
+				cache = cache[cache.length - 1];
+				
+				if (!cache) {
+					return;
+				}
+				
+				var matrix = $space.utils.getMatrix(view);
+				var wrap = view.querySelector($space.utils.parseClass(".", "rivet-wrapper"));
+
+				$space.utils.resetTransition(view, 350);
+				$space.utils.setTransform(view, matrix.translate(320 * (back ? 1 : -1), 0));
+				
+				var offset = list.parentNode.offsetTop;
+				
+				// Set wrap height
+				wrap.style.height = list.offsetHeight + "px";
+				
+				// Reposition nested list so that the transition doesn't look weird
+				var transform = (wrap.getBoundingClientRect().top - view.offsetTop);
+				
+				// We need slightly different interactions for back/forward animations
+				if (!back) {
+					
+					// Value should be the offset value plus the scrolled value
+					list.style.top = -(offset + transform) + "px";
+					
+					// Add the current transform
+					cache.transformValue = transform;
+					endTransition(list, -offset + "px", null);
+					
+				} else {
+					var parent = cache.list.parentNode;
+					while (parent && parent.nodeName.toLowerCase() !== "ul") {
+						parent = parent.parentNode;
+					}
+					
+					if (parent) {
+
+						// Set wrap height
+						wrap.style.height = parent.offsetHeight + "px";
+						
+						transform = cache.transformValue;
+						offset = parent.offsetTop;
+						
+						// Calculate the current transform value
+						var newTransform = (wrap.getBoundingClientRect().top - view.offsetTop);
+						
+						// Add offset and old transform, subtract from new transform value
+						var destination = (offset + transform) - newTransform;
+						
+						parent.style.top = destination + "px";
+						endTransition(parent, null, destination);
+						
+						$self.vars.cache.pop();
+					}
+				}
+				
+			}, 0);
+			
 		},
 		
 		updateBackButton : function(view, list, text, old, back) {
@@ -105,8 +186,9 @@ Dup.UI.SplitView = (function (object) {
 			if (target) {
 				
 				if (!back) {
-					$self.vars.titles = $self.vars.titles || [];
-					$self.vars.titles.push({
+					$self.vars.cache = $self.vars.cache || [];
+					$self.vars.cache.push({
+						list : list,
 						text : text,
 						old : old
 					});
@@ -125,15 +207,12 @@ Dup.UI.SplitView = (function (object) {
 
 					$space.utils.bindHoverClass(button);
 					button.addEventListener("touchend", function() {
-						$self.vars.titles.pop();
+						var cache = $self.vars.cache;
 
-						var titles = $self.vars.titles;
-
-						var title = titles[titles.length - 1] || {
+						var title = cache[cache.length - 2] || {
 							text : $self.vars.mainTitle,
 							old : null
 						};
-
 
 						$self.utils.transitionTo(view, list, true);
 						$self.utils.updateBackButton(view, list, title.text, title.old, true);
@@ -239,13 +318,15 @@ Dup.UI.SplitView = (function (object) {
 		}
 		
 		function markActiveElement(e) {
-			for (var i = 0, j = items.length; i < j; i++) {
-				$space.utils.removeClass(items[i], _hover);
-			}
-			
 			_cell = findItem(e.target);
 			
 			if (_cell) {
+				var items = _cell.parentNode.querySelectorAll("li");
+				
+				for (var i = 0, j = items.length; i < j; i++) {
+					$space.utils.removeClass(items[i], _hover);
+				}
+				
 				handleNextStep();
 			}
 		}
@@ -313,14 +394,6 @@ Dup.UI.SplitView = (function (object) {
 			link.addEventListener("click", function(e) {
 				e.preventDefault();
 			}, false);
-		}
-		
-		var nestedLists = first.querySelectorAll("ul ul");
-		for (i = 0, j = nestedLists.length; i < j; i++) {
-			var list = nestedLists[i],
-			    offset = list.parentNode.offsetTop;
-			
-			list.style.top = -(offset) + "px";
 		}
 	};
 	
