@@ -9,6 +9,25 @@
 		<link rel="stylesheet" href="../css/utils/rivet.css" type="text/css" />
 		<link rel="stylesheet" href="../css/ui/split-view.css" type="text/css" />
 		
+		<style type="text/css" media="screen">
+			
+			ul {
+				counter-reset: count;
+			}
+			
+			li {
+				position: relative;
+			}
+
+			li:after {
+				top: 0;
+				right: 12px;
+				position: absolute;
+				display: inline-block;
+				counter-increment: count;
+				content: counter(count) " ";
+			}
+		</style>
 	</head>
 	<body>
 		<div class="ui-dup-split-view-component">
@@ -38,75 +57,105 @@
 							<span>Foo</span>
 							<ul>
 								<li>Bar</li>
-								<li><a href="split/test-2.html">Bar</a></li>
+								<li><a rel="split/test-2.html">Bar</a></li>
 								<li>Bar</li>
 								<li>Bar</li>
-								<li><a href="split/test-2.html">Bar</a></li>
+								<li><a rel="split/test-3.html">Bar</a></li>
 								<li>
 									<span>Bar</span>
 									<ul>
 										<li>Dup</li>
-										<li><a href="split/test-2.html">Dup</a></li>
+										<li><a rel="split/test-1.html">Dup</a></li>
 										<li>Dup</li>
 										<li>Dup</li>
-										<li><a href="split/test-2.html">Dup</a></li>
+										<li><a rel="split/test-2.html">Dup</a></li>
 										<li>Dup</li>
 										<li>Dup</li>
-										<li><a href="split/test-2.html">Dup</a></li>
+										<li><a rel="split/test-3.html">Dup</a></li>
 										<li>
 											<span>Dup</span>
 											<ul>
 												<li>Boo</li>
-												<li><a href="split/test-2.html">Boo</a></li>
+												<li><a rel="split/test-1.html">Boo</a></li>
 												<li>Boo</li>
 												<li>Boo</li>
-												<li><a href="split/test-2.html">Boo</a></li>
+												<li><a rel="split/test-2.html">Boo</a></li>
+												<li>Boo</li>
+												<li>
+													<span>Boo</span>
+													<ul>
+														<li>Yen</li>
+														<li>Yen</li>
+														<li>Yen</li>
+													</ul>
+												</li>
+												<li><a rel="split/test-3.html">Boo</a></li>
 												<li>Boo</li>
 												<li>Boo</li>
-												<li><a href="split/test-2.html">Boo</a></li>
+												<li><a rel="split/test-1.html">Boo</a></li>
 												<li>Boo</li>
 												<li>Boo</li>
-												<li><a href="split/test-2.html">Boo</a></li>
+												<li><a rel="split/test-2.html">Boo</a></li>
 												<li>Boo</li>
 												<li>Boo</li>
-												<li><a href="split/test-2.html">Boo</a></li>
+												<li><a rel="split/test-3.html">Boo</a></li>
 												<li>Boo</li>
 												<li>Boo</li>
-												<li><a href="split/test-2.html">Boo</a></li>
+												<li><a rel="split/test-1.html">Boo</a></li>
 												<li>Boo</li>
 												<li>Boo</li>
-												<li><a href="split/test-2.html">Boo</a></li>
+												<li><a rel="split/test-2.html">Boo</a></li>
+												<li>Boo</li>
+												<li>Boo</li>
+												<li><a rel="split/test-3.html">Boo</a></li>
+												<li>Boo</li>
+												<li>Boo</li>
+												<li><a rel="split/test-1.html">Boo</a></li>
+												<li>Boo</li>
+												<li>Boo</li>
+												<li><a rel="split/test-2.html">Boo</a></li>
+												<li>Boo</li>
+												<li>Boo</li>
+												<li><a rel="split/test-3.html">Boo</a></li>
 												<li>Boo</li>
 											</ul>
 										</li>
 										<li>Dup</li>
-										<li><a href="split/test-2.html">Dup</a></li>
+										<li><a rel="split/test-1.html">Dup</a></li>
 										<li>Dup</li>
 										<li>Dup</li>
-										<li><a href="split/test-2.html">Dup</a></li>
+										<li><a rel="split/test-2.html">Dup</a></li>
 										<li>Dup</li>
 										<li>Dup</li>
-										<li><a href="split/test-2.html">Dup</a></li>
+										<li><a rel="split/test-3.html">Dup</a></li>
 										<li>Dup</li>
 										<li>Dup</li>
-										<li><a href="split/test-2.html">Dup</a></li>
+										<li>Dup</li>
+										<li><a rel="split/test-1.html">Dup</a></li>
+										<li>Dup</li>
+										<li>Dup</li>
+										<li><a rel="split/test-2.html">Dup</a></li>
+										<li>Dup</li>
+										<li>Dup</li>
+										<li><a rel="split/test-3.html">Dup</a></li>
+										<li>Dup</li>
 										<li>Dup</li>
 									</ul>
 								</li>
 								<li>Bar</li>
-								<li><a href="split/test-2.html">Bar</a></li>
+								<li><a rel="split/test-1.html">Bar</a></li>
 								<li>Bar</li>
 								<li>Bar</li>
-								<li><a href="split/test-2.html">Bar</a></li>
+								<li><a rel="split/test-2.html">Bar</a></li>
 								<li>Bar</li>
 								<li>Bar</li>
-								<li><a href="split/test-2.html">Bar</a></li>
+								<li><a rel="split/test-3.html">Bar</a></li>
 								<li>Bar</li>
 								<li>Bar</li>
-								<li><a href="split/test-2.html">Bar</a></li>
+								<li><a rel="split/test-1.html">Bar</a></li>
 								<li>Bar</li>
 								<li>Bar</li>
-								<li><a href="split/test-2.html">Bar</a></li>
+								<li><a rel="split/test-2.html">Bar</a></li>
 								<li>Bar</li>
 							</ul>
 						</li>
@@ -138,9 +187,39 @@
 						<li>
 							<span>Foo</span>
 							<ul>
-								<li>Bar</li>
-								<li><a rel="split/test-2.html">Bar</a></li>
-								<li>Bar</li>
+								<li>Baz</li>
+								<li><a rel="split/test-2.html">Baz</a></li>
+								<li>Baz</li>
+								<li>Baz</li>
+								<li><a rel="split/test-3.html">Baz</a></li>
+								<li>Baz</li>
+								<li>Baz</li>
+								<li><a rel="split/test-1.html">Baz</a></li>
+								<li>Baz</li>
+								<li>Baz</li>
+								<li><a rel="split/test-2.html">Baz</a></li>
+								<li>Baz</li>
+								<li>Baz</li>
+								<li><a rel="split/test-3.html">Baz</a></li>
+								<li>Baz</li>
+								<li>Baz</li>
+								<li><a rel="split/test-1.html">Baz</a></li>
+								<li>Baz</li>
+								<li>Baz</li>
+								<li><a rel="split/test-2.html">Baz</a></li>
+								<li>Baz</li>
+								<li>Baz</li>
+								<li><a rel="split/test-3.html">Baz</a></li>
+								<li>Baz</li>
+								<li>Baz</li>
+								<li><a rel="split/test-1.html">Baz</a></li>
+								<li>Baz</li>
+								<li>Baz</li>
+								<li><a rel="split/test-2.html">Baz</a></li>
+								<li>Baz</li>
+								<li>Baz</li>
+								<li><a rel="split/test-3.html">Baz</a></li>
+								<li>Baz</li>
 							</ul>
 						</li>
 						<li>Foo</li>
