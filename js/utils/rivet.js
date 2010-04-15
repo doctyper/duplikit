@@ -36,7 +36,7 @@ Dup.UI.Rivet = (function (object) {
 	var $space = Dup;
 	
 	// Self reference
-	var $self = this;
+	var $self = Dup.UI.Rivet;
 	
 	/*
 	Namespace: Dup.UI.const
@@ -167,6 +167,14 @@ Dup.UI.Rivet = (function (object) {
 	*/
 	$self.utils = {
 		
+		enableRivet : function() {
+			$self.vars.rivetDisabled = false;
+		},
+		
+		disableRivet : function() {
+			$self.vars.rivetDisabled = true;
+		},
+		
 		/*
 		sub: parseClass
 			Returns a class string prefixed with the current namespace class
@@ -188,16 +196,18 @@ Dup.UI.Rivet = (function (object) {
 			
 			This function mimics that UX.
 		*/
-		checkScroll : function(e) {
+		checkScroll : function(e, duration) {
 			
 			// Orientationchange fires before scroll
 			// This is good. It gives me a chance to not scroll
-			if (!$space.vars.orientationChange) {
-				var targets = $self.utils.getTargets($self.vars.object);
-				var matrix = $self.utils.getMatrix(targets.y);
+			if (duration || !$space.vars.orientationChange) {
+				var targets = $self.utils.getTargets($self.vars.object),
+				    rect = targets.y.getBoundingClientRect().top,
+				    offset = $self.utils.getOffsets(targets.y).top,
+				    matrix = $self.utils.getMatrix(targets.y);
 				
-				$self.utils.resetTransition(targets.y, 350);
-				$self.utils.setTransform(targets.y, matrix.translate(0, -targets.y.getBoundingClientRect().top));
+				$self.utils.resetTransition(targets.y, (duration || 350));
+				$self.utils.setTransform(targets.y, matrix.translate(0, -(rect - offset)));
 			}
 			
 			$space.vars.orientationChange = false;
@@ -522,6 +532,12 @@ Dup.UI.Rivet = (function (object) {
 		var eventListeners = {
 			touchstart : function(e) {
 				
+				if ($self.vars.rivetDisabled) {
+					return;
+				}
+				
+				targets = $self.utils.getTargets(object);
+				
 				// Reset values
 				$self.utils.zeroValues();
 				$self.vars.touchActive = $self.vars.touchActive || 0;
@@ -600,6 +616,10 @@ Dup.UI.Rivet = (function (object) {
 			},
 
 			touchmove : function(e) {
+				
+				if ($self.vars.rivetDisabled) {
+					return;
+				}
 				
 				// Prevent native scroll interaction
 				e.preventDefault();
@@ -748,6 +768,10 @@ Dup.UI.Rivet = (function (object) {
 			},
 
 			touchend : function(e) {
+				
+				if ($self.vars.rivetDisabled) {
+					return;
+				}
 				
 				// Reset x/y transition duration
 				matrices = $self.utils.resetXY(targets, 0);
