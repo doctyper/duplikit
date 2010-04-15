@@ -105,7 +105,12 @@ Requires:
 	position: absolute;
 	top: 0;
 	left: 100%;
+	display: none;
 	background: rgba(0, 255, 0, 0.5);
+}
+
+.ui-dup-split-view-component view .ui-dup-hover ul {
+	display: block;
 }
 
 .ui-dup-split-view-component view li {
