@@ -21,6 +21,10 @@ Supports:
 	font-size: 100%;
 }
 
+view, view * {
+	-webkit-transform: translate(0, 0);
+}
+
 view {
 	/* Disable Loupe */
 	-webkit-user-select: none;
