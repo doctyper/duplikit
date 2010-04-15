@@ -125,6 +125,32 @@ var Dup = window.Dup || (function() {
 			}
 			
 			$self.vars.orientationChange = true;
+		},
+
+		bindHoverClass : function(el) {
+			var _hover = $self.utils.parseClass("hover");
+			
+			function addHover(el) {
+				el.addEventListener("click", function(e) {
+					e.preventDefault();
+					e.stopPropagation();
+					
+					console.log(e);
+					$self.utils.addClass(this, _hover);
+				}, false);
+
+				el.addEventListener("touchend", function(e) {
+					$self.utils.removeClass(this, _hover);
+				});
+			}
+			
+			if (el && el[0]) {
+				for (var i = 0, j = el.length; i < j; i++) {
+					addHover(el[i]);
+				}
+			} else {
+				addHover(el);
+			}
 		}
 	};
 	
