@@ -37,6 +37,40 @@ var Dup = window.Dup || (function() {
 	*/
 	$self.utils = {
 		
+		/*
+		sub: setTransform
+			Applies a matrix value to the target element
+		*/
+		setTransform : function(el, matrix) {
+			if (el) {
+				el.style.webkitTransform = matrix;
+			}
+		},
+
+		/*
+		sub: resetTransition
+			Resets transition duration to a specific value or zero
+		*/
+		resetTransition : function(el, duration, timing) {
+			if (el) {
+				el.style.webkitTransitionDuration = ((typeof duration !== "undefined") ? duration : 150) + "ms";
+				el.style.webkitTransitionTimingFunction = ((typeof timing !== "undefined") ? timing : "");
+			}
+		},
+
+		/*
+		sub: getMatrix
+			Returns the target element matrix
+		*/
+		getMatrix : function(el) {
+			if (el) {
+				var transform = window.getComputedStyle(el).webkitTransform,
+				    matrix = new WebKitCSSMatrix(transform);
+
+				return matrix;
+			}
+		},
+		
 		parseClass : function() {
 			var suffix = arguments[1] || arguments[0],
 			    prefix = arguments[1] ? arguments[0] : "";
@@ -135,7 +169,6 @@ var Dup = window.Dup || (function() {
 					e.preventDefault();
 					e.stopPropagation();
 					
-					console.log(e);
 					$self.utils.addClass(this, _hover);
 				}, false);
 
