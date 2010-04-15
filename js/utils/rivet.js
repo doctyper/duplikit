@@ -196,18 +196,25 @@ Dup.UI.Rivet = (function (object) {
 			
 			This function mimics that UX.
 		*/
-		checkScroll : function(e, duration) {
+		checkScroll : function(e) {
+			var args = arguments;
 			
 			// Orientationchange fires before scroll
 			// This is good. It gives me a chance to not scroll
-			if (duration || !$space.vars.orientationChange) {
+			if (args[1] || !$space.vars.orientationChange) {
 				var targets = $self.utils.getTargets($self.vars.object),
-				    rect = targets.y.getBoundingClientRect().top,
-				    offset = $self.utils.getOffsets(targets.y).top,
-				    matrix = $space.utils.getMatrix(targets.y);
 				
-				$space.utils.resetTransition(targets.y, (duration || 350));
-				$space.utils.setTransform(targets.y, matrix.translate(0, -(rect - offset)));
+				    y = (args[3] || targets.y),
+				
+				    rect = y.getBoundingClientRect().top,
+				    offset = $self.utils.getOffsets(y).top,
+				    matrix = $space.utils.getMatrix(y),
+				
+				    duration = (args[2] || args[1] || 350),
+				    distance = (args[2] ? args[1] : -(rect - offset));
+				
+				$space.utils.resetTransition(y, duration);
+				$space.utils.setTransform(y, matrix.translate(0, distance));
 			}
 			
 			$space.vars.orientationChange = false;
@@ -219,7 +226,10 @@ Dup.UI.Rivet = (function (object) {
 			(e.g. container, content, axis wrappers)
 		*/
 		getTargets : function(object) {
+			object = object || $self.vars.object;
+			
 			$self.vars.object = {
+				target : object.target,
 				view : object.target,
 				parent : object.target.querySelector("section"),
 				content : object.target.querySelector($self.utils.parseClass(".", "wrapper")),
