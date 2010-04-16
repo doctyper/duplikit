@@ -106,7 +106,7 @@ Dup.UI.SplitView = (function (object) {
 
 					// Make sure the nested list is flush with the top boundary
 					target.style.top = offset || "";
-				}, 350);
+				}, 300);
 
 			}
 			
@@ -124,11 +124,11 @@ Dup.UI.SplitView = (function (object) {
 					return;
 				}
 				
-				var matrix = $space.utils.getMatrix(view);
 				var wrap = view.querySelector($space.utils.parseClass(".", "rivet-wrapper"));
+				var matrix = $space.utils.getMatrix(wrap);
 
-				$space.utils.resetTransition(view, 350);
-				$space.utils.setTransform(view, matrix.translate(320 * (back ? 1 : -1), 0));
+				$space.utils.resetTransition(wrap, 300, "ease-out");
+				$space.utils.setTransform(wrap, matrix.translate(320 * (back ? 1 : -1), 0));
 				
 				var offset = list.parentNode.offsetTop;
 				
@@ -232,11 +232,11 @@ Dup.UI.SplitView = (function (object) {
 					}
 					
 					target.appendChild(header);
-					
-					window.setTimeout(function() {
-						$self.utils.animateHeader(target, back);
-					}, 0);
 				}
+				
+				window.setTimeout(function() {
+					$self.utils.animateHeader(target, back);
+				}, 0);
 				
 			}
 		},
@@ -244,8 +244,6 @@ Dup.UI.SplitView = (function (object) {
 		animateHeader : function(target, back) {
 			var buttons = target.querySelectorAll("button"),
 			    headers = target.querySelectorAll("h1");
-			
-			var matrix;
 			
 			var hFirst = headers[0],
 			    hSecond = headers[1];
@@ -260,20 +258,14 @@ Dup.UI.SplitView = (function (object) {
 					
 					$space.utils.addClass(hSecond, $space.utils.parseClass("slide-in"));
 					$space.utils.removeClass(hSecond, $space.utils.parseClass("slide-out"));
-				} else {
-					$space.utils.addClass(hFirst, $space.utils.parseClass("slide-out"));
-					$space.utils.removeClass(hFirst, $space.utils.parseClass("slide-in"));
 				}
 				
+				$space.utils.removeClass(bFirst, $space.utils.parseClass("slide-in"));
+				$space.utils.removeClass(bFirst, $space.utils.parseClass("slide-out"));
+				
 				if (bSecond) {
-					$space.utils.removeClass(bFirst, $space.utils.parseClass("slide-in"));
-					$space.utils.removeClass(bFirst, $space.utils.parseClass("slide-out"));
-					
 					$space.utils.addClass(bSecond, $space.utils.parseClass("slide-in"));
 					$space.utils.removeClass(bSecond, $space.utils.parseClass("slide-out"));
-				} else {
-					$space.utils.addClass(bFirst, $space.utils.parseClass("slide-out"));
-					$space.utils.removeClass(bFirst, $space.utils.parseClass("slide-in"));
 				}
 			} else {
 				if (hSecond) {
@@ -302,13 +294,13 @@ Dup.UI.SplitView = (function (object) {
 			if (hSecond) {
 				window.setTimeout(function() {
 					hFirst.parentNode.removeChild(hFirst);
-				}, 350);
+				}, 300);
 			}
 			
 			if (bSecond) {
 				window.setTimeout(function() {
 					bFirst.parentNode.removeChild(bFirst);
-				}, 350);
+				}, 300);
 			}
 		}
 		
@@ -420,6 +412,8 @@ Dup.UI.SplitView = (function (object) {
 		}
 		
 		function handleNextStep() {
+			var wrap = views[1].querySelector($space.utils.parseClass(".", "rivet-wrapper"));
+			
 			_list = _cell.querySelector("ul");
 			_link = _cell.querySelector("a");
 			
@@ -440,7 +434,6 @@ Dup.UI.SplitView = (function (object) {
 				$self.utils.transitionTo(first, _list);
 				$self.utils.updateBackButton(first, _list, text, oldText);
 			} else if (_link) {
-				var wrap = views[1].querySelector($space.utils.parseClass(".", "rivet-wrapper"));
 				$self.utils.loadPage(_link.getAttribute("rel"), wrap);
 			}
 			
@@ -461,7 +454,7 @@ Dup.UI.SplitView = (function (object) {
 			if (target) {
 				_timer = window.setTimeout(function() {
 					markActiveElement(e);
-				}, 250);
+				}, 300);
 			}
 		}, false);
 		

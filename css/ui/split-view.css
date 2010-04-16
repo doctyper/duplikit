@@ -87,18 +87,19 @@ Requires:
 	-webkit-border-image: url("../../images/bg-search.png") 4 16 2 33;
 }
 
-.ui-dup-split-view-component view:first-child {
+/*.ui-dup-split-view-component view:first-child {
 	overflow: hidden;
 }
 
 .ui-dup-split-view-component view:first-child section {
 	overflow: visible;
 }
-
+*/
 .ui-dup-split-view-component view ul {
 	display: block;
 	width: 320px;
 	position: relative;
+	background: #fff;
 }
 
 .ui-dup-split-view-component view ul ul {
@@ -207,8 +208,8 @@ Requires:
 	opacity: 0;
 	
 	-webkit-transition-property: -webkit-transform, opacity;
-	-webkit-transition-duration: 350ms;
-	-webkit-transition-timing-function: linear;
+	-webkit-transition-duration: 300ms;
+	-webkit-transition-timing-function: ease-out;
 }
 
 .ui-dup-split-view-component view:first-child .ui-dup-slide-in {
