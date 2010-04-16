@@ -15,12 +15,6 @@ Requires:
 
 */
 
-.ui-dup-split-view-component {
-	margin: 0;
-	padding: 0;
-	font-family: "Helvetica";
-}
-
 .ui-dup-split-view-component view {
 	margin: 0 -2px 0 -1px;
 	padding: 0;
@@ -28,27 +22,6 @@ Requires:
 	position: relative;
 	vertical-align: top;
 	min-height: 768px;
-}
-
-.ui-dup-split-view-component header, .ui-dup-split-view-component .ui-dup-search-component {
-	margin: 0;
-	padding: 0;
-	display: block;
-	width: 100%;
-	height: 42px;
-	line-height: 44px;
-	text-align: center;
-	border: solid;
-	border-width: 1px 0;
-	border-color: #fff #fff #797f90;
-	background: -webkit-gradient(linear, left top, left bottom, from(#f4f5f7), to(#a8acb9), color-stop(32%, #edeef1), color-stop(70%, #c7cad3));
-}
-
-.ui-dup-split-view-component header h1 {
-	font-size: 20px;
-	font-weight: bold;
-	color: #717880;
-	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
 }
 
 .ui-dup-split-view-component view:first-child {

@@ -21,25 +21,25 @@ Class: Dup
 var Dup = window.Dup || {};
 
 /*
-Namespace: Dup.UI
-	Under the Dup.UI Local Namespace
+Namespace: Dup.utils
+	Under the Dup.utils Local Namespace
 */
-Dup.UI = Dup.UI || {};
+Dup.utils = Dup.utils || {};
 
 /*
-Namespace: Dup.UI.Rivet
-	Under the Dup.UI.Rivet Local Namespace
+Namespace: Dup.utils.Rivet
+	Under the Dup.utils.Rivet Local Namespace
 */
-Dup.UI.Rivet = (function (object) {
+Dup.utils.Rivet = (function (object) {
 	
 	// Storing a variable to reference
 	var $space = Dup;
 	
 	// Self reference
-	var $self = Dup.UI.Rivet;
+	var $self = Dup.utils.Rivet;
 	
 	/*
-	Namespace: Dup.UI.const
+	Namespace: Dup.utils.const
 		Shared local constants
 	*/
 	
@@ -143,7 +143,7 @@ Dup.UI.Rivet = (function (object) {
 	const NAMESPACE_CLASS = "ui-dup-rivet";
 	
 	/*
-	Namespace: Dup.UI.vars
+	Namespace: Dup.utils.vars
 		Shared local variables
 	*/
 	$self.vars = {
@@ -162,7 +162,7 @@ Dup.UI.Rivet = (function (object) {
 	};
 	
 	/*
-	Namespace: Dup.UI.utils
+	Namespace: Dup.utils.utils
 		Shared local utilities
 	*/
 	$self.utils = {
@@ -482,8 +482,8 @@ Dup.UI.Rivet = (function (object) {
 	};
 	
 	/*
-	Namespace: Dup.UI
-		Under the Dup.UI Local Namespace
+	Namespace: Dup.utils
+		Under the Dup.utils Local Namespace
 	*/
 	
 	/*

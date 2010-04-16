@@ -80,7 +80,7 @@ Dup.UI.SplitView = (function (object) {
 						}
 						
 						target.appendChild(fragment);
-						$space.UI.Rivet.utils.checkScroll(null, "0", null, target);
+						$space.utils.Rivet.utils.checkScroll(null, "0", null, target);
 						
 					} else {
 						console.log(xhr.status);
@@ -99,10 +99,10 @@ Dup.UI.SplitView = (function (object) {
 				window.setTimeout(function() {
 
 					// Enable Rivet
-					$space.UI.Rivet.utils.enableRivet();
+					$space.utils.Rivet.utils.enableRivet();
 
 					// Snap to top
-					$space.UI.Rivet.utils.checkScroll(null, destination || "0", destination ? "0" : null);
+					$space.utils.Rivet.utils.checkScroll(null, destination || "0", destination ? "0" : null);
 
 					// Make sure the nested list is flush with the top boundary
 					target.style.top = offset || "";
@@ -114,7 +114,7 @@ Dup.UI.SplitView = (function (object) {
 			window.setTimeout(function() {
 			
 				// Disable interaction during a transition
-				$space.UI.Rivet.utils.disableRivet();
+				$space.utils.Rivet.utils.disableRivet();
 				
 				// Get last created cache object
 				var cache = $self.vars.cache;
@@ -311,7 +311,7 @@ Dup.UI.SplitView = (function (object) {
 		    views = parent.querySelectorAll("view");
 		
 		for (var i = 0, j = views.length; i < j; i++) {
-			new Dup.UI.Rivet({
+			new Dup.utils.Rivet({
 				target : views[i]
 			});
 		}
@@ -393,7 +393,7 @@ Dup.UI.SplitView = (function (object) {
 			
 			if (_cell) {
 				_cell = null;
-				$space.UI.Rivet.utils.enableRivet();
+				$space.utils.Rivet.utils.enableRivet();
 			}
 		}
 		
@@ -438,7 +438,7 @@ Dup.UI.SplitView = (function (object) {
 			}
 			
 			$space.utils.addClass(_cell, _hover);
-			$space.UI.Rivet.utils.disableRivet();
+			$space.utils.Rivet.utils.disableRivet();
 		}
 		
 		first.addEventListener("touchstart", function(e) {
