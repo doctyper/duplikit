@@ -21,8 +21,8 @@ view section .ui-dup-rivet-scrollbar {
 	width: 5px;
 	z-index: 300;
 	
-	-webkit-backface-visibility: hidden;
 	-webkit-transition: -webkit-transform 0ms cubic-bezier(0, 0, 0, 1.0);
+	-webkit-backface-visibility: hidden;
 }
 
 view section .ui-dup-rivet-scrollbar-horizontal {
@@ -45,11 +45,11 @@ view section .ui-dup-rivet-scrollbar-inner {
 	background: rgba(0, 0, 0, 0.5);
 	-webkit-border-radius: 3px;
 	
-	-webkit-backface-visibility: hidden;
 	-webkit-transform-origin: left top;
 	-webkit-transition-property: opacity, height;
 	-webkit-transition-duration: 500ms, 100ms;
 	-webkit-transition-timing-function: cubic-bezier(0, 0, 0, 1.0);
+	-webkit-backface-visibility: hidden;
 }
 
 view section .ui-dup-rivet-hidden .ui-dup-rivet-scrollbar-inner {
@@ -61,6 +61,6 @@ view section .ui-dup-rivet-hidden .ui-dup-rivet-scrollbar-inner {
 	z-index: 100;
 	position: absolute;
 	
-	-webkit-backface-visibility: hidden;
 	-webkit-transition: -webkit-transform 0ms cubic-bezier(0, 0, 0, 1.0);
+	-webkit-backface-visibility: hidden;
 }
