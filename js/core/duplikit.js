@@ -37,6 +37,10 @@ var Dup = window.Dup || (function() {
 	*/
 	$self.utils = {
 		
+		isStandalone : function() {
+			return window.navigator.standalone;
+		},
+		
 		/*
 		sub: setTransform
 			Applies a matrix value to the target element
@@ -183,6 +187,30 @@ var Dup = window.Dup || (function() {
 				}
 			} else {
 				addHover(el);
+			}
+		},
+		
+		showInstallReminder : function(view) {
+			var standalone = $self.utils.isStandalone();
+			
+			if (!standalone) {
+				var parent = document.createElement("div");
+				$self.utils.addClass(parent, $self.utils.parseClass("reminder"));
+				parent.innerHTML = "<h3>Install This App</h3><p>Tap the <em>+</em> icon and select 'Add to Home Screen'</p><div class=\"ui-dup-reminder-tip\"></div>";
+				
+				view.appendChild(parent);
+				
+				window.setTimeout(function() {
+					$self.utils.addClass(parent, $self.utils.parseClass("reminder-active"));
+				}, 1000);
+			}
+		},
+		
+		handleProperties : function(view, properties) {
+			for (var key in properties) {
+				if (typeof $self.utils[key] === "function") {
+					$self.utils[key](view);
+				}
 			}
 		}
 	};
