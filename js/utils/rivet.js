@@ -432,6 +432,28 @@ Dup.utils.Rivet = (function (object) {
 			}
 		},
 		
+		updateScrollbarDimensions : function(targets) {
+			var ratio, dimension,
+			    hScroll = targets.parent.querySelector($self.utils.parseClass(".", "scrollbar-horizontal")),
+			    vScroll = targets.parent.querySelector($self.utils.parseClass(".", "scrollbar-vertical"));
+			
+			if (hScroll) {
+				dimension = (targets.parent.offsetWidth || window.outerWidth);
+				ratio = targets.content.offsetWidth / dimension;
+				
+				hScroll.setAttribute("data-original-width", dimension / ratio);
+				hScroll.style.width = hScroll.getAttribute("data-original-width") + "px";
+			}
+			
+			if (vScroll) {
+				dimension = (targets.parent.offsetHeight || window.outerHeight);
+				ratio = targets.content.offsetHeight / dimension;
+				
+				vScroll.setAttribute("data-original-height", dimension / ratio);
+				vScroll.style.height = vScroll.getAttribute("data-original-height") + "px";
+			}
+		},
+		
 		/*
 		sub: zeroValues
 			Resets values set on previous touch events, giving a clean slate to the current touch
@@ -574,6 +596,8 @@ Dup.utils.Rivet = (function (object) {
 				
 				// Reset x/y transition duration
 				matrices = $self.utils.resetXY(targets);
+				
+				$self.utils.updateScrollbarDimensions(targets);
 				
 				// Stop x axis scrollbar
 				$self.utils.updateScrollbarPosition({
