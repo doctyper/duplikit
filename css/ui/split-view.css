@@ -31,6 +31,12 @@ Requires:
 	opacity: 0.9999;
 }
 
+/* Everything in popovers/split view menus needs a shim transform */
+.ui-dup-split-view-component view:first-child * {
+	-webkit-transform: translate(0, 0);
+	-webkit-backface-visibility: hidden;
+}
+
 .ui-dup-split-view-component view:last-child {
 	width: 703px;
 }
@@ -125,6 +131,7 @@ Requires:
 	text-indent: -9999px;
 	
 	-webkit-transform: rotate(45deg);
+	-webkit-backface-visibility: hidden;
 }
 
 .ui-dup-split-view-component view li.ui-dup-hover {
@@ -176,8 +183,9 @@ Requires:
 }
 
 .ui-dup-split-view-component view:first-child .ui-dup-slide-prep, .ui-dup-split-view-component view:first-child button {
-	-webkit-backface-visibility: hidden;
 	-webkit-transform: translate(100px, 0);
+	-webkit-backface-visibility: hidden;
+	
 	opacity: 0;
 	
 	-webkit-transition-property: -webkit-transform, opacity;
@@ -301,7 +309,9 @@ Requires:
 		width: 100%;
 		border: 1px solid #4f4f4f;
 		background: -webkit-gradient(linear, right bottom, left top, from(#000), to(rgba(180, 184, 190, 0.5)), color-stop(50%, #b4b8be));
+		
 		-webkit-transform: rotate(45deg) scale(0.5);
+		-webkit-backface-visibility: hidden;
 	}
 
 	.ui-dup-split-view-component .ui-dup-search-component {
