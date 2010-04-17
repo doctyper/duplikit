@@ -172,6 +172,11 @@ Dup.utils.Rivet = (function (object) {
 		},
 		
 		disableRivet : function() {
+			var targets = $self.utils.getTargets($self.vars.object),
+			    matrix = $space.utils.getMatrix(targets.y);
+			
+			$space.utils.setTransform(targets.y, matrix.translate(0, 0));
+			
 			$self.vars.rivetDisabled = true;
 		},
 		
