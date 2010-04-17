@@ -47,7 +47,7 @@ view section .ui-dup-rivet-scrollbar-inner {
 	
 	-webkit-transform-origin: left top;
 	-webkit-transition-property: opacity, height;
-	-webkit-transition-duration: 500ms, 100ms;
+	-webkit-transition-duration: 500ms, 0ms;
 	-webkit-transition-timing-function: cubic-bezier(0, 0, 0, 1.0);
 	-webkit-backface-visibility: hidden;
 }
