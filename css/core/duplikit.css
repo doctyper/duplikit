@@ -21,10 +21,6 @@ Supports:
 	font-size: 100%;
 }
 
-view, view * {
-	-webkit-transform: translate(0, 0);
-}
-
 view {
 	/* Disable Loupe */
 	-webkit-user-select: none;
@@ -40,13 +36,16 @@ view {
 	margin: 0;
 	padding: 0;
 	font-family: "Helvetica";
+	background: #d3d7da;
 }
 
-view, view viewport, view section {
+view, view viewport, view viewport *, view section {
 	margin: 0;
 	padding: 0;
 	display: block;
 	position: relative;
+	
+	-webkit-transform: translate(0, 0);
 	-webkit-backface-visibility: hidden;
 }
 
@@ -78,4 +77,57 @@ view header h1 {
 	font-weight: bold;
 	color: #717880;
 	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
+}
+
+
+.ui-dup-reminder {
+	top: 24px;
+	left: 185px;
+	position: absolute;
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(21, 21, 21, 0.95)), to(rgba(7, 7, 7, 0.75)));
+	-webkit-box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.35);
+	color: #ccc;
+	text-shadow: 0 0 1px #000;
+	-webkit-border-radius: 5px;
+	-webkit-border-top-left-radius: 0;
+	font-family: "Helvetica";
+	line-height: 1;
+	text-align: center;
+	
+	opacity: 0;
+	-webkit-transition: opacity 350ms ease-out;
+}
+
+.ui-dup-reminder-active {
+	opacity: 0.9999;
+}
+
+.ui-dup-reminder h3 {
+	margin: 20px 20px 5px;
+	font-size: 20px;
+	font-weight: normal;
+}
+
+.ui-dup-reminder p {
+	margin: 0 20px 20px;
+	font-size: 14px;
+}
+
+.ui-dup-reminder em {
+	vertical-align: bottom;
+	position: relative;
+	text-indent: -9999px;
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	background: url("../../images/ui/icon-install.png") no-repeat 0 0;
+}
+
+.ui-dup-reminder .ui-dup-reminder-tip {
+	top: -22px;
+	left: 0;
+	position: absolute;
+	width: 44px;
+	height: 22px;
+	background: url("../../images/ui/bg-reminder.png") no-repeat 0 0;
 }
