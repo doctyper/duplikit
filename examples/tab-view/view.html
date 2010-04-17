@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		
+		<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		
+		<title>DupliKit Fixed Positioning</title>
+		
+		<link rel="stylesheet" href="../../css/core/duplikit.css" type="text/css" />
+		<link rel="stylesheet" href="../../css/utils/rivet.css" type="text/css" />
+		<!-- <link rel="stylesheet" href="../css/ui/split-view.css" type="text/css" /> -->
+		
+		<style type="text/css" media="screen">
+			body {
+				background: #000;
+			}
+			
+			.ui-dup-tab-view-component section {
+				background: #fff;
+			}
+			
+			.ui-dup-tab-view-component viewport {
+				width: 100%;
+			}
+			
+			.ui-dup-tab-view-component section ul {
+				padding: 10px 0;
+				text-align: center;
+				list-style: none;
+			}
+			
+			.ui-dup-tab-view-component section li {
+				margin: 10px;
+				background: #ccc;
+				width: 312px;
+				height: 200px;
+				line-height: 200px;
+				color: rgba(0, 0, 0, 0.2);
+				font-weight: bold;
+				font-size: 18px;
+				display: inline-block;
+				position: relative;
+			}
+			
+			.ui-dup-tab-view-component section #sample-tab-1 li {
+				background: rgba(255, 0, 0, 0.5);
+			}
+			
+			.ui-dup-tab-view-component section #sample-tab-2 li {
+				background: rgba(0, 255, 0, 0.5);
+			}
+			
+			.ui-dup-tab-view-component section #sample-tab-3 li {
+				background: rgba(0, 0, 255, 0.5);
+			}
+			
+			.ui-dup-tab-view-component section #sample-tab-4 li {
+				background: rgba(0, 255, 255, 0.5);
+			}
+			
+			.ui-dup-tab-view-component viewport footer {
+				top: 561px;
+				left: 0;
+				width: 100%;
+				height: 48px;
+				position: absolute;
+				border-top: 1px solid #000;
+				background: #000;
+				color: #999;
+				font-size: 10px;
+				font-weight: bold;
+			}
+			
+			.ui-dup-tab-view-component viewport footer ul {
+				width: 100%;
+				height: 46px;
+				text-align: center;
+				
+				background: -webkit-gradient(linear, left top, left bottom, from(#2e2e2e), to(#000), color-stop(50%, #151515), color-stop(50%, #000));
+				border-top: 1px solid #434343;
+			}
+			
+			.ui-dup-tab-view-component viewport footer li {
+				margin: 1px 15px 0;
+				width: 76px;
+				height: 44px;
+				line-height: 76px;
+				display: inline-block;
+			}
+			
+			.ui-dup-tab-view-component viewport footer li.ui-dup-tab-active {
+				color: #fff;
+				-webkit-border-radius: 3px;
+				background: rgba(255, 255, 255, 0.14);
+			}
+			
+			.ui-dup-tab-view-component viewport footer a {
+				width: 100%;
+				height: 100%;
+				display: block;
+				color: #999;
+				background: url("../../images/tmp/icon-sample.png") no-repeat center 0;
+			}
+			
+			.ui-dup-tab-view-component viewport footer li:nth-child(2) a {
+				background-image: url("../../images/tmp/icon-sample-2.png");
+			}
+			
+			.ui-dup-tab-view-component viewport footer li:nth-child(3) a {
+				background-image: url("../../images/tmp/icon-sample-3.png");
+			}
+			
+			.ui-dup-tab-view-component viewport footer li:nth-child(4) a {
+				background-image: url("../../images/tmp/icon-sample-4.png");
+			}
+			
+			.ui-dup-tab-view-component viewport footer li.ui-dup-tab-active a {
+				color: #fff;
+				background-position: center -44px;
+			}
+			
+			section {
+				min-width: 100%;
+				min-height: 517px;
+			}
+
+/*			li:before {
+				top: 0;
+				right: 12px;
+				position: absolute;
+				display: inline-block;
+				counter-increment: count;
+				content: counter(count) " ";
+			}
+*/			
+		</style>
+	</head>
+	<body>
+		<div class="ui-dup-tab-view-component">
+			<view>
+				<viewport>
+					
+					<header></header>
+					
+					<footer>
+						<ul>
+							<li class="ui-dup-tab-active"><a rel="tabs/tab-1.html">Tab 1</a></li>
+							<li><a rel="tabs/tab-2.html">Tab 2</a></li>
+							<li><a rel="tabs/tab-3.html">Tab 3</a></li>
+							<li><a rel="tabs/tab-4.html">Tab 4</a></li>
+						</ul>
+					</footer>
+
+				</viewport>
+				
+				<section></section>
+			</view>
+			
+		</div>
+		
+		<script src="../../js/core/duplikit.js" type="text/javascript"></script>
+		<script src="../../js/utils/rivet.js" type="text/javascript"></script>
+		<script src="../../js/ui/tab-view.js" type="text/javascript"></script>
+		
+		<script type="text/javascript">
+			document.addEventListener("DOMContentLoaded", function() {
+				var target = document.querySelector(".ui-dup-tab-view-component");
+				
+				var component = new Dup.UI.TabView(target, {
+					showInstallReminder : true
+				});
+			}, false);
+		</script>
+		
+	</body>
+</html>
