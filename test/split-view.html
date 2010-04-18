@@ -8,27 +8,6 @@
 		<link rel="stylesheet" href="../css/core/duplikit.css" type="text/css" />
 		<link rel="stylesheet" href="../css/utils/rivet.css" type="text/css" />
 		<link rel="stylesheet" href="../css/ui/split-view.css" type="text/css" />
-		
-		<style type="text/css" media="screen">
-			
-			ul {
-				counter-reset: count;
-			}
-			
-			li {
-				position: relative;
-			}
-
-/*			li:before {
-				top: 0;
-				right: 12px;
-				position: absolute;
-				display: inline-block;
-				counter-increment: count;
-				content: counter(count) " ";
-			}
-*/			
-		</style>
 	</head>
 	<body>
 		<div class="ui-dup-split-view-component">
@@ -299,7 +278,7 @@
 		<script type="text/javascript">
 			document.addEventListener("DOMContentLoaded", function() {
 				var target = document.querySelector(".ui-dup-split-view-component");
-				var component = new Dup.UI.SplitView(target);
+				var component = new DupliKit.UI.SplitView(target);
 			}, false);
 		</script>
 		
