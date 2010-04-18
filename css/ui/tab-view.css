@@ -6,6 +6,10 @@
 	display: none;
 }
 
+.ui-dup-tab-view-component section header {
+	display: none;
+}
+
 .ui-dup-tab-view-component viewport {
 	width: 100%;
 }
