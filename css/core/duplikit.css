@@ -77,6 +77,10 @@ view header {
 }
 
 view header h1 {
+	top: 0;
+	left: 0;
+	position: absolute;
+	width: 100%;
 	font-size: 20px;
 	font-weight: bold;
 	color: #717880;
