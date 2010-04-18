@@ -16,37 +16,37 @@ Requires:
 */
 
 /*
-Class: Dup
-	Scoped to the Dup Global Namespace
+Class: DupliKit
+	Scoped to the DupliKit Global Namespace
 */
-var Dup = window.Dup || {};
+var DupliKit = window.DupliKit || {};
 
 /*
-Namespace: Dup.UI
-	Under the Dup.UI Local Namespace
+Namespace: DupliKit.UI
+	Under the DupliKit.UI Local Namespace
 */
-Dup.UI = Dup.UI || {};
+DupliKit.UI = DupliKit.UI || {};
 
 /*
-Namespace: Dup.UI.SplitView
-	Under the Dup.UI.SplitView Local Namespace
+Namespace: DupliKit.UI.SplitView
+	Under the DupliKit.UI.SplitView Local Namespace
 */
-Dup.UI.SplitView = (function (object) {
+DupliKit.UI.SplitView = (function (object) {
 	
 	// Storing a variable to reference
-	var $space = Dup;
+	var $space = DupliKit;
 	
 	// Self reference
-	var $self = Dup.UI.SplitView;
+	var $self = DupliKit.UI.SplitView;
 	
 	/*
-	Namespace: Dup.UI.vars
+	Namespace: DupliKit.UI.vars
 		Shared local variables
 	*/
 	$self.vars = {};
 	
 	/*
-	Namespace: Dup.UI.utils
+	Namespace: DupliKit.UI.utils
 		Shared local utilities
 	*/
 	$self.utils = {
@@ -311,7 +311,7 @@ Dup.UI.SplitView = (function (object) {
 		    views = parent.querySelectorAll("view");
 		
 		for (var i = 0, j = views.length; i < j; i++) {
-			new Dup.utils.Rivet({
+			new DupliKit.utils.Rivet({
 				target : views[i]
 			});
 		}
