@@ -15,6 +15,10 @@
 		
 		<!-- Sample Content -->
 		<style type="text/css" media="screen">
+			.ui-dup-tab-view-component section {
+				overflow: hidden;
+			}
+			
 			.ui-dup-tab-view-component section ul {
 				padding: 10px 0;
 				text-align: center;
@@ -34,8 +38,23 @@
 				position: relative;
 			}
 			
-			.ui-dup-tab-view-component section #sample-tab-1 li {
+			.ui-dup-tab-view-component .ui-dup-segmented-control-content h2 {
+				margin: 20px 0 0;
+				display: block;
+				text-align: center;
+				font-size: 20px;
+			}
+			
+			.ui-dup-tab-view-component section #sample-seg-control-1 li {
 				background: rgba(255, 0, 0, 0.5);
+			}
+			
+			.ui-dup-tab-view-component section #sample-seg-control-2 li {
+				background: rgba(255, 255, 0, 0.5);
+			}
+			
+			.ui-dup-tab-view-component section #sample-seg-control-3 li {
+				background: rgba(255, 0, 255, 0.5);
 			}
 			
 			.ui-dup-tab-view-component section #sample-tab-2 li {
@@ -58,17 +77,7 @@
 			<view>
 				<viewport>
 					
-					<header>
-						
-						<div class="ui-dup-segmented-control">
-							<ul>
-								<li class="ui-dup-tab-view-active"><a rel="#first">First</a></li>
-								<li><a rel="#second">Second</a></li>
-								<li><a rel="#third">Third</a></li>
-							</ul>
-						</div>
-						
-					</header>
+					<header></header>
 					
 					<footer>
 						<!-- <ul>
@@ -90,147 +99,235 @@
 				<section>
 					
 					<!-- Sample Content -->
-					<div id="sample-tab-1" class="ui-dup-tab-view-content" data-header-text="Tab 1: Vanilla Edition">
-						<ul>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-							<li>Tab 1</li>
-						</ul>
+					<div id="sample-tab-1" class="ui-dup-tab-view-content">
+						<header>
+							<h1>Tab 1: Vanilla Edition</h1>
+							
+							<div class="ui-dup-segmented-control">
+								<ul>
+									<li class="ui-dup-segmented-control-active"><a rel="#sample-seg-control-1">First</a></li>
+									<li><a rel="#sample-seg-control-2">Second</a></li>
+									<li><a rel="#sample-seg-control-3">Third</a></li>
+								</ul>
+							</div>
+						</header>
+						
+						<section>
+							<div id="sample-seg-control-1" class="ui-dup-segmented-control-content">
+								<h2>First</h2>
+
+								<ul>
+									<li>Control 1</li>
+									<li>Control 1</li>
+									<li>Control 1</li>
+									<li>Control 1</li>
+									<li>Control 1</li>
+									<li>Control 1</li>
+									<li>Control 1</li>
+									<li>Control 1</li>
+									<li>Control 1</li>
+									<li>Control 1</li>
+									<li>Control 1</li>
+									<li>Control 1</li>
+									<li>Control 1</li>
+									<li>Control 1</li>
+									<li>Control 1</li>
+									<li>Control 1</li>
+									<li>Control 1</li>
+									<li>Control 1</li>
+									<li>Control 1</li>
+									<li>Control 1</li>
+									<li>Control 1</li>
+									<li>Control 1</li>
+									<li>Control 1</li>
+								</ul>
+							</div>
+							<div id="sample-seg-control-2" class="ui-dup-segmented-control-content">
+								<h2>Second</h2>
+
+								<ul>
+									<li>Control 2</li>
+									<li>Control 2</li>
+									<li>Control 2</li>
+									<li>Control 2</li>
+									<li>Control 2</li>
+									<li>Control 2</li>
+									<li>Control 2</li>
+									<li>Control 2</li>
+									<li>Control 2</li>
+									<li>Control 2</li>
+									<li>Control 2</li>
+									<li>Control 2</li>
+									<li>Control 2</li>
+									<li>Control 2</li>
+									<li>Control 2</li>
+									<li>Control 2</li>
+									<li>Control 2</li>
+								</ul>
+							</div>
+							<div id="sample-seg-control-3" class="ui-dup-segmented-control-content">
+								<h2>Third</h2>
+
+								<ul>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+									<li>Control 3</li>
+								</ul>
+							</div>
+						</section>
 					</div>
-					<div id="sample-tab-2" class="ui-dup-tab-view-content" data-header-text="Tab 2: Extreme Tab">
-						<ul>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-							<li>Tab 2</li>
-						</ul>
+					<div id="sample-tab-2" class="ui-dup-tab-view-content">
+						<header>
+							<h1>Tab 2: Extreme Tab</h1>
+						</header>
+						
+						<section>
+							<ul>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+							</ul>
+						</section>
 					</div>
-					<div id="sample-tab-3" class="ui-dup-tab-view-content" data-header-text="Tab 3: Tab Harder">
-						<ul>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-							<li>Tab 3</li>
-						</ul>
+					<div id="sample-tab-3" class="ui-dup-tab-view-content">
+						<header>
+							<h1>Tab 3: Tab Harder</h1>
+						</header>
+						
+						<section>
+							<ul>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+							</ul>
+						</section>
 					</div>
-					<div id="sample-tab-4" class="ui-dup-tab-view-content" data-header-text="Tab 4: Tab With A Vengeance">
-						<ul>
-							<li>Tab 4</li>
-							<li>Tab 4</li>
-							<li>Tab 4</li>
-							<li>Tab 4</li>
-							<li>Tab 4</li>
-							<li>Tab 4</li>
-							<li>Tab 4</li>
-							<li>Tab 4</li>
-							<li>Tab 4</li>
-							<li>Tab 4</li>
-							<li>Tab 4</li>
-							<li>Tab 4</li>
-							<li>Tab 4</li>
-							<li>Tab 4</li>
-							<li>Tab 4</li>
-							<li>Tab 4</li>
-							<li>Tab 4</li>
-							<li>Tab 4</li>
-						</ul>
+					<div id="sample-tab-4" class="ui-dup-tab-view-content">
+						<header>
+							<h1>Tab 4: Tab With A Vengeance</h1>
+						</header>
+						
+						<section>
+							<ul>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+							</ul>
+						</section>
 					</div>
 					<!-- Sample Content -->
 					
@@ -246,7 +343,7 @@
 			document.addEventListener("DOMContentLoaded", function() {
 				var target = document.querySelector(".ui-dup-tab-view-component");
 				
-				var component = new Dup.UI.TabView(target, {
+				var component = new DupliKit.UI.TabView(target, {
 					showInstallReminder : true
 				});
 			}, false);
