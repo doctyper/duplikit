@@ -60,7 +60,9 @@ view section .ui-dup-rivet-hidden .ui-dup-rivet-scrollbar-inner {
 	min-width: 100%;
 	z-index: 100;
 	position: absolute;
-	
+}
+
+.ui-dup-rivet-x-axis, .ui-dup-rivet-y-axis {
 	-webkit-transition: -webkit-transform 0ms cubic-bezier(0, 0, 0, 1.0);
 	-webkit-backface-visibility: hidden;
 }
