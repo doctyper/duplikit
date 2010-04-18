@@ -16,37 +16,37 @@ Requires:
 */
 
 /*
-Class: Dup
-	Scoped to the Dup Global Namespace
+Class: DupliKit
+	Scoped to the DupliKit Global Namespace
 */
-var Dup = window.Dup || {};
+var DupliKit = window.DupliKit || {};
 
 /*
-Namespace: Dup.UI
-	Under the Dup.UI Local Namespace
+Namespace: DupliKit.UI
+	Under the DupliKit.UI Local Namespace
 */
-Dup.UI = Dup.UI || {};
+DupliKit.UI = DupliKit.UI || {};
 
 /*
-Namespace: Dup.UI.TabView
-	Under the Dup.UI.TabView Local Namespace
+Namespace: DupliKit.UI.TabView
+	Under the DupliKit.UI.TabView Local Namespace
 */
-Dup.UI.TabView = (function (object, properties) {
+DupliKit.UI.TabView = (function (object, properties) {
 	
 	// Storing a variable to reference
-	var $space = Dup;
+	var $space = DupliKit;
 	
 	// Self reference
-	var $self = Dup.UI.TabView;
+	var $self = DupliKit.UI.TabView;
 	
 	/*
-	Namespace: Dup.UI.vars
+	Namespace: DupliKit.UI.vars
 		Shared local variables
 	*/
 	$self.vars = {};
 	
 	/*
-	Namespace: Dup.UI.utils
+	Namespace: DupliKit.UI.utils
 		Shared local utilities
 	*/
 	$self.utils = {
@@ -60,30 +60,34 @@ Dup.UI.TabView = (function (object, properties) {
 			}
 		},
 		
-		updateHeader : function(header, title) {
-			var heading = header.querySelector("h1");
-			
-			if (!heading) {
-				heading = document.createElement("h1");
-				heading.appendChild(document.createTextNode());
-				header.appendChild(heading);
+		updateHeader : function(header, newHeader, index) {
+			if (newHeader) {
+				newHeader.setAttribute("data-related-index", index);
+				header.parentNode.appendChild(newHeader);
+			} else {
+				newHeader = header.parentNode.querySelector("header[data-related-index='" + index + "']");
 			}
 			
-			heading.firstChild.nodeValue = title;
+			var headers = header.parentNode.querySelectorAll("header");
+			for (var i = 0, j = headers.length; i < j; i++) {
+				$space.utils.addClass(headers[i], $space.utils.parseClass("hidden"));
+			}
+			
+			$space.utils.removeClass(newHeader, $space.utils.parseClass("hidden"));
 		},
 		
-		loadSection : function(src, header, target) {
+		loadSection : function(src, header, target, index) {
 			if ($self.vars.xhr) {
 				$self.vars.xhr.abort();
 			}
 			
 			if (src.charAt(0) === "#") {
 				var active = target.querySelector(src),
-				    children, title;
+				    children, newHeader;
 				
 				if (active) {
-					title = active.getAttribute("data-header-text");
-					$self.utils.updateHeader(header, title);
+					newHeader = active.querySelector("header");
+					$self.utils.updateHeader(header, newHeader, index);
 					
 					children = active.parentNode.querySelectorAll($space.utils.parseClass(".", "tab-view-content"));
 					
@@ -113,12 +117,8 @@ Dup.UI.TabView = (function (object, properties) {
 							var dummy = document.createElement("div");
 							dummy.innerHTML = xhr.responseText;
 
-							var title = dummy.querySelector(".ui-dup-tab-view-content");
-
-							if (title) {
-								title = title.getAttribute("data-header-text");
-								$self.utils.updateHeader(header, title);
-							}
+							var newHeader = dummy.querySelector("header");
+							$self.utils.updateHeader(header, newHeader, index);
 
 							for (var i = 0, j = dummy.childNodes.length; i < j; i++) {
 								var node = dummy.childNodes[i];
@@ -144,6 +144,58 @@ Dup.UI.TabView = (function (object, properties) {
 				xhr.send();
 				
 			}
+		},
+		
+		loadSegment : function(target, src) {
+			var active = target.querySelector(src),
+			    children;
+			
+			if (active) {
+				children = active.parentNode.querySelectorAll($space.utils.parseClass(".", "segmented-control-content"));
+				
+				for (var i = 0, j = children.length; i < j; i++) {
+					$space.utils.addClass(children[i], $space.utils.parseClass("hidden"));
+				}
+				
+				$space.utils.removeClass(active, $space.utils.parseClass("hidden"));
+			}
+
+			$space.utils.Rivet.utils.checkScroll(null, "0", null, target);
+			$space.utils.Rivet.utils.enableRivet();
+		},
+		
+		segmentedController : function(content, header) {
+			var controller, target, link;
+			
+			header.parentNode.addEventListener("touchstart", function(e) {
+				e.stopPropagation();
+				
+				controller = header.parentNode.querySelector($space.utils.parseClass(".", "segmented-control"));
+				
+				if (controller) {
+					target = e.target;
+					
+					while (target && target !== controller) {
+						if (target.nodeName.toLowerCase() === "a") {
+							link = target;
+						}
+						
+						target = target.parentNode;
+					}
+					
+					if (target) {
+						var controls = controller.querySelectorAll("li"),
+						    _class = $space.utils.parseClass("segmented-control-active");
+						
+						for (var i = 0, j = controls.length; i < j; i++) {
+							$space.utils.removeClass(controls[i], _class);
+						}
+						
+						$space.utils.addClass(link.parentNode, _class);
+						$self.utils.loadSegment(content, link.getAttribute("rel"));
+					}
+				}
+			}, false);
 		}
 	};
 	
@@ -152,7 +204,7 @@ Dup.UI.TabView = (function (object, properties) {
 		    views = parent.querySelectorAll("view");
 		
 		for (var i = 0, j = views.length; i < j; i++) {
-			new Dup.utils.Rivet({
+			new DupliKit.utils.Rivet({
 				target : views[i]
 			});
 		}
@@ -162,7 +214,7 @@ Dup.UI.TabView = (function (object, properties) {
 		var parent = object,
 		    view = parent.querySelector("view > section"),
 		    content = view.querySelector(".ui-dup-rivet-wrapper"),
-		    header = parent.querySelector("header"),
+		    header = parent.querySelector("view > viewport header"),
 		    footer = parent.querySelector("footer"),
 		    tabs = footer.querySelectorAll("li a"),
 		    active = footer.querySelector("li.ui-dup-tab-active a"),
@@ -174,6 +226,7 @@ Dup.UI.TabView = (function (object, properties) {
 			
 			tab.addEventListener("touchend", function(e) {
 				_parent = this.parentNode;
+			    header = parent.querySelector("view > viewport header");
 				link = this.getAttribute("rel");
 				
 				if (!$space.utils.hasClass(_parent, _active)) {
@@ -184,13 +237,15 @@ Dup.UI.TabView = (function (object, properties) {
 					$space.utils.Rivet.utils.disableRivet();
 
 					$space.utils.addClass(_parent, _active);
-					$self.utils.loadSection(link, header, content);
+					$self.utils.loadSection(link, header, content, this.getAttribute("data-index"));
 				}
 			}, false);
+			
+			tab.setAttribute("data-index", i);
 		}
 		
 		if (active) {
-			$self.utils.loadSection(link, header, content);
+			$self.utils.loadSection(link, header, content, active.getAttribute("data-index"));
 		}
 		
 		window.addEventListener("orientationchange", function() {
@@ -198,6 +253,7 @@ Dup.UI.TabView = (function (object, properties) {
 		}, false);
 		
 		$self.utils.orientationChange(view, footer);
+		$self.utils.segmentedController(content, header);
 	};
 	
 	/*
