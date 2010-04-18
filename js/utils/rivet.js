@@ -15,31 +15,31 @@ Requires:
 */
 
 /*
-Class: Dup
-	Scoped to the Dup Global Namespace
+Class: DupliKit
+	Scoped to the DupliKit Global Namespace
 */
-var Dup = window.Dup || {};
+var DupliKit = window.DupliKit || {};
 
 /*
-Namespace: Dup.utils
-	Under the Dup.utils Local Namespace
+Namespace: DupliKit.utils
+	Under the DupliKit.utils Local Namespace
 */
-Dup.utils = Dup.utils || {};
+DupliKit.utils = DupliKit.utils || {};
 
 /*
-Namespace: Dup.utils.Rivet
-	Under the Dup.utils.Rivet Local Namespace
+Namespace: DupliKit.utils.Rivet
+	Under the DupliKit.utils.Rivet Local Namespace
 */
-Dup.utils.Rivet = (function (object) {
+DupliKit.utils.Rivet = (function (object) {
 	
 	// Storing a variable to reference
-	var $space = Dup;
+	var $space = DupliKit;
 	
 	// Self reference
-	var $self = Dup.utils.Rivet;
+	var $self = DupliKit.utils.Rivet;
 	
 	/*
-	Namespace: Dup.utils.const
+	Namespace: DupliKit.utils.const
 		Shared local constants
 	*/
 	
@@ -143,7 +143,7 @@ Dup.utils.Rivet = (function (object) {
 	const NAMESPACE_CLASS = "ui-dup-rivet";
 	
 	/*
-	Namespace: Dup.utils.vars
+	Namespace: DupliKit.utils.vars
 		Shared local variables
 	*/
 	$self.vars = {
@@ -162,7 +162,7 @@ Dup.utils.Rivet = (function (object) {
 	};
 	
 	/*
-	Namespace: Dup.utils.utils
+	Namespace: DupliKit.utils.utils
 		Shared local utilities
 	*/
 	$self.utils = {
@@ -509,8 +509,8 @@ Dup.utils.Rivet = (function (object) {
 	};
 	
 	/*
-	Namespace: Dup.utils
-		Under the Dup.utils Local Namespace
+	Namespace: DupliKit.utils
+		Under the DupliKit.utils Local Namespace
 	*/
 	
 	/*
