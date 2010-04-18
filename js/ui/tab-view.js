@@ -165,7 +165,9 @@ DupliKit.UI.TabView = (function (object, properties) {
 		},
 		
 		segmentedController : function(content, header) {
-			var controller, target, link;
+			var controller, target, link, active;
+			controller = header.parentNode.querySelector($space.utils.parseClass(".", "segmented-control"));
+			active = controller.querySelector($space.utils.parseClass(".", "segmented-control-active a"));
 			
 			header.parentNode.addEventListener("touchstart", function(e) {
 				e.stopPropagation();
@@ -196,6 +198,10 @@ DupliKit.UI.TabView = (function (object, properties) {
 					}
 				}
 			}, false);
+			
+			if (active) {
+				$self.utils.loadSegment(content, active.getAttribute("rel"));
+			}
 		}
 	};
 	
