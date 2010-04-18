@@ -119,6 +119,9 @@ view header h1 {
 	font-family: "Helvetica";
 	line-height: 1;
 	text-align: center;
+	
+	-webkit-transform: translate(0, 0);
+	-webkit-backface-visibility: hidden;
 }
 
 .ui-dup-reminder-active {
