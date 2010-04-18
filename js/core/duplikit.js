@@ -15,16 +15,16 @@ Supports:
 */
 
 /*
-Class: Dup
-	Scoped to the Dup Global Namespace
+Class: DupliKit
+	Scoped to the DupliKit Global Namespace
 */
-var Dup = window.Dup || (function() {
+var DupliKit = window.DupliKit || (function() {
 	
 	// Storing a variable to reference
 	var $self = {};
 	
 	/*
-	Namespace: Dup.vars
+	Namespace: DupliKit.vars
 		Shared local variables
 	*/
 	$self.vars = {
@@ -32,7 +32,7 @@ var Dup = window.Dup || (function() {
 	};
 	
 	/*
-	Namespace: Dup.utils
+	Namespace: DupliKit.utils
 		Shared local utilities
 	*/
 	$self.utils = {
@@ -196,7 +196,15 @@ var Dup = window.Dup || (function() {
 			if (!standalone) {
 				var parent = document.createElement("div");
 				$self.utils.addClass(parent, $self.utils.parseClass("reminder"));
-				parent.innerHTML = "<h3>Install This App</h3><p>Tap the <em>+</em> icon and select 'Add to Home Screen'</p><div class=\"ui-dup-reminder-tip\"></div>";
+				parent.innerHTML = "<div class=\"ui-dup-reminder-popover\"><h3>Install This App</h3><p>Tap the <em>+</em> icon and select 'Add to Home Screen'</p><div class=\"ui-dup-reminder-tip\"></div></div>";
+				
+				parent.addEventListener("touchend", function(e) {
+					$self.utils.removeClass(parent, $self.utils.parseClass("reminder-active"));
+					
+					window.setTimeout(function() {
+						parent.parentNode.removeChild(parent);
+					}, 350);
+				}, false);
 				
 				view.appendChild(parent);
 				
@@ -208,7 +216,7 @@ var Dup = window.Dup || (function() {
 		
 		handleProperties : function(view, properties) {
 			for (var key in properties) {
-				if (typeof $self.utils[key] === "function") {
+				if (properties[key] !== false && typeof $self.utils[key] === "function") {
 					$self.utils[key](view);
 				}
 			}
@@ -216,8 +224,8 @@ var Dup = window.Dup || (function() {
 	};
 	
 	/*
-	Namespace: Dup
-		Under the Dup Local Namespace
+	Namespace: DupliKit
+		Under the DupliKit Local Namespace
 	*/
 	
 	return function() {
@@ -232,3 +240,9 @@ var Dup = window.Dup || (function() {
 		return $self;
 	}();
 })();
+
+/*
+Class: DupliKit
+	Shortcut to window.DupliKit
+*/
+window.Dup = window.Dup || window.DupliKit;
