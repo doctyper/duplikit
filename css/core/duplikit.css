@@ -43,7 +43,7 @@ view {
 	background: #d3d7da;
 }
 
-view, view viewport, view viewport *, view section {
+view, view > viewport, view > viewport *, view > section {
 	margin: 0;
 	padding: 0;
 	display: block;
@@ -53,7 +53,7 @@ view, view viewport, view viewport *, view section {
 	-webkit-backface-visibility: hidden;
 }
 
-view section {
+view > section {
 	display: block;
 	overflow: hidden;
 }
@@ -87,8 +87,26 @@ view header h1 {
 	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
 }
 
+.ui-dup-hidden {
+	top: -100%;
+	left: -100%;
+	position: absolute;
+	visibility: hidden;
+}
 
 .ui-dup-reminder {
+	top: 0;
+	left: 0;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	
+	opacity: 0;
+	-webkit-transition: opacity 350ms ease-out;
+	-webkit-backface-visibility: hidden;
+}
+
+.ui-dup-reminder-popover {
 	top: 24px;
 	left: 185px;
 	position: absolute;
@@ -101,13 +119,11 @@ view header h1 {
 	font-family: "Helvetica";
 	line-height: 1;
 	text-align: center;
-	
-	opacity: 0;
-	-webkit-transition: opacity 350ms ease-out;
 }
 
 .ui-dup-reminder-active {
 	opacity: 0.9999;
+	-webkit-transition-duration: 0;
 }
 
 .ui-dup-reminder h3 {
@@ -140,6 +156,20 @@ view header h1 {
 	background: url("../../images/ui/bg-reminder.png") no-repeat 0 0;
 }
 
+@-webkit-keyframes segmented-control {
+	from {
+		opacity : 0;
+	}
+	
+	99% {
+		opacity: 0;
+	}
+	
+	to {
+		opacity: 0.9999;
+	}
+}
+
 .ui-dup-segmented-control {
 	position: relative;
 	z-index: 300;
@@ -159,6 +189,9 @@ view header h1 {
 	
 	min-width: 100px;
 	max-width: 220px;
+	
+	-webkit-animation: segmented-control 2000ms ease-out;
+	-webkit-backface-visibility: hidden;
 }
 
 .ui-dup-segmented-control ul {
@@ -206,11 +239,11 @@ view header h1 {
 	-webkit-border-bottom-right-radius: 5px;
 }
 
-.ui-dup-segmented-control li.ui-dup-tab-view-active a {
+.ui-dup-segmented-control li.ui-dup-segmented-control-active a {
 	background: -webkit-gradient(linear, left top, left bottom, from(#aeb0b4), to(#666d74));
 }
 
-.ui-dup-segmented-control li.ui-dup-tab-view-active a {
+.ui-dup-segmented-control li.ui-dup-segmented-control-active a {
 	color: #fff;
 	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
 	border-top-color: #939699;
