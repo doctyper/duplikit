@@ -139,3 +139,80 @@ view header h1 {
 	height: 22px;
 	background: url("../../images/ui/bg-reminder.png") no-repeat 0 0;
 }
+
+.ui-dup-segmented-control {
+	position: relative;
+	z-index: 300;
+	
+	margin: 6px auto 0;
+	border: 1px solid;
+	border-color: #686868 #959595 #959595;
+	
+	background: -webkit-gradient(linear, left top, left bottom, from(#f7f7f8), to(#b9bdc7), color-stop(25%, #e9eaec), color-stop(75%, #c7c9d1));
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+	-webkit-border-radius: 5px;
+	
+	font-weight: bold;
+	font-size: 12px;
+	height: 26px;
+	text-align: center;
+	
+	min-width: 100px;
+	max-width: 220px;
+}
+
+.ui-dup-segmented-control ul {
+	width: 100%;
+	display: table;
+	border-collapse: collapse;
+}
+
+.ui-dup-segmented-control li {
+	margin: 0 -2px 0 -1px;
+	
+	border-right: 1px solid #959595;
+	
+	line-height: 25px;
+	vertical-align: top;
+	
+	display: table-cell;
+}
+
+.ui-dup-segmented-control li:last-child {
+	border-right-width: 0;
+}
+
+.ui-dup-segmented-control a {
+	padding: 0 13px;
+	display: block;
+	
+	border: solid;
+	border-width: 1px 0;
+	border-color: #d0d1d2 #fff #959595;
+	
+	min-width: 41px;
+	
+	color: #4f5459;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.ui-dup-segmented-control li:first-child a {
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+}
+
+.ui-dup-segmented-control li:last-child a {
+	-webkit-border-top-right-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+}
+
+.ui-dup-segmented-control li.ui-dup-tab-view-active a {
+	background: -webkit-gradient(linear, left top, left bottom, from(#aeb0b4), to(#666d74));
+}
+
+.ui-dup-segmented-control li.ui-dup-tab-view-active a {
+	color: #fff;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
+	border-top-color: #939699;
+	border-bottom-color: #52575c;
+}
