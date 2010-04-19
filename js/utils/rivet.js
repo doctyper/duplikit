@@ -709,7 +709,7 @@ DupliKit.utils.Rivet = (function (object) {
 					
 					// Update only if we have more than one touch logged
 					// We need at least two for the touchend event to do its analysis
-					if ($self.vars.log.length > 1) {
+					// if ($self.vars.log.length > 1) {
 						
 						// Set the x-axis transform based on the differences in touch
 						$space.utils.setTransform(targets.x, matrices.x.translate(touchDifferences.x, 0));
@@ -724,7 +724,7 @@ DupliKit.utils.Rivet = (function (object) {
 							offset : bLeft
 						});
 						
-					}
+					// }
 				}
 
 				// If the height difference is greater than zero,
@@ -746,7 +746,7 @@ DupliKit.utils.Rivet = (function (object) {
 					
 					// Update only if we have more than one touch logged
 					// We need at least two for the touchend event to do its analysis
-					if ($self.vars.log.length > 1) {
+					// if ($self.vars.log.length > 1) {
 						
 						// Set the y-axis transform based on the differences in touch
 						$space.utils.setTransform(targets.y, matrices.y.translate(0, touchDifferences.y));
@@ -761,7 +761,7 @@ DupliKit.utils.Rivet = (function (object) {
 							offset : bTop
 						});
 						
-					}
+					// }
 				}
 				
 				// Keep a log of the previous difference
