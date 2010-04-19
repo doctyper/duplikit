@@ -206,7 +206,7 @@ var DupliKit = window.DupliKit || (function() {
 					}, 350);
 				}, false);
 				
-				view.appendChild(parent);
+				document.body.appendChild(parent);
 				
 				window.setTimeout(function() {
 					$self.utils.addClass(parent, $self.utils.parseClass("reminder-active"));
