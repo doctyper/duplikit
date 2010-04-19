@@ -101,6 +101,8 @@ view header h1 {
 	width: 100%;
 	height: 100%;
 	
+	z-index: 500;
+	
 	opacity: 0;
 	-webkit-transition: opacity 350ms ease-out;
 	-webkit-backface-visibility: hidden;
