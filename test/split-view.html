@@ -278,7 +278,39 @@
 		<script type="text/javascript">
 			document.addEventListener("DOMContentLoaded", function() {
 				var target = document.querySelector(".ui-dup-split-view-component");
-				var component = new DupliKit.UI.SplitView(target);
+				var component = new DupliKit.UI.SplitView(target, {
+					showInstallReminder : true
+				});
+				
+				// var component = new DuplitKit.MasterView({
+				// 	masterPane : foo, // required
+				// 	detailPane : bar, // optional
+				// 	showInstallReminder : true // optional, default is false
+				// });
+				
+				// var control = new DupliKit.SegmentedControl({
+				// 	pane : foo // required
+				// });
+				
+				// var tabBar = new DupliKit.TabBarController({
+				// 	context : foo // required
+				// });
+				
+				// var modal = new DupliKit.ModalView({
+				// 	pane : foo, //required
+				// 	context : "fullScreen"
+				// 	context : "pageSheet"
+				// 	context : "formSheet"
+				// 	context : "currentContext"
+				// });
+				
+				// var sheet = new DupliKit.ActionSheet({
+				// 	pane : foo // required
+				// });
+				
+				// var picker = new DupliKit.PickerView({
+				// 	context : document.querySelectorAll("select") // required, accepts multiple <select> elements
+				// });
 			}, false);
 		</script>
 		
