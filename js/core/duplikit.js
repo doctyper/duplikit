@@ -2,7 +2,7 @@
 File: duplikit.js
 
 About: Version
-	1.0
+	0.1 pre
 
 Project: DupliKit
 

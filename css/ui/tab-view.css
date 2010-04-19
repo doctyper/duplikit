@@ -1,3 +1,20 @@
+/*
+File: tab-view.css
+
+About: Version
+	0.1 pre
+
+Project: DupliKit
+
+Description:
+	DupliKit's Tab View Controller
+
+Requires:
+	- <duplikit.css>
+	- <rivet.css>
+
+*/
+
 .ui-dup-tab-view-component section {
 	background: #fff;
 }
