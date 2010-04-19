@@ -31,7 +31,7 @@ DupliKit.UI = DupliKit.UI || {};
 Namespace: DupliKit.UI.SplitView
 	Under the DupliKit.UI.SplitView Local Namespace
 */
-DupliKit.UI.SplitView = (function (object) {
+DupliKit.UI.SplitView = (function (object, properties) {
 	
 	// Storing a variable to reference
 	var $space = DupliKit;
@@ -485,5 +485,9 @@ DupliKit.UI.SplitView = (function (object) {
 		$self.addEventListeners(object);
 		$self.prepDrillDown(object);
 		$self.prepView(object);
+		
+		if (properties) {
+			$space.utils.handleProperties(object, properties);
+		}
 	}();
 });
