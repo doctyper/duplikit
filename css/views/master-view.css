@@ -1,0 +1,298 @@
+/*
+File: master-view.css
+
+About: Version
+	0.1 pre
+
+Project: DupliKit
+
+Description:
+	DupliKit's Master View Controller CSS
+
+Requires:
+	- <duplikit.css>
+	- <rivet.css>
+
+*/
+
+/* [=] General View Styles
+------------------------------------------------ */
+.ui-dup-view-component .ui-dup-popover-mask {
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	display: none;
+	z-index: 300;
+}
+
+.ui-dup-view-component button {
+	top: 8px;
+	left: 7px;
+	position: absolute;
+	height: 29px;
+	text-align: center;
+	font-size: 12px;
+	font-weight: bold;
+	z-index: 500;
+	white-space: nowrap;
+}
+
+.ui-dup-view-component viewport footer {
+	top: -48px;
+	left: 0;
+	width: 100%;
+	height: 48px;
+	position: absolute;
+	font-size: 10px;
+	font-weight: bold;
+	z-index: 600;
+}
+
+.ui-dup-view-component viewport footer ul {
+	width: 100%;
+	height: 46px;
+	text-align: center;
+}
+
+.ui-dup-view-component viewport footer li {
+	margin: 1px 15px 0;
+	width: 76px;
+	height: 44px;
+	line-height: 76px;
+	display: inline-block;
+}
+
+.ui-dup-view-component viewport footer li.ui-dup-tab-active {
+	-webkit-border-radius: 3px;
+}
+
+.ui-dup-view-component viewport footer a {
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+
+
+/* [=] General Pane Styles
+------------------------------------------------ */
+.ui-dup-view-component .ui-dup-pane {
+	margin: 0 -2px 0 -1px;
+	padding: 0;
+	display: inline-block;
+	position: relative;
+	vertical-align: top;
+	min-height: 768px;
+}
+
+.ui-dup-view-component .ui-dup-pane viewport {
+	width: 100%;
+}
+
+.ui-dup-view-component .ui-dup-pane section {
+	width: 100%;
+}
+
+.ui-dup-view-component .ui-dup-pane section .ui-dup-tab-hidden {
+	display: none;
+}
+
+.ui-dup-view-component .ui-dup-pane section header {
+	display: none;
+}
+
+.ui-dup-view-component .ui-dup-pane section p {
+	font-size: 18px;
+	margin: 20px;
+	line-height: 1.5;
+}
+
+@media all and (orientation:portrait) {
+	
+	.ui-dup-popover-active .ui-dup-popover-mask {
+		display: block;
+	}
+	
+}
+
+
+/* [=] Detail Pane Styles
+------------------------------------------------ */
+.ui-dup-view-component .ui-dup-detail-pane {
+	width: 320px;
+	z-index: 400;
+	opacity: 0.9999;
+}
+
+ Everything in popovers/split view menus needs a shim transform 
+.ui-dup-view-component .ui-dup-detail-pane * {
+	-webkit-transform: translate(0, 0);
+	-webkit-backface-visibility: hidden;
+}
+
+.ui-dup-view-component .ui-dup-detail-pane section {
+	padding: 0;
+}
+
+.ui-dup-view-component .ui-dup-detail-pane section ul {
+	display: block;
+	width: 320px;
+	position: relative;
+}
+
+.ui-dup-view-component .ui-dup-detail-pane section ul ul {
+	position: absolute;
+	top: 0;
+	left: 100%;
+	display: none;
+}
+
+.ui-dup-view-component .ui-dup-detail-pane section .ui-dup-hover ul {
+	display: block;
+}
+
+.ui-dup-view-component .ui-dup-detail-pane section li {
+	display: block;
+	text-indent: 12px;
+	height: 43px;
+	line-height: 44px;
+	font-size: 20px;
+	font-weight: bold;
+	width: 320px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	-webkit-backface-visibility: hidden;
+}
+
+.ui-dup-view-component .ui-dup-detail-pane section li a, .ui-dup-view-component .ui-dup-detail-pane section li a:hover {
+	display: block;
+}
+
+.ui-dup-view-component .ui-dup-detail-pane section li span {
+	display: block;
+}
+
+.ui-dup-view-component .ui-dup-detail-pane section li > span:after {
+	width: 6px;
+	height: 6px;
+	
+	top: 16px;
+	right: 14px;
+	position: absolute;
+	
+	content : ".";
+	text-indent: -9999px;
+	
+	-webkit-transform: rotate(45deg);
+	-webkit-backface-visibility: hidden;
+}
+
+.ui-dup-view-component .ui-dup-detail-pane section li.ui-dup-hover > a {
+	display: block;
+}
+
+.ui-dup-view-component .ui-dup-detail-pane .ui-dup-slide-prep, .ui-dup-view-component .ui-dup-detail-pane button {
+	-webkit-transform: translate(100px, 0);
+	-webkit-backface-visibility: hidden;
+	
+	opacity: 0;
+	
+	-webkit-transition-property: -webkit-transform, opacity;
+	-webkit-transition-duration: 300ms;
+	-webkit-transition-timing-function: ease-out;
+}
+
+.ui-dup-view-component .ui-dup-detail-pane .ui-dup-slide-in {
+	-webkit-transform: translate(0, 0);
+	opacity: 0.9999;
+}
+
+.ui-dup-view-component .ui-dup-detail-pane .ui-dup-slide-out {
+	-webkit-transform: translate(-100px, 0);
+	opacity: 0;
+}
+
+.ui-dup-view-component .ui-dup-detail-pane h1 {
+	width: 100%;
+	top: 0;
+	left: 0;
+	position: absolute;
+}
+
+@media all and (orientation:portrait) {
+	
+	.ui-dup-view-component .ui-dup-detail-pane {
+		top: 53px;
+		left: 12px;
+		position: absolute;
+		width: 332px;
+		min-height: 400px;
+		
+		-webkit-transition: opacity 350ms ease-out;
+		display: none;
+		
+		-webkit-box-shadow: 0 20px 20px rgba(0, 0, 0, 0.5);
+	}
+	
+	.ui-dup-popover-active .ui-dup-detail-pane {
+		display: block;
+		opacity: 0.9999;
+	}
+	
+	.ui-dup-popover-animating .ui-dup-detail-pane {
+		opacity: 0;
+		display: block;
+	}
+	
+	.ui-dup-view-component .ui-dup-detail-pane section {
+		margin: 0 auto 6px;
+		width: 320px;
+		max-height: 400px;
+	}
+	
+	.ui-dup-view-component .ui-dup-detail-pane .ui-dup-popover-tip-wrap {
+		overflow: hidden;
+		height: 32px;
+		width: 64px;
+		top: -32px;
+		left: -12px;
+		position: absolute;
+	}
+	
+	.ui-dup-view-component .ui-dup-detail-pane .ui-dup-popover-tip {
+		display: block;
+		height: 200%;
+		width: 100%;
+		
+		-webkit-transform: rotate(45deg) scale(0.5);
+		-webkit-backface-visibility: hidden;
+	}
+	
+}
+
+
+/* [=] Master Pane Styles
+------------------------------------------------ */
+.ui-dup-view-component .ui-dup-master-pane {
+	width: 100%;
+}
+
+.ui-dup-view-component .ui-dup-detail-pane + .ui-dup-master-pane {
+	width: 703px;
+}
+
+.ui-dup-view-component .ui-dup-master-pane button {
+	display: none;
+}
+
+@media all and (orientation:portrait) {
+	
+	.ui-dup-view-component .ui-dup-master-pane, .ui-dup-view-component .ui-dup-master-pane > * {
+		width: 768px;
+	}
+	
+	.ui-dup-view-component .ui-dup-master-pane button.ui-dup-popover-trigger {
+		display: block;
+	}
+}

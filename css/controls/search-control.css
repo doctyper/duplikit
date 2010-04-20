@@ -1,0 +1,15 @@
+.ui-dup-view-component .ui-dup-search-component {
+	border-bottom-color: #717d85;
+}
+
+.ui-dup-view-component .ui-dup-search-component fieldset input[type="search"] {
+	display: block;
+	margin-top: 5px;
+	margin-left: 5px;
+	height: 31px;
+	border-width: 4px 16px 2px 33px;
+	-webkit-border-radius: 14px;
+	font-size: 14px;
+	width: 310px;
+	-webkit-border-image: url("../../images/bg-search.png") 4 16 2 33;
+}

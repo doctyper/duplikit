@@ -1,0 +1,251 @@
+/*
+File: ipad.css
+
+About: Version
+	0.1 pre
+
+Project: DupliKit
+
+Description:
+	iPad OS Skin for DupliKit
+
+Supports:
+	- iPad (iPhone coming soon(?))
+
+*/
+
+/* [=] Global Styles
+------------------------------------------------ */
+body {
+	background: #000;
+}
+
+view {
+	font-family: "Helvetica";
+	background: #d3d7da;
+}
+
+view header {
+	border: solid;
+	border-width: 1px 0;
+	border-color: #fff #fff #797f90;
+	background: -webkit-gradient(linear, left top, left bottom, from(#f4f5f7), to(#a8acb9), color-stop(32%, #edeef1), color-stop(70%, #c7cad3));
+}
+
+view header h1 {
+	color: #717880;
+	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
+}
+
+.ui-dup-reminder-popover {
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(21, 21, 21, 0.95)), to(rgba(7, 7, 7, 0.75)));
+	-webkit-box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.35);
+	color: #ccc;
+	text-shadow: 0 0 1px #000;
+	-webkit-border-radius: 5px;
+	-webkit-border-top-left-radius: 0;
+	font-family: "Helvetica";
+}
+
+.ui-dup-reminder em {
+	background: url("../../images/ui/icon-install.png") no-repeat 0 0;
+}
+
+.ui-dup-reminder .ui-dup-reminder-tip {
+	background: url("../../images/ui/bg-reminder.png") no-repeat 0 0;
+}
+
+.ui-dup-segmented-control {
+	border: 1px solid;
+	border-color: #686868 #959595 #959595;
+	
+	background: -webkit-gradient(linear, left top, left bottom, from(#f7f7f8), to(#b9bdc7), color-stop(25%, #e9eaec), color-stop(75%, #c7c9d1));
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+	-webkit-border-radius: 5px;
+}
+
+.ui-dup-segmented-control li {
+	border-right: 1px solid #959595;
+}
+
+.ui-dup-segmented-control li:last-child {
+	border-right-width: 0;
+}
+
+.ui-dup-segmented-control a {
+	border: solid;
+	border-width: 1px 0;
+	border-color: #d0d1d2 #fff #959595;
+	
+	color: #4f5459;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.ui-dup-segmented-control li:first-child a {
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+}
+
+.ui-dup-segmented-control li:last-child a {
+	-webkit-border-top-right-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+}
+
+.ui-dup-segmented-control li.ui-dup-segmented-control-active a {
+	background: -webkit-gradient(linear, left top, left bottom, from(#aeb0b4), to(#666d74));
+}
+
+.ui-dup-segmented-control li.ui-dup-segmented-control-active a {
+	color: #fff;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
+	border-top-color: #939699;
+	border-bottom-color: #52575c;
+}
+
+
+/* [=] General View Styles
+------------------------------------------------ */
+.ui-dup-view-component button {
+	border: 1px solid;
+	border-color: #4c4e50 #565a60 #565b64;
+	-webkit-border-radius: 5px;
+	background: -webkit-gradient(linear, left top, left bottom, from(#b1b5bb), to(#6b737e));
+	color: #fff;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.8);
+}
+
+.ui-dup-view-component button.ui-dup-hover {
+	border-color: #464748 #44464a #373a40;
+	background: -webkit-gradient(linear, left top, left bottom, from(#9fa1a4), to(#454950));
+}
+
+.ui-dup-view-component viewport footer {
+	border-top: 1px solid #000;
+	background: #000;
+	color: #999;
+}
+
+.ui-dup-view-component viewport footer ul {
+	background: -webkit-gradient(linear, left top, left bottom, from(#2e2e2e), to(#000), color-stop(50%, #151515), color-stop(50%, #000));
+	border-top: 1px solid #434343;
+}
+
+.ui-dup-view-component viewport footer li.ui-dup-tab-active {
+	color: #fff;
+	background: rgba(255, 255, 255, 0.14);
+}
+
+.ui-dup-view-component viewport footer a {
+	color: #999;
+	background: url("../../images/tmp/icon-sample.png") no-repeat center 0;
+}
+
+.ui-dup-view-component viewport footer li:nth-child(2) a {
+	background-image: url("../../images/tmp/icon-sample-2.png");
+}
+
+.ui-dup-view-component viewport footer li:nth-child(3) a {
+	background-image: url("../../images/tmp/icon-sample-3.png");
+}
+
+.ui-dup-view-component viewport footer li:nth-child(4) a {
+	background-image: url("../../images/tmp/icon-sample-4.png");
+}
+
+.ui-dup-view-component viewport footer li.ui-dup-tab-active a {
+	color: #fff;
+	background-position: center -44px;
+}
+
+
+/* [=] General Pane Styles
+------------------------------------------------ */
+.ui-dup-view-component .ui-dup-pane section {
+	background: #fff;
+}
+
+
+/* [=] Detail Pane Styles
+------------------------------------------------ */
+.ui-dup-view-component .ui-dup-detail-pane {
+	border-right: 1px solid #000;
+}
+
+.ui-dup-view-component .ui-dup-detail-pane section ul {
+	background: #fff;
+}
+
+.ui-dup-view-component .ui-dup-detail-pane section li {
+	color: #000;
+	border-bottom: 1px solid #e0e0e0;
+}
+
+.ui-dup-view-component .ui-dup-detail-pane section li a, .ui-dup-view-component .ui-dup-detail-pane section li a:hover {
+	color: #000;
+}
+
+.ui-dup-view-component .ui-dup-detail-pane section li > span:after {
+	border: solid #7b7b7b;
+	border-width: 3px 3px 0 0;
+}
+
+.ui-dup-view-component .ui-dup-detail-pane section li.ui-dup-hover {
+	color: #fff;
+	background: -webkit-gradient(linear, left top, left bottom, from(#458bf3), to(#265ee3), color-stop(25%, #3a7bef), color-stop(75%, #2c67e7));
+}
+
+.ui-dup-view-component .ui-dup-detail-pane section li.ui-dup-hover > span:after {
+	border-color: #fff;
+}
+
+.ui-dup-view-component .ui-dup-detail-pane section li.ui-dup-hover > a {
+	color: #fff;
+}
+
+.ui-dup-view-component .ui-dup-detail-pane button {
+	background: none;
+	border-width: 2px 5px 2px 14px;
+	-webkit-border-radius: 0;
+	-webkit-border-image: url("../../images/ui/border-back-button.png") 2 5 2 14;
+}
+
+.ui-dup-view-component .ui-dup-detail-pane button.ui-dup-hover {
+	-webkit-border-image: url("../../images/ui/border-back-button-active.png") 2 5 2 14;
+}
+
+@media all and (orientation:portrait) {
+	
+	.ui-dup-view-component .ui-dup-detail-pane {
+		-webkit-border-radius: 8px;
+		-webkit-border-top-left-radius: 0;
+		border: 1px solid #4f4f4f;
+		background: -webkit-gradient(linear, left top, left bottom, from(#131e31), to(#121d30));
+	}
+	
+	.ui-dup-view-component .ui-dup-detail-pane section {
+		-webkit-border-bottom-left-radius: 4px;
+		-webkit-border-bottom-right-radius: 4px;
+	}
+	
+	.ui-dup-view-component .ui-dup-detail-pane section > * {
+		-webkit-border-radius: 4px;
+	}
+	
+	.ui-dup-view-component .ui-dup-detail-pane header {
+		-webkit-border-top-right-radius: 8px;
+		border: none;
+		border-top: 1px solid #bbbec3;
+		background: -webkit-gradient(linear, left top, left bottom, from(#b4b8be), to(#0f1828), color-stop(50%, #131e31), color-stop(50%, #263041));
+	}
+	
+	.ui-dup-view-component .ui-dup-detail-pane header h1 {
+		color: #fff;
+		text-shadow: none;
+	}
+	
+	.ui-dup-view-component .ui-dup-detail-pane .ui-dup-popover-tip {
+		border: 1px solid #4f4f4f;
+		background: -webkit-gradient(linear, right bottom, left top, from(#000), to(rgba(180, 184, 190, 0.5)), color-stop(50%, #b4b8be));
+	}
+	
+}

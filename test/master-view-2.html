@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>DupliKit Fixed Positioning</title>
+		
+		<link rel="stylesheet" href="../css/core/duplikit.css" type="text/css" />
+		<link rel="stylesheet" href="../css/utils/rivet.css" type="text/css" />
+		
+		<link rel="stylesheet" href="../css/views/master-view.css" type="text/css" />
+		
+		<link rel="stylesheet" href="../css/skins/ipad.css" type="text/css" />
+		
+		<!-- Sample Content -->
+		<style type="text/css" media="screen">
+			.ui-dup-master-pane section {
+				overflow: hidden;
+			}
+			
+			.ui-dup-master-pane section ul {
+				padding: 10px 0;
+				text-align: center;
+				list-style: none;
+			}
+			
+			.ui-dup-master-pane section li {
+				margin: 14px 12px;
+				background: #ccc;
+				width: 220px;
+				height: 124px;
+				line-height: 200px;
+				color: rgba(0, 0, 0, 0.2);
+				font-weight: bold;
+				font-size: 18px;
+				display: inline-block;
+				position: relative;
+			}
+			
+			.ui-dup-master-pane .ui-dup-segmented-control-content h2 {
+				margin: 20px 0 0;
+				display: block;
+				text-align: center;
+				font-size: 20px;
+			}
+			
+			.ui-dup-master-pane section #sample-seg-control-1 li {
+				background: rgba(255, 0, 0, 0.5);
+			}
+			
+			.ui-dup-master-pane section #sample-seg-control-2 li {
+				background: rgba(255, 255, 0, 0.5);
+			}
+			
+			.ui-dup-master-pane section #sample-seg-control-3 li {
+				background: rgba(255, 0, 255, 0.5);
+			}
+			
+			.ui-dup-master-pane section #sample-tab-2 li {
+				background: rgba(0, 255, 0, 0.5);
+			}
+			
+			.ui-dup-master-pane section #sample-tab-3 li {
+				background: rgba(0, 0, 255, 0.5);
+			}
+			
+			.ui-dup-master-pane section #sample-tab-4 li {
+				background: rgba(0, 255, 255, 0.5);
+			}
+		</style>
+		<!-- Sample Content -->
+		
+	</head>
+	<body>
+		<div class="ui-dup-view-component">
+			
+			<view class="ui-dup-pane ui-dup-master-pane">
+				<viewport>
+
+					<header>
+						<h1>Item</h1>
+					</header>
+					
+					<footer class="ui-dup-tab-bar-control">
+						<ul>
+							<li class="ui-dup-tab-active"><a rel="#sample-tab-1">Tab 1</a></li>
+							<li><a rel="#sample-tab-2">Tab 2</a></li>
+							<li><a rel="#sample-tab-3">Tab 3</a></li>
+							<li><a rel="#sample-tab-4">Tab 4</a></li>
+						</ul>
+					</footer>
+					
+				</viewport>
+				<section>
+
+					<!-- Sample Content -->
+					<div id="sample-tab-1" class="ui-dup-tab-view-content">
+						<header>
+							<h1>Tab 1: Vanilla Edition</h1>
+						</header>
+						
+						<section>
+							<ul>
+								<li>Control 1</li>
+								<li>Control 1</li>
+								<li>Control 1</li>
+								<li>Control 1</li>
+								<li>Control 1</li>
+								<li>Control 1</li>
+								<li>Control 1</li>
+								<li>Control 1</li>
+								<li>Control 1</li>
+								<li>Control 1</li>
+								<li>Control 1</li>
+								<li>Control 1</li>
+								<li>Control 1</li>
+								<li>Control 1</li>
+								<li>Control 1</li>
+								<li>Control 1</li>
+								<li>Control 1</li>
+								<li>Control 1</li>
+								<li>Control 1</li>
+								<li>Control 1</li>
+								<li>Control 1</li>
+								<li>Control 1</li>
+								<li>Control 1</li>
+							</ul>
+						</section>
+					</div>
+					<div id="sample-tab-2" class="ui-dup-tab-view-content">
+						<header>
+							<h1>Tab 2: Extreme Tab</h1>
+						</header>
+						
+						<section>
+							<ul>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+								<li>Tab 2</li>
+							</ul>
+						</section>
+					</div>
+					<div id="sample-tab-3" class="ui-dup-tab-view-content">
+						<header>
+							<h1>Tab 3: Tab Harder</h1>
+						</header>
+						
+						<section>
+							<ul>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+								<li>Tab 3</li>
+							</ul>
+						</section>
+					</div>
+					<div id="sample-tab-4" class="ui-dup-tab-view-content">
+						<header>
+							<h1>Tab 4: Tab With A Vengeance</h1>
+						</header>
+						
+						<section>
+							<ul>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+								<li>Tab 4</li>
+							</ul>
+						</section>
+					</div>
+					<!-- Sample Content -->
+
+				</section>
+			</view>
+			
+		</div>
+		
+		<script src="../js/core/duplikit.js" type="text/javascript"></script>
+		<script src="../js/utils/rivet.js" type="text/javascript"></script>
+		
+		<script src="../js/views/master-view.js" type="text/javascript"></script>
+		<script src="../js/controls/tab-bar-control.js" type="text/javascript"></script>
+		<script src="../js/controls/segmented-control.js" type="text/javascript"></script>
+		
+		<script type="text/javascript">
+			document.addEventListener("DOMContentLoaded", function() {
+				
+				var parent = document.querySelector(".ui-dup-view-component");
+				
+				var component = new DupliKit.MasterView({
+					masterPane : parent.querySelector(".ui-dup-master-pane"),
+					showScrollbars : false
+				});
+				
+				component.addControl({
+					type : "TabBarController",
+					context : parent.querySelector(".ui-dup-tab-bar-control")
+				});
+				
+			}, false);
+		</script>
+		
+	</body>
+</html>
