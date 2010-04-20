@@ -14,10 +14,6 @@ Supports:
 
 */
 
-body {
-	background: #000;
-}
-
 * {
 	margin: 0;
 	padding: 0;
@@ -39,8 +35,6 @@ view {
 view {
 	margin: 0;
 	padding: 0;
-	font-family: "Helvetica";
-	background: #d3d7da;
 }
 
 view, view > viewport, view > viewport *, view > section {
@@ -70,10 +64,6 @@ view header {
 	height: 42px;
 	line-height: 44px;
 	text-align: center;
-	border: solid;
-	border-width: 1px 0;
-	border-color: #fff #fff #797f90;
-	background: -webkit-gradient(linear, left top, left bottom, from(#f4f5f7), to(#a8acb9), color-stop(32%, #edeef1), color-stop(70%, #c7cad3));
 }
 
 view header h1 {
@@ -83,8 +73,6 @@ view header h1 {
 	width: 100%;
 	font-size: 20px;
 	font-weight: bold;
-	color: #717880;
-	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
 }
 
 .ui-dup-hidden {
@@ -112,13 +100,6 @@ view header h1 {
 	top: 24px;
 	left: 185px;
 	position: absolute;
-	background: -webkit-gradient(linear, left top, left bottom, from(rgba(21, 21, 21, 0.95)), to(rgba(7, 7, 7, 0.75)));
-	-webkit-box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.35);
-	color: #ccc;
-	text-shadow: 0 0 1px #000;
-	-webkit-border-radius: 5px;
-	-webkit-border-top-left-radius: 0;
-	font-family: "Helvetica";
 	line-height: 1;
 	text-align: center;
 	
@@ -149,7 +130,6 @@ view header h1 {
 	display: inline-block;
 	width: 18px;
 	height: 18px;
-	background: url("../../images/ui/icon-install.png") no-repeat 0 0;
 }
 
 .ui-dup-reminder .ui-dup-reminder-tip {
@@ -158,7 +138,6 @@ view header h1 {
 	position: absolute;
 	width: 44px;
 	height: 22px;
-	background: url("../../images/ui/bg-reminder.png") no-repeat 0 0;
 }
 
 @-webkit-keyframes segmented-control {
@@ -180,12 +159,6 @@ view header h1 {
 	z-index: 300;
 	
 	margin: 6px auto 0;
-	border: 1px solid;
-	border-color: #686868 #959595 #959595;
-	
-	background: -webkit-gradient(linear, left top, left bottom, from(#f7f7f8), to(#b9bdc7), color-stop(25%, #e9eaec), color-stop(75%, #c7c9d1));
-	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
-	-webkit-border-radius: 5px;
 	
 	font-weight: bold;
 	font-size: 12px;
@@ -208,49 +181,15 @@ view header h1 {
 .ui-dup-segmented-control li {
 	margin: 0 -2px 0 -1px;
 	
-	border-right: 1px solid #959595;
-	
 	line-height: 25px;
 	vertical-align: top;
 	
 	display: table-cell;
 }
 
-.ui-dup-segmented-control li:last-child {
-	border-right-width: 0;
-}
-
 .ui-dup-segmented-control a {
 	padding: 0 13px;
 	display: block;
 	
-	border: solid;
-	border-width: 1px 0;
-	border-color: #d0d1d2 #fff #959595;
-	
 	min-width: 41px;
-	
-	color: #4f5459;
-	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
-}
-
-.ui-dup-segmented-control li:first-child a {
-	-webkit-border-top-left-radius: 5px;
-	-webkit-border-bottom-left-radius: 5px;
-}
-
-.ui-dup-segmented-control li:last-child a {
-	-webkit-border-top-right-radius: 5px;
-	-webkit-border-bottom-right-radius: 5px;
-}
-
-.ui-dup-segmented-control li.ui-dup-segmented-control-active a {
-	background: -webkit-gradient(linear, left top, left bottom, from(#aeb0b4), to(#666d74));
-}
-
-.ui-dup-segmented-control li.ui-dup-segmented-control-active a {
-	color: #fff;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
-	border-top-color: #939699;
-	border-bottom-color: #52575c;
 }
