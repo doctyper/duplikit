@@ -30,7 +30,7 @@ DupliKit.utils = DupliKit.utils || {};
 Namespace: DupliKit.utils.Rivet
 	Under the DupliKit.utils.Rivet Local Namespace
 */
-DupliKit.utils.Rivet = (function (object) {
+DupliKit.utils.Rivet = (function (view, object) {
 	
 	// Storing a variable to reference
 	var $space = DupliKit;
@@ -172,7 +172,7 @@ DupliKit.utils.Rivet = (function (object) {
 		},
 		
 		disableRivet : function() {
-			var targets = $self.utils.getTargets($self.vars.object),
+			var targets = $self.utils.getTargets($self.vars.object.view),
 			    matrix = $space.utils.getMatrix(targets.y);
 			
 			$space.utils.setTransform(targets.y, matrix.translate(0, 0));
@@ -207,7 +207,7 @@ DupliKit.utils.Rivet = (function (object) {
 			// Orientationchange fires before scroll
 			// This is good. It gives me a chance to not scroll
 			if (args[1] || !$space.vars.orientationChange) {
-				var targets = $self.utils.getTargets($self.vars.object),
+				var targets = $self.utils.getTargets($self.vars.object.view),
 				
 				    y = (args[3] || targets.y),
 				
@@ -230,17 +230,16 @@ DupliKit.utils.Rivet = (function (object) {
 			Returns an object of elements to target
 			(e.g. container, content, axis wrappers)
 		*/
-		getTargets : function(object) {
-			object = object || $self.vars.object;
+		getTargets : function(view) {
 			
 			$self.vars.object = {
-				target : object.target,
-				view : object.target,
-				parent : object.target.querySelector("section"),
-				content : object.target.querySelector($self.utils.parseClass(".", "wrapper")),
-				x : object.target.querySelector($self.utils.parseClass(".", "x-axis")),
-				y : object.target.querySelector($self.utils.parseClass(".", "y-axis")),
-				viewport : object.target.querySelector("viewport")
+				target : view,
+				view : view,
+				parent : view.querySelector("section"),
+				content : view.querySelector($self.utils.parseClass(".", "wrapper")),
+				x : view.querySelector($self.utils.parseClass(".", "x-axis")),
+				y : view.querySelector($self.utils.parseClass(".", "y-axis")),
+				viewport : view.querySelector("viewport")
 			};
 			
 			return $self.vars.object;
@@ -517,10 +516,10 @@ DupliKit.utils.Rivet = (function (object) {
 	Function: addEventListeners
 		Adds event listeners to element targets
 	*/
-	$self.addEventListeners = function(object) {
+	$self.addEventListeners = function(view, object) {
 		
 		// Shortcuts
-		var targets = $self.utils.getTargets(object);
+		var targets = $self.utils.getTargets(view);
 		
 		// Local variables
 		var touch, offset, scale, noMovement,
@@ -539,7 +538,7 @@ DupliKit.utils.Rivet = (function (object) {
 					return;
 				}
 				
-				targets = $self.utils.getTargets(object);
+				targets = $self.utils.getTargets(view);
 				
 				// Reset values
 				$self.utils.zeroValues();
@@ -597,27 +596,29 @@ DupliKit.utils.Rivet = (function (object) {
 				// Reset x/y transition duration
 				matrices = $self.utils.resetXY(targets);
 				
-				$self.utils.updateScrollbarDimensions(targets);
-				
-				// Stop x axis scrollbar
-				$self.utils.updateScrollbarPosition({
-					targets : targets,
-					el : targets.x,
-					outer : bWidth,
-					inner : tWidth,
-					position : offset,
-					offset : bLeft
-				});
+				if (object.showScrollbars) {
+					$self.utils.updateScrollbarDimensions(targets);
 
-				// Stop y axis scrollbar
-				$self.utils.updateScrollbarPosition({
-					targets : targets,
-					el : targets.y,
-					outer : bHeight,
-					inner : tHeight,
-					position : offset,
-					offset : bTop
-				});
+					// Stop x axis scrollbar
+					$self.utils.updateScrollbarPosition({
+						targets : targets,
+						el : targets.x,
+						outer : bWidth,
+						inner : tWidth,
+						position : offset,
+						offset : bLeft
+					});
+
+					// Stop y axis scrollbar
+					$self.utils.updateScrollbarPosition({
+						targets : targets,
+						el : targets.y,
+						outer : bHeight,
+						inner : tHeight,
+						position : offset,
+						offset : bTop
+					});
+				}
 			},
 
 			touchmove : function(e) {
@@ -713,16 +714,18 @@ DupliKit.utils.Rivet = (function (object) {
 						
 						// Set the x-axis transform based on the differences in touch
 						$space.utils.setTransform(targets.x, matrices.x.translate(touchDifferences.x, 0));
-
-						// Update x-axis scrollbar
-						$self.utils.updateScrollbarPosition({
-							targets : targets,
-							el : targets.x,
-							outer : bWidth,
-							inner : tWidth,
-							position : offset,
-							offset : bLeft
-						});
+						
+						if (object.showScrollbars) {
+							// Update x-axis scrollbar
+							$self.utils.updateScrollbarPosition({
+								targets : targets,
+								el : targets.x,
+								outer : bWidth,
+								inner : tWidth,
+								position : offset,
+								offset : bLeft
+							});
+						}
 						
 					// }
 				}
@@ -751,15 +754,17 @@ DupliKit.utils.Rivet = (function (object) {
 						// Set the y-axis transform based on the differences in touch
 						$space.utils.setTransform(targets.y, matrices.y.translate(0, touchDifferences.y));
 						
-						// Update y-axis scrollbar
-						$self.utils.updateScrollbarPosition({
-							targets : targets,
-							el : targets.y,
-							outer : bHeight,
-							inner : tHeight,
-							position : offset,
-							offset : bTop
-						});
+						if (object.showScrollbars) {
+							// Update y-axis scrollbar
+							$self.utils.updateScrollbarPosition({
+								targets : targets,
+								el : targets.y,
+								outer : bHeight,
+								inner : tHeight,
+								position : offset,
+								offset : bTop
+							});
+						}
 						
 					// }
 				}
@@ -1134,19 +1139,21 @@ DupliKit.utils.Rivet = (function (object) {
 						$self.vars.touchActive--;
 					}, endDuration.x);
 					
-					// Update the scrollbar position
-					$self.utils.updateScrollbarPosition({
-						targets : targets,
-						el : targets.x,
-						outer : bWidth,
-						inner : tWidth,
-						position : {
-							left : offset.left + endDistance.x,
-							top : offset.top + endDistance.y
-						},
-						offset : bLeft,
-						duration : endDuration.x
-					});
+					if (object.showScrollbars) {
+						// Update the scrollbar position
+						$self.utils.updateScrollbarPosition({
+							targets : targets,
+							el : targets.x,
+							outer : bWidth,
+							inner : tWidth,
+							position : {
+								left : offset.left + endDistance.x,
+								top : offset.top + endDistance.y
+							},
+							offset : bLeft,
+							duration : endDuration.x
+						});
+					}
 				}
 				
 				// If difference in height is greater than zero
@@ -1167,19 +1174,21 @@ DupliKit.utils.Rivet = (function (object) {
 						$self.vars.touchActive--;
 					}, endDuration.y);
 					
-					// Update the scrollbar position
-					$self.utils.updateScrollbarPosition({
-						targets : targets,
-						el : targets.y,
-						outer : bHeight,
-						inner : tHeight,
-						position : {
-							left : offset.left + endDistance.x,
-							top : offset.top + endDistance.y
-						},
-						offset : bTop,
-						duration : endDuration.y
-					});
+					if (object.showScrollbars) {
+						// Update the scrollbar position
+						$self.utils.updateScrollbarPosition({
+							targets : targets,
+							el : targets.y,
+							outer : bHeight,
+							inner : tHeight,
+							position : {
+								left : offset.left + endDistance.x,
+								top : offset.top + endDistance.y
+							},
+							offset : bTop,
+							duration : endDuration.y
+						});
+					}
 				}
 				
 			}
@@ -1210,8 +1219,8 @@ DupliKit.utils.Rivet = (function (object) {
 	Function: renderScrollbars
 		Generates scrollbar HTML
 	*/
-	$self.renderScrollbars = function(object) {
-		var targets = $self.utils.getTargets(object),
+	$self.renderScrollbars = function(view) {
+		var targets = $self.utils.getTargets(view),
 		    div, inner, ratio, dimension;
 		
 		// Ensure targets are visible for the rendering
@@ -1259,8 +1268,8 @@ DupliKit.utils.Rivet = (function (object) {
 	Function: prepView
 		Wraps parent in two divs in order to individually track x/y axes
 	*/
-	$self.prepView = function(object) {
-		var targets = $self.utils.getTargets(object);
+	$self.prepView = function(view) {
+		var targets = $self.utils.getTargets(view);
 		
 		var x = document.createElement("div");
 		$space.utils.addClass(x, "ui-dup-rivet");
@@ -1291,8 +1300,11 @@ DupliKit.utils.Rivet = (function (object) {
 		Fires functions on initialization
 	*/
 	$self.init = function() {
-		$self.prepView(object);
-		$self.addEventListeners(object);
-		$self.renderScrollbars(object);
+		$self.prepView(view);
+		$self.addEventListeners(view, object);
+		
+		if (object.showScrollbars) {
+			$self.renderScrollbars(view);
+		}
 	}();
 });

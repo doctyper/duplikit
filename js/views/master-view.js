@@ -43,7 +43,13 @@ DupliKit.MasterView = (function (object) {
 	Namespace: DupliKit.MasterView.vars
 		Shared local variables
 	*/
-	$self.vars = {};
+	$self.vars = {
+		defaults : {
+			showPopover : true,
+			showScrollbars : true,
+			showInstallReminder : false
+		}
+	};
 	
 	/*
 	Namespace: DupliKit.MasterView.utils
@@ -303,9 +309,22 @@ DupliKit.MasterView = (function (object) {
 		},
 		
 		prepView : function(view) {
-			new DupliKit.utils.Rivet({
-				target : view
-			});
+			new DupliKit.utils.Rivet(view, $self.vars.masterObject);
+		},
+		
+		prepMasterObject : function(object) {
+			var obj = {}, key;
+			
+			for (key in $self.vars.defaults) {
+				obj[key] = $self.vars.defaults[key];
+			}
+			
+			for (key in object) {
+				obj[key] = object[key];
+			}
+			
+			$self.vars.masterObject = obj;
+			return $self.vars.masterObject;
 		},
 		
 		buildControlObject : function(object) {
@@ -562,7 +581,7 @@ DupliKit.MasterView = (function (object) {
 	Function: init
 	*/
 	$self.init = function() {
-		$self.vars.masterObject = object;
+		object = $self.utils.prepMasterObject(object);
 		
 		if (object.masterPane) {
 			$self.masterPane.init(object.masterPane);
