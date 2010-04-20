@@ -15,23 +15,23 @@ Requires:
 
 */
 
-.ui-dup-tab-view-component section {
+.ui-dup-view-component section {
 	background: #fff;
 }
 
-.ui-dup-tab-view-component section .ui-dup-tab-hidden {
+.ui-dup-view-component section .ui-dup-tab-hidden {
 	display: none;
 }
 
-.ui-dup-tab-view-component section header {
+.ui-dup-view-component section header {
 	display: none;
 }
 
-.ui-dup-tab-view-component viewport {
+.ui-dup-view-component viewport {
 	width: 100%;
 }
 
-.ui-dup-tab-view-component viewport footer {
+.ui-dup-view-component viewport footer {
 	top: -48px;
 	left: 0;
 	width: 100%;
@@ -42,9 +42,10 @@ Requires:
 	color: #999;
 	font-size: 10px;
 	font-weight: bold;
+	z-index: 600;
 }
 
-.ui-dup-tab-view-component viewport footer ul {
+.ui-dup-view-component viewport footer ul {
 	width: 100%;
 	height: 46px;
 	text-align: center;
@@ -53,7 +54,7 @@ Requires:
 	border-top: 1px solid #434343;
 }
 
-.ui-dup-tab-view-component viewport footer li {
+.ui-dup-view-component viewport footer li {
 	margin: 1px 15px 0;
 	width: 76px;
 	height: 44px;
@@ -61,13 +62,13 @@ Requires:
 	display: inline-block;
 }
 
-.ui-dup-tab-view-component viewport footer li.ui-dup-tab-active {
+.ui-dup-view-component viewport footer li.ui-dup-tab-active {
 	color: #fff;
 	-webkit-border-radius: 3px;
 	background: rgba(255, 255, 255, 0.14);
 }
 
-.ui-dup-tab-view-component viewport footer a {
+.ui-dup-view-component viewport footer a {
 	width: 100%;
 	height: 100%;
 	display: block;
@@ -75,19 +76,19 @@ Requires:
 	background: url("../../images/tmp/icon-sample.png") no-repeat center 0;
 }
 
-.ui-dup-tab-view-component viewport footer li:nth-child(2) a {
+.ui-dup-view-component viewport footer li:nth-child(2) a {
 	background-image: url("../../images/tmp/icon-sample-2.png");
 }
 
-.ui-dup-tab-view-component viewport footer li:nth-child(3) a {
+.ui-dup-view-component viewport footer li:nth-child(3) a {
 	background-image: url("../../images/tmp/icon-sample-3.png");
 }
 
-.ui-dup-tab-view-component viewport footer li:nth-child(4) a {
+.ui-dup-view-component viewport footer li:nth-child(4) a {
 	background-image: url("../../images/tmp/icon-sample-4.png");
 }
 
-.ui-dup-tab-view-component viewport footer li.ui-dup-tab-active a {
+.ui-dup-view-component viewport footer li.ui-dup-tab-active a {
 	color: #fff;
 	background-position: center -44px;
 }
