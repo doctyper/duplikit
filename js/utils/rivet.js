@@ -688,6 +688,13 @@ DupliKit.utils.Rivet = (function (view, object) {
 					}
 				}
 				
+				if (!object.lockAxis) {
+					activeAxis = {
+						x : true,
+						y: true
+					};
+				}
+				
 				// Current target boundaries
 				offset = targets.content.getBoundingClientRect();
 				
@@ -1068,7 +1075,7 @@ DupliKit.utils.Rivet = (function (view, object) {
 
 						// If the absolute value of the right boundary is less than the width difference,
 						// We need to create a bounce effect to mimic native UX
-						if (Math.abs(offset.right) < (widthDiff - bLeft)) {
+						if (Math.abs(offset.left) < (widthDiff - bLeft)) {
 
 							// Bounce distance is the amount to travel
 							bounce.x = -(widthDiff) - (offset.left - bLeft);
