@@ -45,6 +45,7 @@ DupliKit.MasterView = (function (object) {
 	*/
 	$self.vars = {
 		defaults : {
+			lockAxis : true,
 			showPopover : true,
 			showScrollbars : true,
 			showInstallReminder : false
