@@ -48,8 +48,6 @@ DupliKit.TabBarController = (function (object) {
 			var tabBar = $self.vars.context,
 			    offset = window.innerHeight - tabBar.offsetHeight;
 			
-			console.log(tabBar.offsetHeight);
-			
 			view.style.height = offset - view.offsetTop + "px";
 			tabBar.style.top = offset + "px";
 		},
